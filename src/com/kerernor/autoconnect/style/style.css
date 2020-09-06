@@ -1,0 +1,86 @@
+
+.jfx-button {
+    -fx-border-radius: 40px;
+    -fx-border-color: white;
+}
+.button {
+    -fx-background-color: #05071F;
+    -fx-text-fill: #e7e5e5;
+}
+
+.button:hover {
+    -fx-background-color: #10165F;
+}
+
+.button:pressed {
+    -fx-background-color: #1620A1;
+}
+
+.scroll-pane {
+    -fx-background-color: #02030A;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+
+#listViewComputer {
+    -fx-border-insets: 0;
+    -fx-border-style: none;
+}
+
+
+.list-view {
+    -fx-selection-bar: #0A0E3F ;
+    -fx-selection-bar-non-focused:  #0A0E3F ;
+}
+
+.list-view {
+    -fx-background-color: #0A0E3F, -fx-control-inner-background;
+    -fx-control-inner-background: #02030A;
+    -fx-background-insets: 1, 1;
+    -fx-padding: 1;
+}
+
+
+.list-cell:hover {
+    -fx-background-color: #10165F;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #10165F;
+    -fx-background-radius: 5em;
+}
+
+.scroll-pane > .corner {
+    -fx-background-color: black;
+}
+
+.bordered-titled-title {
+    -fx-background-color: black;
+    -fx-text-fill: white;
+    -fx-translate-y: -13;
+}
+
+.bordered-titled-border {
+    -fx-content-display: top;
+    -fx-border-insets: 20 15 15 15;
+    -fx-background-color: black;
+    -fx-border-color: white;
+    -fx-border-width: 1;
+}
+

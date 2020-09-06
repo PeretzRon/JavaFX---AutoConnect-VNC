@@ -1,0 +1,31 @@
+.labelDescription {
+    -fx-text-fill: #fff;
+    -fx-font-size: 1.2em;
+    -fx-padding: 10;
+}
+
+.text-field-input {
+    -fx-text-fill: #fff;
+}
+
+.radio-button {
+    -fx-padding: 10;
+    -fx-text-fill: #ffffff;
+    -jfx-selected-color: #3c49ee;
+}
+.button-raised{
+    -fx-padding: 0.5em 0.3em;
+    -fx-font-size: 14px;
+    -jfx-button-type: RAISED;
+    -fx-background-color: #3c49ee;
+    -fx-pref-width: 100;
+    -fx-text-fill: WHITE;
+}
+
+.dialog .button{
+    -fx-background-color:black;
+    -fx-text-fill:white;
+    -fx-wrap-text: true;
+    -fx-effect: dropshadow( three-pass-box, yellow, 10.0, 0.0, 0.0, 0.0);
+    -fx-cursor:hand;
+}
