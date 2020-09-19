@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPaneDialog" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="289.0" prefWidth="372.0" style="-fx-background-color: #05071F;" stylesheets="@../style/dialogStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kerernor.autoconnect.controllers.DialogController">
+<BorderPane fx:id="borderPaneDialog" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="289.0" prefWidth="372.0" style="-fx-background-color: #05071F;" stylesheets="@../style/dialogStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kerernor.autoconnect.view.DialogController">
    <center>
       <VBox prefHeight="376.0" prefWidth="563.0" style="-fx-background-color: #02030A;" BorderPane.alignment="CENTER">
          <children>

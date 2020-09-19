@@ -1,9 +1,10 @@
-package com.kerernor.autoconnect.scripts;
+package com.kerernor.autoconnect.script;
 import java.io.File;
 import java.io.FileWriter;
 
 public class VNCRemote {
 
+    // TODO: delete unnecessary row
     private static final String mPathToVNC = "C:\\Program Files (x86)\\uvnc bvba\\UltraVNC";
     private static final String mPathScript = "C:\\Script\\run.bat";
     private static final String mAdminPassword = "P@ssw0rd";

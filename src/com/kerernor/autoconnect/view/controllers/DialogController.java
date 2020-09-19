@@ -1,4 +1,4 @@
-package com.kerernor.autoconnect.controllers;
+package com.kerernor.autoconnect.view.controllers;
 
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
