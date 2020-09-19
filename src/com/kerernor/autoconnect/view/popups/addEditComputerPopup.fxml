@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="mainPane" prefHeight="350.0" prefWidth="349.0" styleClass="add-edit-popup" stylesheets="@../../style/popupStyle.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <Label fx:id="addEditComputerLabel" styleClass="sub-title" text="Add/Edit Computer" BorderPane.alignment="CENTER_LEFT">
+         <font>
+            <Font size="29.0" />
+         </font>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </Label>
+   </top>
+   <center>
+      <VBox prefHeight="275.0" prefWidth="327.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="52.0" prefWidth="349.0" stylesheets="@../../style/popupStyle.css">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label styleClass="sub-title" text="IP Address:" />
+                        <TextField fx:id="computerIPAddress" focusTraversable="true" prefHeight="25.0" prefWidth="129.0" styleClass="text-field-add-edit-popup" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="55.0" prefWidth="349.0">
+               <children>
+                  <VBox prefHeight="55.0" prefWidth="121.0">
+                     <children>
+                        <Label styleClass="sub-title" text="Computer Name:" />
+                        <TextField fx:id="computerName" focusTraversable="true" prefHeight="25.0" prefWidth="114.0" styleClass="text-field-add-edit-popup" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="55.0" prefWidth="349.0">
+               <children>
+                  <VBox prefHeight="55.0" prefWidth="121.0">
+                     <children>
+                        <Label styleClass="sub-title" text="Computer Location:" />
+                        <TextField fx:id="computerLocation" focusTraversable="true" prefHeight="25.0" prefWidth="114.0" styleClass="text-field-add-edit-popup" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="55.0" prefWidth="349.0">
+               <children>
+                  <VBox prefHeight="55.0" prefWidth="121.0" spacing="5.0">
+                     <children>
+                        <Label styleClass="sub-title" text="Computer Type:" />
+                        <RadioButton fx:id="stationRadioButton" focusTraversable="true" mnemonicParsing="false" text="Station" textFill="WHITE">
+                           <padding>
+                              <Insets bottom="5.0" top="5.0" />
+                           </padding>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="computerType" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="rcgwRadioButton" focusTraversable="true" mnemonicParsing="false" text="RCGW" textFill="WHITE" toggleGroup="$computerType">
+                           <padding>
+                              <Insets bottom="5.0" top="5.0" />
+                           </padding>
+                        </RadioButton>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Button focusTraversable="true" mnemonicParsing="false" onAction="#saveClickAction" styleClass="button-add-edit-popup" text="Save" />
+                  <Button focusTraversable="true" mnemonicParsing="false" onAction="#closeClickAction" styleClass="button-add-edit-popup" text="Cancel" />
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+   </center>
+</BorderPane>

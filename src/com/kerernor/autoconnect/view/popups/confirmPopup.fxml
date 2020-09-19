@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane prefHeight="200.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+   <columnConstraints>
+      <ColumnConstraints hgrow="ALWAYS" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="50.0" styleClass="confirm-popup" stylesheets="@../../style/popupStyle.css">
+         <children>
+            <Label fx:id="mainTitle" alignment="CENTER" styleClass="sub-title" text="כותרת ">
+               <font>
+                  <Font size="38.0" />
+               </font>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </Label>
+            <Label fx:id="subTitle" styleClass="title" text="כותרת משנה">
+               <font>
+                  <Font size="19.0" />
+               </font></Label>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="7.0">
+               <children>
+                  <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#confirmClickAction" styleClass="button-confirm-popup" text="OK" />
+                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#closeClickAction" styleClass="button-confirm-popup" text="Cancel" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</GridPane>
