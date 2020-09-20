@@ -12,6 +12,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
@@ -65,6 +66,8 @@ public class MainController extends AnchorPane {
     @FXML
     private CheckBox viewOnlyCheckBox;
 
+    private boolean isViewOnly = false;
+
 //    public void initialize() {
 ////       RemoteScreenController remoteScreenController = new RemoteScreenController();
 //    }
@@ -80,12 +83,12 @@ public class MainController extends AnchorPane {
         Platform.runLater(() -> quickConnectTextField.requestFocus());
         quickConnectTextField.setOnKeyReleased(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
-                VNCRemote.connect(quickConnectTextField.getText(), mainPane);
+                connectToVNC(quickConnectTextField.getText(), mainPane);
             }
         });
 
         quickConnectBtn.setOnAction(actionEvent -> {
-            VNCRemote.connect(quickConnectTextField.getText(), mainPane);
+            connectToVNC(quickConnectTextField.getText(), mainPane);
         });
 
         searchAreaController.getSearch().setOnKeyReleased(keyEvent -> {
@@ -95,16 +98,22 @@ public class MainController extends AnchorPane {
                     computer -> computer.getIp().contains(input) ||
                             computer.getName().contains(input) ||
                             computer.getItemLocation().contains(input));
+            computerListController.scrollTo(0);
         });
 
         // TODO: delete
         computerListController.addEventHandler(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, event -> {
-            System.out.println(event.getText());
+//            System.out.println(event.getText());
         });
 
-//        viewOnlyCheckBox.selectedProperty().addListener((observable, oldValue, newValue) ->  {
-//            System.out.println(newValue);
-//        });
+        computerListController.addEventHandler(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, event -> {
+            connectToVNC(event.getIpAddress(),event.getBehindParent());
+        });
+
+
+        viewOnlyCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            isViewOnly = newValue;
+        });
     }
 
     public void handleClicks(ActionEvent actionEvent) {
@@ -131,6 +140,10 @@ public class MainController extends AnchorPane {
     public void addNewComputer() {
         AddEditComputerPopup addEditComputerPopup = new AddEditComputerPopup(pnlOverview);
         addEditComputerPopup.openPopup(false, null);
+    }
+
+    private void connectToVNC(String ip, Parent paneBehind) {
+        VNCRemote.connect(ip, paneBehind, isViewOnly);
     }
 
 

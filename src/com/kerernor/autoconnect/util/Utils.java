@@ -42,7 +42,7 @@ public class Utils {
     public static final String TExT_CONFIRM_DELETE_COMPUTER_MESSAGE = "Are you sure to delete: ";
     public static final String TEXT_ADD_NEW_COMPUTER_POPUP = "Add new computer";
     public static final String TEXT_EDIT_COMPUTER_POPUP = "Edit ";
-    public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong IP Address, try again";
+    public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong ip address, try again";
 
 
 

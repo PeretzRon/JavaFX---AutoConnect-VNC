@@ -95,7 +95,8 @@ public class ComputerRowController extends ListCell<Computer> {
 
     @FXML
     public void connectToComputer() {
-        VNCRemote.connect(computer.getIp(), mainPane);
+        String ipAddress = computer.getIp();
+        fireEvent(new KorEvents.ConnectVNCEvent(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, ipAddress, paneBehind));
     }
 
     @FXML

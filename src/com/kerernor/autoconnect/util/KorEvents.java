@@ -3,6 +3,7 @@ package com.kerernor.autoconnect.util;
 import com.kerernor.autoconnect.model.Computer;
 import javafx.event.Event;
 import javafx.event.EventType;
+import javafx.scene.Parent;
 
 public class KorEvents {
 
@@ -17,6 +18,26 @@ public class KorEvents {
 
         public String getText() {
             return text;
+        }
+    }
+
+    public static class ConnectVNCEvent extends Event{
+        public static final EventType<ConnectVNCEvent> CONNECT_VNC_EVENT_EVENT = new EventType("ConnectVNCEvent");
+        private final String ipAddress;
+        private final Parent paneBehind;
+
+        public ConnectVNCEvent(EventType<ConnectVNCEvent> eventType, String ipAddress, Parent paneBehind ) {
+            super(eventType);
+            this.ipAddress = ipAddress;
+            this.paneBehind = paneBehind;
+        }
+
+        public String getIpAddress() {
+            return ipAddress;
+        }
+
+        public Parent getBehindParent() {
+            return paneBehind;
         }
     }
 

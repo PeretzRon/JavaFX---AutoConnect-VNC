@@ -17,16 +17,13 @@ public class VNCRemote {
         return ip.matches(PATTERN);
     }
 
-    public static void connect(String ip, Parent parent) {
+    public static void connect(String ip, Parent parent, boolean isViewOnlySelected) {
         if (validateIpAddress(ip)) {
             try {
                 FileWriter myWriter = new FileWriter(mPathScript);
-//                String isViewOnly = viewOnlyToggleBtn.isSelected() ? "-viewonly" : "";
-//                String dataToWrite = String.format("cd %s\n" +
-//                        "vncviewer.exe  -connect %s  %s -password %s", mPathToVNC, isViewOnly, ip, mAdminPassword);
-
+                String isViewOnly = isViewOnlySelected ? "-viewonly" : "";
                 String dataToWrite = String.format("cd %s\n" +
-                        "vncviewer.exe  -connect %s -password %s", mPathToVNC, ip, mAdminPassword);
+                        "vncviewer.exe  -connect %s  %s -password %s", mPathToVNC, isViewOnly, ip, mAdminPassword);
 
                 myWriter.write(dataToWrite);
                 myWriter.close();
