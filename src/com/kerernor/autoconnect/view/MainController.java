@@ -74,6 +74,7 @@ public class MainController extends AnchorPane {
 
 
     public void initialize() {
+
         FilteredList<Computer> computerFilteredList = new FilteredList<>(ComputerData.getInstance().getComputersList(), computer -> true);
         computerListController.setPaneBehind(this.pnlOverview);
         computerListController.loadList(computerFilteredList);
@@ -107,13 +108,14 @@ public class MainController extends AnchorPane {
         });
 
         computerListController.addEventHandler(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, event -> {
-            connectToVNC(event.getIpAddress(),event.getBehindParent());
+            connectToVNC(event.getIpAddress(), event.getBehindParent());
         });
 
 
         viewOnlyCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             isViewOnly = newValue;
         });
+
     }
 
     public void handleClicks(ActionEvent actionEvent) {

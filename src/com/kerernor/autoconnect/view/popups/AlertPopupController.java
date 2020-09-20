@@ -2,17 +2,13 @@ package com.kerernor.autoconnect.view.popups;
 
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.util.Utils;
-import com.sun.javafx.stage.WindowHelper;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Bounds;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;

@@ -3,15 +3,4 @@
     -fx-background-color:  #05071F;
     -fx-background-radius: 5;
     -fx-background-insets: 0;
-
-}
-
-.itemBtn {
-    -fx-border-color: #2A73FF;
-    -fx-border-radius: 20;
-    -fx-background-color: transparent;
-}
-
-.itemBtn:hover {
-    -fx-background-color: #10165F;
 }

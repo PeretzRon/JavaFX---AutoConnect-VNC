@@ -76,7 +76,7 @@
       <StackPane layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
          <children>
             <Pane fx:id="pnlCustomer" prefHeight="200.0" prefWidth="200.0" />
-            <Pane fx:id="pnlSetting" prefHeight="200.0" prefWidth="200.0" />
+            <Pane fx:id="pnlSetting" prefHeight="200.0" prefWidth="200.0"/>
             <Pane fx:id="pnlMenus" prefHeight="200.0" prefWidth="200.0" />
             <Pane fx:id="pnlOverview" prefHeight="576.0" prefWidth="773.0">
                <children>

@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <BorderPane fx:id="mainPane" prefHeight="73.0" prefWidth="657.0" styleClass="item" stylesheets="@../style/itemStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <right>
@@ -32,7 +29,7 @@
                           <Image url="@../images/pencil.png" />
                       </image>
                   </ImageView>
-                  <ImageView fitHeight="21.0" fitWidth="20.0" onMouseClicked="#connectToComputer" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="21.0" fitWidth="20.0" onMouseClicked="#connectToComputer" pickOnBounds="true" preserveRatio="true" styleClass="itemBtn">
                       <image>
                           <Image url="@../images/play.png" />
                       </image>
