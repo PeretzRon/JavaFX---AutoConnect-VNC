@@ -28,3 +28,8 @@
    -fx-border-color: white;
     -fx-text-fill: #fff;
 }
+
+.alert-popup {
+    -fx-background-color: #ff9800;
+    -fx-font-size: 24;
+}

@@ -92,12 +92,12 @@ public class RemoteScreenController {
 
         quickConnectTextField.setOnKeyReleased(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
-                VNCRemote.connect(quickConnectTextField.getText());
+                VNCRemote.connect(quickConnectTextField.getText(), mainPane);
             }
         });
 
         quickConnectBtn.setOnAction(actionEvent -> {
-            VNCRemote.connect(quickConnectTextField.getText());
+            VNCRemote.connect(quickConnectTextField.getText(), mainPane);
         });
 
         searchAreaController.getSearch().setOnKeyReleased(keyEvent -> {
@@ -125,7 +125,6 @@ public class RemoteScreenController {
         AddEditComputerPopup addEditComputerPopup = new AddEditComputerPopup(pnlOverview);
         addEditComputerPopup.openPopup(false, null);
     }
-
 
 
 }

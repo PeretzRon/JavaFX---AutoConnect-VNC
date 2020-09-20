@@ -112,6 +112,9 @@ public class AddEditComputerPopup extends Popup {
         stage.initOwner(paneBehind.getScene().getWindow());
         stage.show();
 
+        // center stage
+        Utils.centerNewStageToBehindStage(paneBehind, stage);
+
         // Blur the pane behind
         paneBehind.effectProperty().setValue(Utils.getBlurEffect());
 

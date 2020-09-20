@@ -117,7 +117,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" layoutX="45.0" layoutY="178.0" prefHeight="42.0" prefWidth="712.0" spacing="80.0" style="-fx-background-color: #02030A;">
                      <children>
-<!--                        <TextField fx:id="search" prefHeight="27.0" prefWidth="183.0" promptText="Filter..." style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 2em; -fx-text-fill: #fff;" />-->
+                        <!--                        <TextField fx:id="search" prefHeight="27.0" prefWidth="183.0" promptText="Filter..." style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 2em; -fx-text-fill: #fff;" />-->
                         <SearchAreaController fx:id="searchAreaController" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 2em; -fx-text-fill: #fff;"/>
                         <ImageView fitHeight="26.0" fitWidth="26.0" onMouseClicked="#addNewComputer" pickOnBounds="true" preserveRatio="true">
                            <image>

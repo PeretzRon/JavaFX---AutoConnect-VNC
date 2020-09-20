@@ -20,7 +20,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         initRootLayout();
-        makeStageDraggable();
+//        makeStageDraggable();
         Scene scene = primaryStage.getScene();
 //        ScenicView.show(scene);
     }

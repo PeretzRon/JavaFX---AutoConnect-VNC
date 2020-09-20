@@ -1,10 +1,13 @@
 package com.kerernor.autoconnect.script;
+import com.kerernor.autoconnect.view.MainController;
+import com.kerernor.autoconnect.view.popups.AlertPopupController;
+import javafx.scene.Parent;
+
 import java.io.File;
 import java.io.FileWriter;
 
 public class VNCRemote {
 
-    // TODO: delete unnecessary row
     private static final String mPathToVNC = "C:\\Program Files (x86)\\uvnc bvba\\UltraVNC";
     private static final String mPathScript = "C:\\Script\\run.bat";
     private static final String mAdminPassword = "P@ssw0rd";
@@ -14,11 +17,9 @@ public class VNCRemote {
         return ip.matches(PATTERN);
     }
 
-    public static void connect(String ip) {
+    public static void connect(String ip, Parent parent) {
         if (validateIpAddress(ip)) {
             try {
-//                mUserInput.setBackground(Color.white);
-//                mInfoMassage.setVisible(false);
                 FileWriter myWriter = new FileWriter(mPathScript);
 //                String isViewOnly = viewOnlyToggleBtn.isSelected() ? "-viewonly" : "";
 //                String dataToWrite = String.format("cd %s\n" +
@@ -31,18 +32,12 @@ public class VNCRemote {
                 myWriter.close();
                 Runtime.getRuntime().exec(
                         "cmd /c run.bat", null, new File("C:\\Script\\"));
-//                if (mIsExitAfterConnect) exit(0);
             } catch (Exception e1) {
                 e1.printStackTrace();
-//                mInfoMassage.setVisible(true);
-//                mInfoMassage.setText("Something went wrong :(");
             }
         } else {
-//            if (!snackbar.isVisible()) {
-//                snackbarLabel.setText("Wrong IP Address!!");
-//                final JFXSnackbar.SnackbarEvent snackbarEvent =
-//                        new JFXSnackbar.SnackbarEvent(snackbarLabel, Duration.seconds(3.33), null);
-//                snackbar.fireEvent(snackbarEvent);
+            AlertPopupController alertPopupController = new AlertPopupController(parent);
+            alertPopupController.show();
         }
     }
 }

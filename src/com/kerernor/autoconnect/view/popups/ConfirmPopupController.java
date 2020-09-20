@@ -74,6 +74,7 @@ public class ConfirmPopupController extends GridPane {
         stage.initModality(Modality.NONE);
         stage.initOwner(paneBehind.getScene().getWindow());
         stage.show();
+        Utils.centerNewStageToBehindStage(paneBehind, stage);
 
         // Blur the pane behind
         paneBehind.effectProperty().setValue(Utils.getBlurEffect());
@@ -90,4 +91,5 @@ public class ConfirmPopupController extends GridPane {
         ComputerData.getInstance().remove(computer);
         closeClickAction();
     }
+
 }

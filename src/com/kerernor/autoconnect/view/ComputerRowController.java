@@ -95,7 +95,7 @@ public class ComputerRowController extends ListCell<Computer> {
 
     @FXML
     public void connectToComputer() {
-        VNCRemote.connect(computer.getIp());
+        VNCRemote.connect(computer.getIp(), mainPane);
     }
 
     @FXML

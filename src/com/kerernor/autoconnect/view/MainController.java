@@ -62,6 +62,9 @@ public class MainController extends AnchorPane {
     @FXML
     private JFXButton quickConnectBtn;
 
+    @FXML
+    private CheckBox viewOnlyCheckBox;
+
 //    public void initialize() {
 ////       RemoteScreenController remoteScreenController = new RemoteScreenController();
 //    }
@@ -77,12 +80,12 @@ public class MainController extends AnchorPane {
         Platform.runLater(() -> quickConnectTextField.requestFocus());
         quickConnectTextField.setOnKeyReleased(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
-                VNCRemote.connect(quickConnectTextField.getText());
+                VNCRemote.connect(quickConnectTextField.getText(), mainPane);
             }
         });
 
         quickConnectBtn.setOnAction(actionEvent -> {
-            VNCRemote.connect(quickConnectTextField.getText());
+            VNCRemote.connect(quickConnectTextField.getText(), mainPane);
         });
 
         searchAreaController.getSearch().setOnKeyReleased(keyEvent -> {
@@ -98,6 +101,10 @@ public class MainController extends AnchorPane {
         computerListController.addEventHandler(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, event -> {
             System.out.println(event.getText());
         });
+
+//        viewOnlyCheckBox.selectedProperty().addListener((observable, oldValue, newValue) ->  {
+//            System.out.println(newValue);
+//        });
     }
 
     public void handleClicks(ActionEvent actionEvent) {
