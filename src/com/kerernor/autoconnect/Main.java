@@ -1,6 +1,7 @@
 package com.kerernor.autoconnect;
 
 import com.kerernor.autoconnect.model.ComputerData;
+import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -61,6 +62,7 @@ public class Main extends Application {
     @Override
     public void init() throws Exception {
         ComputerData.getInstance().loadData();
+        PingerData.getInstance().loadData();
     }
 
     @Override

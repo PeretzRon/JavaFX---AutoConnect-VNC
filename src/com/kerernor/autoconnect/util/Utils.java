@@ -18,11 +18,11 @@ public class Utils {
     public static final String COMPUTER_LIST = VIEWS_BASE_PATH + "computerList.fxml";
     public static final String COMPUTER_ROW_VIEW = VIEWS_BASE_PATH + "computerRow.fxml";
     public static final String SEARCH_AREA = VIEWS_BASE_PATH + "searchArea.fxml";
+    public static final String PINGER_LIST = VIEWS_BASE_PATH + "pingListGroup.fxml";
+    public static final String PINGER_ROW_VIEW = VIEWS_BASE_PATH + "pingRowItem.fxml";
     public static final String CONFIRM_POPUP = VIEWS_POPUPS_BASE_PATH +  "confirmPopup.fxml";
     public static final String ALERT_POPUP = VIEWS_POPUPS_BASE_PATH +  "alertPopup.fxml";
     public static final String ADD_EDIT_COMPUTER_POPUP = VIEWS_POPUPS_BASE_PATH +  "addEditComputerPopup.fxml";
-    public static final String REMOTE_SCREEN_VIEW = VIEWS_BASE_PATH +  "remoteScreenController.fxml";
-
 
 
     // Images file paths
@@ -31,6 +31,7 @@ public class Utils {
 
     // Data paths
     public static final String COMPUTER_DATA = "data.json";
+    public static final String PINGER_DATA = "pingData.json";
 
 
     // Sizes and amounts

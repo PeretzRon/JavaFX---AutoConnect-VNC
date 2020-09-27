@@ -1,0 +1,66 @@
+[
+  {
+    "name": "Karon 98",
+    "data": [
+      {
+        "ipAddress": "10.0.0.10",
+        "name": "A"
+      },
+      {
+        "ipAddress": "10.0.0.1",
+        "name": "B"
+      },
+      {
+        "ipAddress": "10.0.0.66",
+        "name": "C"
+      }
+    ]
+  },
+  {
+    "name": "Karon 88",
+    "data": [
+      {
+        "ipAddress": "10.0.0.10",
+        "name": "C"
+      },
+      {
+        "ipAddress": "10.0.0.1",
+        "name": "D"
+      },
+      {
+        "ipAddress": "10.0.0.66",
+        "name": "E"
+      }
+    ]
+  },
+  {
+    "name": "בית מעלה אדומים",
+    "data": [
+      {
+        "ipAddress": "10.0.0.9",
+        "name": "פלאפון של רון"
+      },
+      {
+        "ipAddress": "10.0.0.10",
+        "name": "מחשב נייח"
+      },
+      {
+        "ipAddress": "10.0.0.11",
+        "name": "סתם מכשיר"
+      },
+      {
+        "ipAddress": "10.0.0.139",
+        "name": "נתב TPLink"
+      },
+      {
+        "ipAddress": "10.0.0.79",
+        "name": "נתב משני בסלון"
+      },
+      {
+        "ipAddress": "10.0.0.67",
+        "name": "פלאפון של אמא"
+      }
+    ]
+  }
+]
+

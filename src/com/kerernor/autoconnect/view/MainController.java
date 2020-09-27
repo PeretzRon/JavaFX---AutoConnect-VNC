@@ -1,13 +1,15 @@
 package com.kerernor.autoconnect.view;
 
 import com.jfoenix.controls.JFXButton;
-import com.kerernor.autoconnect.model.Computer;
-import com.kerernor.autoconnect.model.ComputerData;
+import com.kerernor.autoconnect.model.*;
 import com.kerernor.autoconnect.script.VNCRemote;
 import com.kerernor.autoconnect.util.KorEvents;
+import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,7 +20,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.util.List;
+
 public class MainController extends AnchorPane {
+
+    @FXML
+    private PingListGroupController pingListGroupController;
 
     @FXML
     private ComputerListController computerListController;
@@ -66,6 +75,11 @@ public class MainController extends AnchorPane {
     @FXML
     private CheckBox viewOnlyCheckBox;
 
+    @FXML
+    private ListView<String> nameGroupPingerListView;
+
+    private ObservableList<String> pingerData;
+
     private boolean isViewOnly = false;
 
 //    public void initialize() {
@@ -74,12 +88,26 @@ public class MainController extends AnchorPane {
 
 
     public void initialize() {
-
+        pingerData = FXCollections.observableArrayList();
+        pnlOverview.toFront();
+        pnlSetting.setVisible(false);
         FilteredList<Computer> computerFilteredList = new FilteredList<>(ComputerData.getInstance().getComputersList(), computer -> true);
         computerListController.setPaneBehind(this.pnlOverview);
         computerListController.loadList(computerFilteredList);
         updateCounters();
 
+        PingerData.getInstance().getPingerObservableList().forEach(pinger -> {
+            pingerData.add(pinger.getName());
+        });
+
+        nameGroupPingerListView.setItems(pingerData);
+        nameGroupPingerListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(newValue);
+                pingListGroupController.loadList(pingerList);
+                pingListGroupController.resetProgressBar();
+            }
+        });
 
         Platform.runLater(() -> quickConnectTextField.requestFocus());
         quickConnectTextField.setOnKeyReleased(keyEvent -> {
@@ -124,6 +152,7 @@ public class MainController extends AnchorPane {
             pnlOverview.toFront();
         }
         if (actionEvent.getSource() == btnSettingsScreen) {
+            pnlSetting.setVisible(true);
             pnlSetting.setStyle("-fx-background-color : #02050A");
             pnlSetting.toFront();
         }
@@ -146,6 +175,27 @@ public class MainController extends AnchorPane {
 
     private void connectToVNC(String ip, Parent paneBehind) {
         VNCRemote.connect(ip, paneBehind, isViewOnly);
+    }
+
+    public void checkPingHandler() {
+        pingListGroupController.resetProgressBar();
+        pingListGroupController.getListToSendPing().forEach(pingerItem -> {
+            ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> sendPing(pingerItem));
+        });
+    }
+
+    private void sendPing(PingerItem pingerItem) {
+        try {
+            InetAddress ip = InetAddress.getByName(pingerItem.getIpAddress());
+            if (ip != null && ip.isReachable(3000)) {
+                Platform.runLater(() -> pingerItem.setProgressValue(102));
+            } else {
+                Platform.runLater(() -> pingerItem.setProgressValue(100));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Platform.runLater(() -> pingerItem.setProgressValue(100));
+        }
     }
 
 
