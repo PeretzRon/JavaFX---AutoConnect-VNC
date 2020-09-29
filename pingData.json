@@ -37,12 +37,12 @@
     "name": "בית מעלה אדומים",
     "data": [
       {
-        "ipAddress": "10.0.0.9",
-        "name": "פלאפון של רון"
+        "ipAddress": "8.8.8.8",
+        "name": "Google DNS1"
       },
       {
-        "ipAddress": "10.0.0.10",
-        "name": "מחשב נייח"
+        "ipAddress": "8.8.4.4",
+        "name": "Google DNS1"
       },
       {
         "ipAddress": "10.0.0.11",
@@ -53,12 +53,24 @@
         "name": "נתב TPLink"
       },
       {
-        "ipAddress": "10.0.0.79",
-        "name": "נתב משני בסלון"
+        "ipAddress": "13.226.0.114",
+        "name": "Walla"
       },
       {
         "ipAddress": "10.0.0.67",
-        "name": "פלאפון של אמא"
+        "name": "Computer at Home"
+      },
+      {
+        "ipAddress": "116.202.240.78",
+        "name": "Hebits"
+      },
+      {
+        "ipAddress": "94.23.21.86",
+        "name": "Fuzer"
+      },
+      {
+        "ipAddress": "10.0.0.94",
+        "name": "MiBox M3"
       }
     ]
   }

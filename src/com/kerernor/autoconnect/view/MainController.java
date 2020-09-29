@@ -8,12 +8,12 @@ import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -22,9 +22,13 @@ import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MainController extends AnchorPane {
+
+    @FXML
+    private ProgressBar totalProgress;
 
     @FXML
     private PingListGroupController pingListGroupController;
@@ -70,7 +74,7 @@ public class MainController extends AnchorPane {
     private TextField quickConnectTextField;
 
     @FXML
-    private JFXButton quickConnectBtn;
+    private Button quickConnectBtn;
 
     @FXML
     private CheckBox viewOnlyCheckBox;
@@ -78,9 +82,13 @@ public class MainController extends AnchorPane {
     @FXML
     private ListView<String> nameGroupPingerListView;
 
+    @FXML
+    private Label totalProgressLabel;
+
     private ObservableList<String> pingerData;
 
     private boolean isViewOnly = false;
+    private AtomicInteger passPing = new AtomicInteger(0);
 
 //    public void initialize() {
 ////       RemoteScreenController remoteScreenController = new RemoteScreenController();
@@ -88,6 +96,7 @@ public class MainController extends AnchorPane {
 
 
     public void initialize() {
+        totalProgressLabel.setText("");
         pingerData = FXCollections.observableArrayList();
         pnlOverview.toFront();
         pnlSetting.setVisible(false);
@@ -103,6 +112,9 @@ public class MainController extends AnchorPane {
         nameGroupPingerListView.setItems(pingerData);
         nameGroupPingerListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
+                passPing.set(0);
+                totalProgressLabel.setText("");
+                totalProgress.setProgress(0);
                 ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(newValue);
                 pingListGroupController.loadList(pingerList);
                 pingListGroupController.resetProgressBar();
@@ -178,20 +190,39 @@ public class MainController extends AnchorPane {
     }
 
     public void checkPingHandler() {
-        pingListGroupController.resetProgressBar();
+        int listSizeOfCurrentSelected = pingListGroupController.getListToSendPing().size();
+        AtomicReference<Double> progress = new AtomicReference<>((double) 0);
+        double buffer = 1 / (double) listSizeOfCurrentSelected;
+
+        resetCounterAndProgressBarForPingerScreen();
+        totalProgressLabel.setText("0/" + listSizeOfCurrentSelected);
         pingListGroupController.getListToSendPing().forEach(pingerItem -> {
-            ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> sendPing(pingerItem));
+            ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
+                sendPing(pingerItem, progress, buffer, listSizeOfCurrentSelected);
+            });
         });
     }
 
-    private void sendPing(PingerItem pingerItem) {
+    private void resetCounterAndProgressBarForPingerScreen() {
+        pingListGroupController.resetProgressBar();
+        totalProgress.setProgress(0);
+        passPing.set(0);
+    }
+
+    private void sendPing(PingerItem pingerItem, AtomicReference<Double> progress, double buffer, int listSize) {
         try {
             InetAddress ip = InetAddress.getByName(pingerItem.getIpAddress());
             if (ip != null && ip.isReachable(3000)) {
                 Platform.runLater(() -> pingerItem.setProgressValue(102));
+                passPing.addAndGet(1);
             } else {
                 Platform.runLater(() -> pingerItem.setProgressValue(100));
             }
+            progress.updateAndGet(v -> v + buffer);
+            Platform.runLater(() -> {
+                totalProgress.setProgress(progress.get());
+                totalProgressLabel.setText(String.format("%s/%s", passPing.get(), listSize));
+            });
         } catch (IOException e) {
             e.printStackTrace();
             Platform.runLater(() -> pingerItem.setProgressValue(100));
