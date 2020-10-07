@@ -15,6 +15,7 @@ public class Utils {
     public static final String VIEWS_BASE_PATH = "view/";
     public static final String IMAGES_BASE_PATH = BASE_PATH + "images/";
     public static final String VIEWS_POPUPS_BASE_PATH = VIEWS_BASE_PATH + "popups/";
+    public static final String CONFIG_BASE_PATH = BASE_PATH + "config/";
 
     // View paths
     public static final String MAIN_VIEW = VIEWS_BASE_PATH + "main.fxml";
@@ -23,18 +24,21 @@ public class Utils {
     public static final String SEARCH_AREA = VIEWS_BASE_PATH + "searchArea.fxml";
     public static final String PINGER_LIST = VIEWS_BASE_PATH + "pingListGroup.fxml";
     public static final String PINGER_ROW_VIEW = VIEWS_BASE_PATH + "pingRowItem.fxml";
-    public static final String CONFIRM_POPUP = VIEWS_POPUPS_BASE_PATH +  "confirmPopup.fxml";
-    public static final String ALERT_POPUP = VIEWS_POPUPS_BASE_PATH +  "alertPopup.fxml";
-    public static final String ADD_EDIT_COMPUTER_POPUP = VIEWS_POPUPS_BASE_PATH +  "addEditComputerPopup.fxml";
+    public static final String CONFIRM_POPUP = VIEWS_POPUPS_BASE_PATH + "confirmPopup.fxml";
+    public static final String ALERT_POPUP = VIEWS_POPUPS_BASE_PATH + "alertPopup.fxml";
+    public static final String ADD_EDIT_COMPUTER_POPUP = VIEWS_POPUPS_BASE_PATH + "addEditComputerPopup.fxml";
 
 
     // Images file paths
-    public static final String RCGW_ICON = IMAGES_BASE_PATH + "antenna.png" ;
-    public static final String STATION_ICON = IMAGES_BASE_PATH + "stationKO.png" ;
+    public static final String RCGW_ICON = IMAGES_BASE_PATH + "antenna.png";
+    public static final String STATION_ICON = IMAGES_BASE_PATH + "stationKO.png";
 
     // Data paths
     public static final String COMPUTER_DATA = "data.json";
     public static final String PINGER_DATA = "pingData.json";
+
+    // Config files paths
+    public static final String LOG_4_J_CONFIG = CONFIG_BASE_PATH + "log4j.properties";
 
 
     // Sizes and amounts
@@ -49,9 +53,9 @@ public class Utils {
     public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong ip address, try again";
 
 
-
     /**
      * This method gets the blur effect.
+     *
      * @return BoxBlur effect.
      */
     public static Effect getBlurEffect() {
@@ -66,6 +70,7 @@ public class Utils {
 
     /**
      * This method gets empty effect.
+     *
      * @return empty effect (null).
      */
     public static Effect getEmptyEffect() {
@@ -78,10 +83,10 @@ public class Utils {
         // Calculate the center position of the parent Stage
         logger.info("centerNewStageToBehindStage");
         Stage primaryStage = (Stage) paneBehind.getScene().getWindow();
-        double centerXPosition = primaryStage.getX() + primaryStage.getWidth()/2d;
-        double centerYPosition = primaryStage.getY() + primaryStage.getHeight()/2d;
+        double centerXPosition = primaryStage.getX() + primaryStage.getWidth() / 2d;
+        double centerYPosition = primaryStage.getY() + primaryStage.getHeight() / 2d;
 
-        newStage.setX(centerXPosition - newStage.getWidth()/2d);
-        newStage.setY(centerYPosition - newStage.getHeight()/2d);
+        newStage.setX(centerXPosition - newStage.getWidth() / 2d);
+        newStage.setY(centerYPosition - newStage.getHeight() / 2d);
     }
 }

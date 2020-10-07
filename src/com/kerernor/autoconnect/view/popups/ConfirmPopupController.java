@@ -13,10 +13,13 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
 public class ConfirmPopupController extends GridPane {
+
+    private Logger logger = Logger.getLogger(ConfirmPopupController.class);
 
     @FXML
     private Label mainTitle;
@@ -41,6 +44,7 @@ public class ConfirmPopupController extends GridPane {
     }
 
     public GridPane loadView() {
+        logger.trace("loadView");
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.CONFIRM_POPUP));
 
         loader.setController(this);
@@ -48,6 +52,7 @@ public class ConfirmPopupController extends GridPane {
         try {
             return loader.load();
         } catch (IOException e) {
+            logger.error("Error load view", e);
             e.printStackTrace();
         }
 
@@ -56,6 +61,7 @@ public class ConfirmPopupController extends GridPane {
 
 
     public void openPopup() {
+        logger.trace("openPopup");
         Scene scene = new Scene(this.loadView());
 
         stage = new Stage();
@@ -78,16 +84,20 @@ public class ConfirmPopupController extends GridPane {
 
         // Blur the pane behind
         paneBehind.effectProperty().setValue(Utils.getBlurEffect());
+        logger.info("paneBehind - BlueEffect");
 
     }
 
     public void closeClickAction() {
         // Revert the blur effect from the pane behind
+        logger.trace("close confirm popup - NO Action");
         paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
+        logger.info("paneBehind - no effect");
         stage.close();
     }
 
     public void confirmClickAction() {
+        logger.trace("close confirm popup - CONFIRM THE Action");
         ComputerData.getInstance().remove(computer);
         closeClickAction();
     }

@@ -21,7 +21,7 @@
 <?import com.kerernor.autoconnect.view.PingListGroupController?>
 <?import com.kerernor.autoconnect.view.SearchAreaController?>
 <?import com.kerernor.autoconnect.view.ComputerListController?>
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kerernor.autoconnect.view.MainController">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kerernor.autoconnect.view.MainController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -105,7 +105,7 @@
                </children>
             </Pane>
             <Pane fx:id="pnlMenus" prefHeight="200.0" prefWidth="200.0" visible="false" />
-            <Pane fx:id="pnlOverview" prefHeight="576.0" prefWidth="773.0" visible="false">
+            <Pane fx:id="pnlOverview" prefHeight="576.0" prefWidth="773.0" visible="true">
                <children>
                   <StackPane alignment="TOP_CENTER" layoutX="474.0" layoutY="-9.0" prefHeight="122.0" prefWidth="307.0" styleClass="bordered-titled-border" stylesheets="@../style/style.css">
                      <children>
