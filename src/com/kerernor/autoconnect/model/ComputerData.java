@@ -8,6 +8,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -22,6 +23,7 @@ import java.util.stream.IntStream;
 
 public class ComputerData {
 
+    private Logger logger = Logger.getLogger(ComputerData.class);
     private static final ComputerData instance = new ComputerData();
     private ObservableList<Computer> computersList; // use observable for binding data
     private final SimpleIntegerProperty stationCounterItems = new SimpleIntegerProperty(0);
@@ -49,16 +51,19 @@ public class ComputerData {
     }
 
     public void remove(Computer computerToDelete) {
+        logger.trace("delete computer item - " + computerToDelete.getName());
         computersList.remove(computerToDelete);
         updateCounters(computerToDelete, -1);
     }
 
     public void add(Computer newComputer) {
+        logger.trace("add new computer - " + newComputer.getName());
         computersList.add(newComputer);
         updateCounters(newComputer, 1);
     }
 
     public void update(Computer updatedComputer) {
+        logger.trace("update computer - " + updatedComputer.getName());
         //TODO: change to java8
         for (int i = 0; i < computersList.size(); i++) {
             if (computersList.get(i).getId().equals(updatedComputer.getId())) {
@@ -70,7 +75,7 @@ public class ComputerData {
     }
 
     public void loadData() throws IOException {
-
+        logger.trace("ComputerData.loadData");
         computersList = FXCollections.observableArrayList(); // FXCollection is for better performance
         computerListSize = Bindings.size(computersList);
         Computer[] computers;
@@ -86,6 +91,7 @@ public class ComputerData {
     }
 
     public void storeData() throws IOException {
+        logger.trace("storeData");
         Path path = Paths.get(Utils.COMPUTER_DATA);
         try (BufferedWriter bw = Files.newBufferedWriter(path)) {
             List<Computer> computerListToSave = new ArrayList<>(computersList);
@@ -96,10 +102,16 @@ public class ComputerData {
     }
 
     private void updateCounters(Computer computer, int value) {
+        logger.trace("updateCounters");
         if (computer.getComputerType() == eComputerType.RCGW) {
-            rcgwCounterItems.set(rcgwCounterItems.get() + value);
+            int oldValue = rcgwCounterItems.get();
+            rcgwCounterItems.set(oldValue + value);
+            logger.info("update RCGW: oldValue: " + oldValue + " NewValue: " + rcgwCounterItems.get());
         } else {
+            int oldValue = stationCounterItems.get();
             stationCounterItems.set(stationCounterItems.get() + value);
+            logger.info("update RCGW: oldValue: " + oldValue + " NewValue: " + stationCounterItems.get());
+
         }
     }
 

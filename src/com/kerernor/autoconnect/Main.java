@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.io.IOException;
 
@@ -22,6 +23,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        PropertyConfigurator.configure("D:\\Projects\\IntelliJ Projects\\AutoConnectKO\\src\\com\\kerernor\\autoconnect\\config\\log4j.properties");
+        logger.trace("********************** Start Main *************************");
         this.primaryStage = primaryStage;
         initRootLayout();
         makeStageDraggable();

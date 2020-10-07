@@ -20,6 +20,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -93,6 +94,7 @@ public class MainController extends AnchorPane {
     @FXML
     private TextField filterPingerGroup;
 
+    private Logger logger = Logger.getLogger(MainController.class);
     private boolean isViewOnly = false;
     private AtomicInteger passPing = new AtomicInteger(0);
 
@@ -102,6 +104,7 @@ public class MainController extends AnchorPane {
 
 
     public void initialize() {
+        logger.trace("MainController.initialize");
         toggleGroupPinger = new ToggleGroup();
         totalProgressLabel.setText("");
         pnlOverview.toFront();
@@ -186,6 +189,7 @@ public class MainController extends AnchorPane {
 
     public void handleClicks(ActionEvent actionEvent) {
         if (actionEvent.getSource() == btnRemoteScreen) {
+
             pnlOverview.setStyle("-fx-background-color : #02030A");
             pnlOverview.toFront();
         }
@@ -236,6 +240,7 @@ public class MainController extends AnchorPane {
     }
 
     private void sendPing(PingerItem pingerItem, AtomicReference<Double> progress, double buffer, int listSize) {
+        logger.info("Send Ping to: " + pingerItem.getIpAddress());
         try {
             InetAddress ip = InetAddress.getByName(pingerItem.getIpAddress());
             if (ip != null && ip.isReachable(3000)) {
