@@ -73,6 +73,23 @@
         "name": "MiBox M3"
       }
     ]
+  },
+  {
+    "name": "Karon w88",
+    "data": [
+      {
+        "ipAddress": "10.0.0.10",
+        "name": "C"
+      },
+      {
+        "ipAddress": "10.0.0.1",
+        "name": "D"
+      },
+      {
+        "ipAddress": "10.00.66",
+        "name": "E"
+      }
+    ]
   }
 ]
 

@@ -18,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
@@ -79,13 +80,18 @@ public class MainController extends AnchorPane {
     @FXML
     private CheckBox viewOnlyCheckBox;
 
+
     @FXML
-    private ListView<String> nameGroupPingerListView;
+    FlowPane flowPaneGroupPinger;
 
     @FXML
     private Label totalProgressLabel;
 
-    private ObservableList<String> pingerData;
+    @FXML
+    private ToggleGroup toggleGroupPinger;
+
+    @FXML
+    private TextField filterPingerGroup;
 
     private boolean isViewOnly = false;
     private AtomicInteger passPing = new AtomicInteger(0);
@@ -96,8 +102,8 @@ public class MainController extends AnchorPane {
 
 
     public void initialize() {
+        toggleGroupPinger = new ToggleGroup();
         totalProgressLabel.setText("");
-        pingerData = FXCollections.observableArrayList();
         pnlOverview.toFront();
         pnlSetting.setVisible(false);
         FilteredList<Computer> computerFilteredList = new FilteredList<>(ComputerData.getInstance().getComputersList(), computer -> true);
@@ -105,21 +111,28 @@ public class MainController extends AnchorPane {
         computerListController.loadList(computerFilteredList);
         updateCounters();
 
-        PingerData.getInstance().getPingerObservableList().forEach(pinger -> {
-            pingerData.add(pinger.getName());
+        filterPingerGroup.setOnKeyReleased(keyEvent -> {
+            String input = filterPingerGroup.getText();
+            createPingerGroups(input);
+
         });
 
-        nameGroupPingerListView.setItems(pingerData);
-        nameGroupPingerListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        createPingerGroups("");
+
+
+        toggleGroupPinger.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 passPing.set(0);
                 totalProgressLabel.setText("");
                 totalProgress.setProgress(0);
-                ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(newValue);
+                toggleGroupPinger.getSelectedToggle();
+                ToggleButton selectedToggle = (ToggleButton) toggleGroupPinger.getSelectedToggle();
+                ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(selectedToggle.getText());
                 pingListGroupController.loadList(pingerList);
                 pingListGroupController.resetProgressBar();
             }
         });
+
 
         Platform.runLater(() -> quickConnectTextField.requestFocus());
         quickConnectTextField.setOnKeyReleased(keyEvent -> {
@@ -156,6 +169,19 @@ public class MainController extends AnchorPane {
             isViewOnly = newValue;
         });
 
+    }
+
+    private void createPingerGroups(String filterText) {
+        flowPaneGroupPinger.getChildren().clear();
+        PingerData.getInstance().getPingerObservableList()
+                .stream()
+                .filter(pinger -> pinger.getName().toLowerCase().contains(filterText.toLowerCase()))
+                .forEach(pingerGroup -> {
+            ToggleButton toggleButton = new ToggleButton();
+            toggleButton.setText(pingerGroup.getName());
+            toggleButton.setToggleGroup(toggleGroupPinger);
+            flowPaneGroupPinger.getChildren().add(toggleButton);
+        });
     }
 
     public void handleClicks(ActionEvent actionEvent) {
