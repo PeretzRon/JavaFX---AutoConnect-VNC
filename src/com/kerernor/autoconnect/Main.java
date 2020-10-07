@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
@@ -16,6 +17,8 @@ public class Main extends Application {
     private double x, y;
     private Stage primaryStage;
     private AnchorPane rootLayout;
+
+    private Logger logger = Logger.getLogger(Main.class);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -33,6 +36,7 @@ public class Main extends Application {
     private void initRootLayout() {
         try {
             // Load root layout from fxml file.
+            logger.trace("initRootLayout");
             this.rootLayout = FXMLLoader.load(getClass().getResource(Utils.MAIN_VIEW));
             Scene scene = new Scene(rootLayout);
 
@@ -43,10 +47,12 @@ public class Main extends Application {
             this.primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error("Error to init main stage");
         }
     }
 
     private void makeStageDraggable() {
+        logger.info("makeStageDraggable");
         this.rootLayout.setOnMousePressed(event -> {
             x = event.getSceneX();
             y = event.getSceneY();
