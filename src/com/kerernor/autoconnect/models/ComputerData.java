@@ -8,6 +8,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -26,6 +27,7 @@ public class ComputerData {
     private final SimpleIntegerProperty stationCounterItems = new SimpleIntegerProperty(0);
     private final SimpleIntegerProperty rcgwCounterItems = new SimpleIntegerProperty(0);
     private IntegerBinding computerListSize;
+    private Logger logger = Logger.getLogger(ComputerData.class);
 
     public static ComputerData getInstance() {
         return instance;
@@ -63,7 +65,7 @@ public class ComputerData {
     }
 
     public void loadData() throws IOException {
-
+        logger.info("load data from json");
         computersList = FXCollections.observableArrayList(); // FXCollection is for better performance
         computerListSize = Bindings.size(computersList);
         Computer[] computers;
