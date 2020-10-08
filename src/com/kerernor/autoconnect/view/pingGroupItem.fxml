@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root  prefHeight="46.0" prefWidth="177.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1" type="HBox">
+    <Label fx:id="name" text="name" />
+    <Button fx:id="deleteItem" text="Delete" />
+    <Button fx:id="editItem" text="Edit" />
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</fx:root>

@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.scenicview.ScenicView;
 
 import java.io.IOException;
 

@@ -2,13 +2,9 @@ package com.kerernor.autoconnect.view;
 
 
 import com.kerernor.autoconnect.Main;
-import com.kerernor.autoconnect.model.Computer;
 import com.kerernor.autoconnect.model.PingerItem;
-import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;

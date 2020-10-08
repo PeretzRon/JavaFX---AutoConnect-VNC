@@ -180,11 +180,12 @@ public class MainController extends AnchorPane {
                 .stream()
                 .filter(pinger -> pinger.getName().toLowerCase().contains(filterText.toLowerCase()))
                 .forEach(pingerGroup -> {
-            ToggleButton toggleButton = new ToggleButton();
-            toggleButton.setText(pingerGroup.getName());
-            toggleButton.setToggleGroup(toggleGroupPinger);
-            flowPaneGroupPinger.getChildren().add(toggleButton);
-        });
+//                    ToggleButton toggleButton = new ToggleButton();
+                    PingGroupItemController item = new PingGroupItemController(pingerGroup);
+//                    toggleButton.setText(pingerGroup.getName());
+//                    toggleButton.setToggleGroup(toggleGroupPinger);
+                    flowPaneGroupPinger.getChildren().add(item);
+                });
     }
 
     public void handleClicks(ActionEvent actionEvent) {

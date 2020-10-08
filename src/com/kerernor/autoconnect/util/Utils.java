@@ -27,6 +27,7 @@ public class Utils {
     public static final String CONFIRM_POPUP = VIEWS_POPUPS_BASE_PATH + "confirmPopup.fxml";
     public static final String ALERT_POPUP = VIEWS_POPUPS_BASE_PATH + "alertPopup.fxml";
     public static final String ADD_EDIT_COMPUTER_POPUP = VIEWS_POPUPS_BASE_PATH + "addEditComputerPopup.fxml";
+    public static final String PING_GROUP_ITEM = VIEWS_BASE_PATH + "pingGroupItem.fxml";
 
 
     // Images file paths
