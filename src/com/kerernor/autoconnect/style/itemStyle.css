@@ -4,3 +4,13 @@
     -fx-background-radius: 5;
     -fx-background-insets: 0;
 }
+
+.pinger-item {
+    -fx-background-color: #494a58;
+    -fx-text-fill: #fff;
+}
+
+.pinger-item-selected {
+    -fx-border-color: #fff;
+
+}

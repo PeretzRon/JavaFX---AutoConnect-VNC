@@ -54,6 +54,8 @@ public class Utils {
     public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong ip address, try again";
 
 
+    // Style
+    public static final String PINGER_GROUP_ITEM_SELECTED = "pinger-item-selected";
     /**
      * This method gets the blur effect.
      *

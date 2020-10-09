@@ -5,26 +5,26 @@ import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+
 
 import java.io.IOException;
 
 public class PingGroupItemController extends HBox {
 
-//    @FXML
-//    private HBox mainPane;
+    @FXML
+    private HBox mainPane;
 
     @FXML
     private Label name;
 
     @FXML
-    private Button deleteItem;
+    private ImageView editItem;
 
     @FXML
-    private Button editItem;
+    private ImageView deleteItem;
 
     private final Pinger pingerItem;
 
@@ -40,7 +40,9 @@ public class PingGroupItemController extends HBox {
 
     @FXML
     public void initialize() {
+        mainPane.setOnMouseClicked(event -> {
 
+        });
     }
 
     private HBox loadView() {
@@ -57,4 +59,16 @@ public class PingGroupItemController extends HBox {
         return null;
     }
 
+    public HBox getMainPane() {
+        return mainPane;
+    }
+
+    public Label getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return name.toString();
+    }
 }

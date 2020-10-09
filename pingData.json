@@ -90,6 +90,57 @@
         "name": "E"
       }
     ]
+  },
+  {
+    "name": "Karon 25",
+    "data": [
+      {
+        "ipAddress": "10.0.0.10",
+        "name": "C"
+      },
+      {
+        "ipAddress": "10.0.0.1",
+        "name": "D"
+      },
+      {
+        "ipAddress": "10.00.66",
+        "name": "E"
+      }
+    ]
+  },
+  {
+    "name": "קרון 61",
+    "data": [
+      {
+        "ipAddress": "10.0.0.10",
+        "name": "C"
+      },
+      {
+        "ipAddress": "10.0.0.1",
+        "name": "D"
+      },
+      {
+        "ipAddress": "10.00.66",
+        "name": "E"
+      }
+    ]
+  },
+  {
+    "name": "מגדל פיקוח",
+    "data": [
+      {
+        "ipAddress": "10.0.0.10",
+        "name": "C"
+      },
+      {
+        "ipAddress": "10.0.0.1",
+        "name": "D"
+      },
+      {
+        "ipAddress": "10.00.66",
+        "name": "E"
+      }
+    ]
   }
 ]
 

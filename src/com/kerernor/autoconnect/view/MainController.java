@@ -5,6 +5,7 @@ import com.kerernor.autoconnect.model.*;
 import com.kerernor.autoconnect.script.VNCRemote;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.ThreadManger;
+import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -24,6 +25,8 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -98,6 +101,8 @@ public class MainController extends AnchorPane {
     private boolean isViewOnly = false;
     private AtomicInteger passPing = new AtomicInteger(0);
 
+    private List<PingGroupItemController> pingGroupItemControllerList = new ArrayList<>();
+
 //    public void initialize() {
 ////       RemoteScreenController remoteScreenController = new RemoteScreenController();
 //    }
@@ -123,18 +128,7 @@ public class MainController extends AnchorPane {
         createPingerGroups("");
 
 
-        toggleGroupPinger.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                passPing.set(0);
-                totalProgressLabel.setText("");
-                totalProgress.setProgress(0);
-                toggleGroupPinger.getSelectedToggle();
-                ToggleButton selectedToggle = (ToggleButton) toggleGroupPinger.getSelectedToggle();
-                ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(selectedToggle.getText());
-                pingListGroupController.loadList(pingerList);
-                pingListGroupController.resetProgressBar();
-            }
-        });
+
 
 
         Platform.runLater(() -> quickConnectTextField.requestFocus());
@@ -180,12 +174,26 @@ public class MainController extends AnchorPane {
                 .stream()
                 .filter(pinger -> pinger.getName().toLowerCase().contains(filterText.toLowerCase()))
                 .forEach(pingerGroup -> {
-//                    ToggleButton toggleButton = new ToggleButton();
                     PingGroupItemController item = new PingGroupItemController(pingerGroup);
-//                    toggleButton.setText(pingerGroup.getName());
-//                    toggleButton.setToggleGroup(toggleGroupPinger);
+                    pingGroupItemControllerList.add(item);
+                    item.getMainPane().setOnMouseClicked(event -> {
+                        selectItemStyle(item);
+                        passPing.set(0);
+                        totalProgressLabel.setText("");
+                        totalProgress.setProgress(0);
+                        toggleGroupPinger.getSelectedToggle();
+                        ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(item.getName().getText());
+                        pingListGroupController.loadList(pingerList);
+                        pingListGroupController.resetProgressBar();
+                    });
                     flowPaneGroupPinger.getChildren().add(item);
                 });
+    }
+
+    private void selectItemStyle(PingGroupItemController item) {
+        pingGroupItemControllerList.forEach(pingGroupItemController ->
+                pingGroupItemController.getMainPane().getStyleClass().remove(Utils.PINGER_GROUP_ITEM_SELECTED));
+        item.getMainPane().getStyleClass().add(Utils.PINGER_GROUP_ITEM_SELECTED);
     }
 
     public void handleClicks(ActionEvent actionEvent) {
