@@ -120,6 +120,7 @@ public class MainController extends AnchorPane {
         logger.trace("MainController.initialize");
         toggleGroupPinger = new ToggleGroup();
         totalProgressLabel.setText("");
+        btnRemoteScreen.getStyleClass().add("selected-menu-item");
         pnlOverview.toFront();
         pnlSetting.setVisible(false);
         FilteredList<Computer> computerFilteredList = new FilteredList<>(ComputerData.getInstance().getComputersList(), computer -> true);
@@ -217,13 +218,16 @@ public class MainController extends AnchorPane {
 
     public void handleClicks(ActionEvent actionEvent) {
         if (actionEvent.getSource() == btnRemoteScreen) {
-
             pnlOverview.setStyle("-fx-background-color : #02030A");
+            btnRemoteScreen.getStyleClass().add("selected-menu-item");
+            btnPingerScreen.getStyleClass().remove("selected-menu-item");
             pnlOverview.toFront();
         }
         if (actionEvent.getSource() == btnPingerScreen) {
             pnlSetting.setVisible(true);
             pnlSetting.setStyle("-fx-background-color : #02050A");
+            btnPingerScreen.getStyleClass().add("selected-menu-item");
+            btnRemoteScreen.getStyleClass().remove("selected-menu-item");
             pnlSetting.toFront();
         }
 

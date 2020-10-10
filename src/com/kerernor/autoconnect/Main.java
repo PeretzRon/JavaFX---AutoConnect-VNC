@@ -1,6 +1,7 @@
 package com.kerernor.autoconnect;
 
 import com.kerernor.autoconnect.model.ComputerData;
+import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.application.Application;
@@ -78,5 +79,6 @@ public class Main extends Application {
     @Override
     public void stop() throws Exception {
         ComputerData.getInstance().storeData();
+        PingerData.getInstance().storeData();
     }
 }

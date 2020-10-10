@@ -10,11 +10,15 @@
 }
 
 .button:hover {
-    -fx-background-color: #10165F;
+    -fx-background-color: #1620A1;
 }
 
 .button:pressed {
     -fx-background-color: #1620A1;
+}
+
+.selected-menu-item {
+    -fx-background-color: #10165F;
 }
 
 .pinger-screen-btn {

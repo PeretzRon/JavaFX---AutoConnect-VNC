@@ -12,7 +12,7 @@ public class PingerItem {
     @Expose
     private String name;
 
-    private SimpleDoubleProperty value;
+    private transient SimpleDoubleProperty value = new SimpleDoubleProperty(0);
 
     public PingerItem() {
         value = new SimpleDoubleProperty(0);
@@ -21,7 +21,6 @@ public class PingerItem {
     public PingerItem(String ipAddress, String name) {
         this.ipAddress = ipAddress;
         this.name = name;
-        value = new SimpleDoubleProperty(0);
     }
 
     public String getIpAddress() {

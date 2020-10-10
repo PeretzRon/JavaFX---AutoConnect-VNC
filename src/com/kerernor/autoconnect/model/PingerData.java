@@ -7,9 +7,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.log4j.Logger;
 
+import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,6 +39,17 @@ public class PingerData {
             Gson gson = new Gson();
             pingers = gson.fromJson(reader, Pinger[].class);
             pingerObservableList.addAll(Arrays.asList(pingers));
+        }
+    }
+
+    public void storeData() throws IOException {
+        logger.trace("storeData");
+        Path path = Paths.get(Utils.PINGER_DATA);
+        try (BufferedWriter bw = Files.newBufferedWriter(path)) {
+            List<Pinger> pingerList = new ArrayList<>(pingerObservableList);
+            Gson gson = new Gson();
+            String data = gson.toJson(pingerList);
+            bw.write(data);
         }
     }
 

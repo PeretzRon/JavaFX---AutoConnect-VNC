@@ -89,9 +89,17 @@
                   </HBox>
                </children>
             </VBox>
-            <HBox prefHeight="273.0" prefWidth="744.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="273.0" prefWidth="744.0">
                <children>
                   <ListView fx:id="addedItemsList" prefHeight="170.0" prefWidth="277.0" styleClass="add-ping-list" />
+                  <ImageView fx:id="deleteItemFromList" onMouseClicked="#deleteItemFromListHandler" fitHeight="38.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/dustbin.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </ImageView>
                </children>
                <padding>
                   <Insets left="20.0" right="20.0" />

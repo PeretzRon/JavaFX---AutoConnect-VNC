@@ -40,15 +40,32 @@
     -fx-text-fill: #fff;
 }
 
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    /* 3:, 4: */
+    -fx-background-color: linear-gradient(#333 0%, #777 25%, #aaa 75%, #eee 100%);
+    -fx-text-fill: white; /* 5 */
+}
+
+.list-view .scroll-bar:vertical {
+    -fx-background-color: #05071F;
+}
+
+
 .list-view .list-cell:odd {
     -fx-background-color: #05071F;
     -fx-text-fill: #fff;
 }
 
 .list-view .list-cell:even {
-    -fx-background-color: #131a6d;
+    -fx-background-color: #070d41;
     -fx-text-fill: #fff;
 }
+
+.list-view .list-cell:selected:odd,
+.list-view .list-cell:selected:even {
+    -fx-background-color: #414040;
+}
+
 
 
 .scroll-bar:horizontal .track,

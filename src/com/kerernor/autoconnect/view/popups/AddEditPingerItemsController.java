@@ -13,15 +13,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +44,9 @@ public class AddEditPingerItemsController {
 
     @FXML
     private ImageView addIPImageView;
+
+    @FXML
+    private ImageView deleteItemFromList;
 
     @FXML
     private ListView<String> addedItemsList;
@@ -82,7 +88,22 @@ public class AddEditPingerItemsController {
         pingerItemsAddedObservableList = FXCollections.observableArrayList();
         pingerItemList = new ArrayList<>();
         addedItemsList.setItems(pingerItemsAddedObservableList);
-        Platform.runLater(() ->  mainPane.requestFocus());
+        addedItemsList.setCellFactory(param -> {
+            ListCell<String> cell = new ListCell<String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setText(null);
+                    } else {
+                        setText(item);
+                    }
+                }
+            };
+            return cell;
+        });
+
+        Platform.runLater(() -> mainPane.requestFocus());
     }
 
     @FXML
@@ -91,6 +112,26 @@ public class AddEditPingerItemsController {
         String name = nameItemTextField.getText();
         pingerItemList.add(new PingerItem(ip, name));
         pingerItemsAddedObservableList.add(displayItemNameInList(name, ip));
+    }
+
+    @FXML
+    public void deleteItemFromListHandler() {
+        String selectedItem = addedItemsList.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            pingerItemsAddedObservableList.remove(selectedItem);
+            String ip = selectedItem.split("-")[1].trim();
+            pingerItemList.remove(getItemByIpAddress(ip));
+        }
+    }
+
+    private PingerItem getItemByIpAddress(String ip) {
+        for (PingerItem item : pingerItemList) {
+            if (item.getIpAddress().equals(ip)) {
+                return item;
+            }
+        }
+
+        return null;
     }
 
     @FXML
@@ -104,7 +145,7 @@ public class AddEditPingerItemsController {
             pingerItem.setName(groupName);
             pingerItem.setData(pingerItemList);
             //TODO: refreshList
-            //TODO: scroll color
+
         }
 
         closeClickAction();
