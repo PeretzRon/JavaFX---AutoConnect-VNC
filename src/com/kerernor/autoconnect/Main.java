@@ -30,7 +30,7 @@ public class Main extends Application {
         initRootLayout();
         makeStageDraggable();
         Scene scene = primaryStage.getScene();
-//        ScenicView.show(scene);
+        //ScenicView.show(scene);
     }
 
     public static void main(String[] args) {

@@ -17,6 +17,11 @@
     ]
   },
   {
+    "name": "ריק",
+    "data": [
+    ]
+  },
+  {
     "name": "Karon 88",
     "data": [
       {
@@ -71,7 +76,31 @@
       {
         "ipAddress": "10.0.0.94",
         "name": "MiBox M3"
+      },
+      {
+        "ipAddress": "10.0.0.94",
+        "name": "MiBox M3"
       }
+    ,
+      {
+        "ipAddress": "10.0.0.94",
+        "name": "MiBox M3"
+      }
+    ,
+      {
+        "ipAddress": "10.0.0.94",
+        "name": "MiBox M3"
+      }
+    ,
+      {
+        "ipAddress": "10.0.0.94",
+        "name": "MiBox M3"
+      },
+      {
+        "ipAddress": "10.0.0.94",
+        "name": "MiBox M3"
+      }
+
     ]
   },
   {

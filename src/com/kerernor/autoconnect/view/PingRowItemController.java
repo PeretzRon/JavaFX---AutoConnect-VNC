@@ -15,7 +15,7 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 
-public class PingRowItemController extends ListCell<PingerItem> {
+public class PingRowItemController extends BorderPane {
 
     @FXML
     private BorderPane mainPane;
@@ -36,6 +36,12 @@ public class PingRowItemController extends ListCell<PingerItem> {
         return progressBar;
     }
 
+    public PingRowItemController(PingerItem pingerItem) {
+        this.pingerItem = pingerItem;
+        loadView();
+        loadAndSetValues();
+    }
+
     public void initialize() {
         progressBar.progressProperty().addListener((obs, oldProgress, newProgress) -> {
             if (newProgress.doubleValue() > 101) {
@@ -44,12 +50,14 @@ public class PingRowItemController extends ListCell<PingerItem> {
                 progressBar.setStyle("-fx-accent: red");
             }
         });
+
+        progressBar.progressProperty().bind(pingerItem.getVal());
     }
 
     public FXMLLoader loadView() {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.PINGER_ROW_VIEW));
         loader.setController(this);
-
+        loader.setRoot(this);
         try {
             loader.load();
         } catch (IOException e) {
@@ -59,23 +67,7 @@ public class PingRowItemController extends ListCell<PingerItem> {
         return loader;
     }
 
-    @Override
-    protected void updateItem(PingerItem pingerItem, boolean empty) {
-        super.updateItem(pingerItem, empty);
-        if (empty || pingerItem == null) {
-            setText(null);
-            setGraphic(null);
-        } else {
-            setStyle(" -fx-background-color: transparent;"); // TODO: move to css file
-            loadAndSetValues(pingerItem);
-            setText(null);
-            setGraphic(mainPane);
-            progressBar.progressProperty().bind(pingerItem.getVal());
-        }
-    }
-
-    public void loadAndSetValues(PingerItem pingerItem) {
-        this.pingerItem = pingerItem;
+    public void loadAndSetValues() {
         if (loader == null) {
             loader = loadView();
         }

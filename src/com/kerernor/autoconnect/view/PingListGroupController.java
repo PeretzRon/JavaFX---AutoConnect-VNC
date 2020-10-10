@@ -7,15 +7,17 @@ import com.kerernor.autoconnect.util.Utils;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
-public class PingListGroupController extends ListView {
+public class PingListGroupController extends FlowPane {
 
     @FXML
-    private ListView<PingerItem> pingerListView;
+    private FlowPane pingerListView;
 
     private Pane paneBehind;
 
@@ -39,7 +41,9 @@ public class PingListGroupController extends ListView {
 
 
     public void initialize() {
-
+        pingerListView.setHgap(7);
+        pingerListView.setVgap(7);
+        pingerListView.setPadding(new Insets(10, 10, 10, 10));
     }
 
 
@@ -62,13 +66,13 @@ public class PingListGroupController extends ListView {
     }
 
     public void loadList(ObservableList<PingerItem> list) {
+        pingerListView.getChildren().clear();
         this.listToSendPing = list;
-        pingerListView.setItems(list);
+        list.forEach(pingerItem -> {
+            pingRowItemController = new PingRowItemController(pingerItem);
+            pingerListView.getChildren().add(pingRowItemController);
 
-        pingerListView.setCellFactory(o -> {
-            pingRowItemController = new PingRowItemController();
-
-            return pingRowItemController;
         });
     }
+
 }

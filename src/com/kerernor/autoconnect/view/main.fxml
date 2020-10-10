@@ -66,20 +66,24 @@
       <StackPane layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
          <children>
             <Pane fx:id="pnlCustomer" prefHeight="200.0" prefWidth="200.0" visible="false" />
-            <Pane fx:id="pnlSetting" prefHeight="200.0" prefWidth="200.0">
+            <Pane fx:id="pnlSetting" prefHeight="200.0" prefWidth="200.0" stylesheets="@../style/style.css">
                <children>
                   <AnchorPane prefHeight="576.0" prefWidth="793.0">
                      <children>
-                        <ScrollPane layoutX="22.0" layoutY="80.0" prefHeight="133.0" prefWidth="760.0">
+                        <ScrollPane hbarPolicy="NEVER" layoutX="22.0" layoutY="80.0" prefHeight="202.0" prefWidth="720.0">
                            <content>
-                              <FlowPane fx:id="flowPaneGroupPinger" hgap="7.0" prefHeight="130.0" prefWidth="757.0" style="-fx-background-color: #05071F;" vgap="7.0">
+                              <FlowPane fx:id="flowPaneGroupPinger" hgap="7.0" prefHeight="201.0" prefWidth="705.0" style="-fx-background-color: #05071F;" vgap="7.0">
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </FlowPane>
                            </content>
                         </ScrollPane>
-                        <PingListGroupController fx:id="pingListGroupController" layoutX="22.0" layoutY="225.0" prefHeight="284.0" prefWidth="762.0" />
+                        <ScrollPane fx:id="pingItemsScrollPane" hbarPolicy="NEVER" layoutX="22.0" layoutY="298.0" prefHeight="226.0" prefWidth="763.0">
+                           <content>
+                              <PingListGroupController fx:id="pingListGroupController" layoutX="22.0" layoutY="225.0" prefHeight="284.0" prefWidth="763.0" style="-fx-background-color: #05071F;" />
+                           </content>
+                        </ScrollPane>
                         <ProgressBar fx:id="totalProgress" layoutX="22.0" layoutY="533.0" prefHeight="18.0" prefWidth="651.0" progress="0.0" />
                         <Label fx:id="totalProgressLabel" alignment="CENTER" layoutX="700.0" layoutY="533.0" prefHeight="18.0" prefWidth="74.0" text="Label" textFill="WHITE">
                            <font>
@@ -89,6 +93,7 @@
                            <children>
                               <TextField fx:id="filterPingerGroup" />
                               <Button fx:id="checkPing" mnemonicParsing="false" onAction="#checkPingHandler" prefHeight="26.0" prefWidth="101.0" text="Run!" />
+                              <Button fx:id="addPingerItem" mnemonicParsing="false" onAction="#addPingerItemHandler" prefHeight="26.0" prefWidth="101.0" text="Add" />
                            </children>
                         </HBox>
                      </children>

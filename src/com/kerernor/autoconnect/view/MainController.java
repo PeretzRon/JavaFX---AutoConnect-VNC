@@ -1,16 +1,14 @@
 package com.kerernor.autoconnect.view;
 
-import com.jfoenix.controls.JFXButton;
 import com.kerernor.autoconnect.model.*;
 import com.kerernor.autoconnect.script.VNCRemote;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
+import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -31,6 +29,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MainController extends AnchorPane {
+
+    @FXML
+    private ScrollPane pingItemsScrollPane;
 
     @FXML
     private ProgressBar totalProgress;
@@ -55,7 +56,6 @@ public class MainController extends AnchorPane {
 
     @FXML
     private Button btnSettingsScreen;
-
 
     @FXML
     private Pane pnlSetting;
@@ -100,7 +100,7 @@ public class MainController extends AnchorPane {
     private Logger logger = Logger.getLogger(MainController.class);
     private boolean isViewOnly = false;
     private AtomicInteger passPing = new AtomicInteger(0);
-
+    private boolean isCheckPingRunning = false;
     private List<PingGroupItemController> pingGroupItemControllerList = new ArrayList<>();
 
 //    public void initialize() {
@@ -126,9 +126,6 @@ public class MainController extends AnchorPane {
         });
 
         createPingerGroups("");
-
-
-
 
 
         Platform.runLater(() -> quickConnectTextField.requestFocus());
@@ -177,6 +174,8 @@ public class MainController extends AnchorPane {
                     PingGroupItemController item = new PingGroupItemController(pingerGroup);
                     pingGroupItemControllerList.add(item);
                     item.getMainPane().setOnMouseClicked(event -> {
+                        isCheckPingRunning = false;
+                        pingItemsScrollPane.setVvalue(0);
                         selectItemStyle(item);
                         passPing.set(0);
                         totalProgressLabel.setText("");
@@ -229,6 +228,7 @@ public class MainController extends AnchorPane {
     }
 
     public void checkPingHandler() {
+        isCheckPingRunning = true;
         int listSizeOfCurrentSelected = pingListGroupController.getListToSendPing().size();
         AtomicReference<Double> progress = new AtomicReference<>((double) 0);
         double buffer = 1 / (double) listSizeOfCurrentSelected;
@@ -252,22 +252,30 @@ public class MainController extends AnchorPane {
         logger.info("Send Ping to: " + pingerItem.getIpAddress());
         try {
             InetAddress ip = InetAddress.getByName(pingerItem.getIpAddress());
-            if (ip != null && ip.isReachable(3000)) {
+            if (ip != null && ip.isReachable(3000) && isCheckPingRunning) {
                 Platform.runLater(() -> pingerItem.setProgressValue(102));
                 passPing.addAndGet(1);
-            } else {
+            } else if (isCheckPingRunning) {
                 Platform.runLater(() -> pingerItem.setProgressValue(100));
             }
-            progress.updateAndGet(v -> v + buffer);
-            Platform.runLater(() -> {
-                totalProgress.setProgress(progress.get());
-                totalProgressLabel.setText(String.format("%s/%s", passPing.get(), listSize));
-            });
+            if (isCheckPingRunning) {
+                progress.updateAndGet(v -> v + buffer);
+                Platform.runLater(() -> {
+                    totalProgress.setProgress(progress.get());
+                    totalProgressLabel.setText(String.format("%s/%s", passPing.get(), listSize));
+                });
+            }
         } catch (IOException e) {
             e.printStackTrace();
-            Platform.runLater(() -> pingerItem.setProgressValue(100));
+            if (isCheckPingRunning) {
+                Platform.runLater(() -> pingerItem.setProgressValue(100));
+            }
         }
     }
 
-
+    public void addPingerItemHandler() {
+        logger.trace("addPingerItemHandler");
+        AddEditPingerItemsController addEditPingerItemsController = new AddEditPingerItemsController(pnlSetting);
+        addEditPingerItemsController.show();
+    }
 }
