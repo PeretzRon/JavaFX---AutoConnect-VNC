@@ -2,11 +2,17 @@ package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Pinger;
+import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.util.Utils;
+import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
+import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
+import com.kerernor.autoconnect.view.popups.ConfirmPopupController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 
@@ -27,9 +33,11 @@ public class PingGroupItemController extends HBox {
     private ImageView deleteItem;
 
     private final Pinger pingerItem;
+    private Parent behindPane;
 
-    public PingGroupItemController(Pinger pingerItem) {
+    public PingGroupItemController(Pinger pingerItem, Parent behindPane) {
         this.pingerItem = pingerItem;
+        this.behindPane = behindPane;
         loadView();
         setDataToComponent();
     }
@@ -43,6 +51,20 @@ public class PingGroupItemController extends HBox {
         mainPane.setOnMouseClicked(event -> {
 
         });
+    }
+
+    @FXML
+    public void deletePingGroupHandler(MouseEvent event) {
+        event.consume();
+        ConfirmPopupController confirmPopupController = new ConfirmPopupController(behindPane, null, pingerItem);
+        confirmPopupController.openPopup();
+    }
+
+    @FXML
+    public void editPingGroupHandler(MouseEvent event) {
+        event.consume();
+        AddEditPingerItemsController addEditPingerItemsController = new AddEditPingerItemsController(behindPane, pingerItem, true);
+        addEditPingerItemsController.show();
     }
 
     private HBox loadView() {

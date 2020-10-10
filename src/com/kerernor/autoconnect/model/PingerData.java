@@ -37,6 +37,14 @@ public class PingerData {
         }
     }
 
+    public void add(Pinger pinger) {
+        pingerObservableList.add(pinger);
+    }
+
+    public void remove(Pinger pingerToDelete) {
+        pingerObservableList.remove(pingerToDelete);
+    }
+
     public ObservableList<PingerItem> getListOfPingItemByName(String name) {
         ObservableList<PingerItem> list = FXCollections.observableArrayList();
         pingerObservableList.forEach(pinger -> {

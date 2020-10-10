@@ -1,5 +1,6 @@
 package com.kerernor.autoconnect.script;
-import com.kerernor.autoconnect.view.MainController;
+
+import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.popups.AlertPopupController;
 import javafx.scene.Parent;
 import org.apache.log4j.Logger;
@@ -21,7 +22,7 @@ public class VNCRemote {
 
     public static void connect(String ip, Parent parent, boolean isViewOnlySelected) {
         logger.info("Try to connect via VNC to: " + ip + " ViewOnly: " + isViewOnlySelected);
-        if (validateIpAddress(ip)) {
+        if (Utils.isValidateIpAddress(ip)) {
             try {
                 FileWriter myWriter = new FileWriter(mPathScript);
                 String isViewOnly = isViewOnlySelected ? "-viewonly" : "";

@@ -11,6 +11,11 @@ public class Pinger {
         return name;
     }
 
+    public Pinger(String name, List<PingerItem> data) {
+        this.name = name;
+        this.data = data;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -25,9 +30,6 @@ public class Pinger {
 
     @Override
     public String toString() {
-        return "Pinger{" +
-                "name='" + name + '\'' +
-                ", data=" + data +
-                '}';
+        return name;
     }
 }

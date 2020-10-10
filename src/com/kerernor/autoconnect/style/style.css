@@ -3,6 +3,7 @@
     -fx-border-radius: 40px;
     -fx-border-color: white;
 }
+
 .button {
     -fx-background-color: #05071F;
     -fx-text-fill: #e7e5e5;
@@ -15,6 +16,14 @@
 .button:pressed {
     -fx-background-color: #1620A1;
 }
+
+.pinger-screen-btn {
+    -fx-border-color: #3678e7;
+    -fx-border-radius: 2em;
+    -fx-background-radius: 2em;
+    -fx-border-width: 1;
+}
+
 
 .scroll-pane {
     -fx-background-color: #02030A;
@@ -37,8 +46,8 @@
 
 
 .list-view {
-    -fx-selection-bar: #0A0E3F ;
-    -fx-selection-bar-non-focused:  #0A0E3F ;
+    -fx-selection-bar: #0A0E3F;
+    -fx-selection-bar-non-focused: #0A0E3F;
 }
 
 .list-view {
@@ -82,5 +91,13 @@
     -fx-background-color: black;
     -fx-border-color: white;
     -fx-border-width: 1;
+}
+
+.total-pinger-progress-bar {
+    -fx-accent: #10165F;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+
 }
 

@@ -3,6 +3,8 @@ package com.kerernor.autoconnect.view.popups;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
 import com.kerernor.autoconnect.model.ComputerData;
+import com.kerernor.autoconnect.model.Pinger;
+import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,18 +31,25 @@ public class ConfirmPopupController extends GridPane {
 
     private final Parent paneBehind;
     private final Computer computer;
+    private final Pinger pingerItem;
     private Stage stage;
 
-    public ConfirmPopupController(Parent paneBehind, Computer computer) {
+    public ConfirmPopupController(Parent paneBehind, Computer computer, Pinger pingerItem) {
         super();
         this.paneBehind = paneBehind;
         this.computer = computer;
+        this.pingerItem = pingerItem;
     }
 
     @FXML
     private void initialize() {
         mainTitle.setText(Utils.TEXT_CONFIRM_DELETE_TITLE);
-        subTitle.setText(Utils.TExT_CONFIRM_DELETE_COMPUTER_MESSAGE + computer.toString());
+        if(computer != null) {
+            subTitle.setText(Utils.TExT_CONFIRM_DELETE_COMPUTER_MESSAGE + computer.toString());
+        } else if (pingerItem != null) {
+            subTitle.setText(Utils.TExT_CONFIRM_DELETE_COMPUTER_MESSAGE + pingerItem.toString());
+        }
+
     }
 
     public GridPane loadView() {
@@ -98,7 +107,12 @@ public class ConfirmPopupController extends GridPane {
 
     public void confirmClickAction() {
         logger.trace("close confirm popup - CONFIRM THE Action");
-        ComputerData.getInstance().remove(computer);
+        if (computer != null) {
+            ComputerData.getInstance().remove(computer);
+        } else if (pingerItem != null) {
+            PingerData.getInstance().remove(pingerItem);
+        }
+
         closeClickAction();
     }
 

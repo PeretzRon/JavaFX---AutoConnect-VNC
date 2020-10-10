@@ -39,6 +39,9 @@ public class PingListGroupController extends FlowPane {
         loadView();
     }
 
+    public FlowPane getPingerListView() {
+        return pingerListView;
+    }
 
     public void initialize() {
         pingerListView.setHgap(7);

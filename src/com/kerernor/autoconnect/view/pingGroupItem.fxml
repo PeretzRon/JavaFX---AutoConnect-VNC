@@ -22,12 +22,12 @@
          </VBox>
          <HBox alignment="CENTER" prefHeight="55.0" prefWidth="101.0" spacing="15.0">
             <children>
-               <ImageView fx:id="editItem" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="editItem"  onMouseClicked="#editPingGroupHandler" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../images/pencil.png" />
                   </image>
                </ImageView>
-               <ImageView fx:id="deleteItem" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="deleteItem" onMouseClicked="#deletePingGroupHandler" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../images/dustbin.png" />
                   </image>

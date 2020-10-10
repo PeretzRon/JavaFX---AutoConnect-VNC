@@ -64,7 +64,6 @@ public class ComputerData {
 
     public void update(Computer updatedComputer) {
         logger.trace("update computer - " + updatedComputer.getName());
-        //TODO: change to java8
         for (int i = 0; i < computersList.size(); i++) {
             if (computersList.get(i).getId().equals(updatedComputer.getId())) {
                 computersList.set(i, updatedComputer);

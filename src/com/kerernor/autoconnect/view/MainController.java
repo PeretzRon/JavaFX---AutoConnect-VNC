@@ -7,8 +7,12 @@ import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
+import com.sun.javafx.robot.FXRobot;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -29,6 +33,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MainController extends AnchorPane {
+
+    @FXML
+    private Button checkPing;
 
     @FXML
     private ScrollPane pingItemsScrollPane;
@@ -55,7 +62,7 @@ public class MainController extends AnchorPane {
     private Button btnExitApp;
 
     @FXML
-    private Button btnSettingsScreen;
+    private Button btnPingerScreen;
 
     @FXML
     private Pane pnlSetting;
@@ -97,16 +104,17 @@ public class MainController extends AnchorPane {
     @FXML
     private TextField filterPingerGroup;
 
-    private Logger logger = Logger.getLogger(MainController.class);
+    private static MainController instance = new MainController();
+    private final Logger logger = Logger.getLogger(MainController.class);
     private boolean isViewOnly = false;
-    private AtomicInteger passPing = new AtomicInteger(0);
+    private final AtomicInteger passPing = new AtomicInteger(0);
     private boolean isCheckPingRunning = false;
-    private List<PingGroupItemController> pingGroupItemControllerList = new ArrayList<>();
+    private final List<PingGroupItemController> pingGroupItemControllerList = new ArrayList<>();
+    private BooleanProperty isRunPingerButtonDisabled = new SimpleBooleanProperty(true);
 
-//    public void initialize() {
-////       RemoteScreenController remoteScreenController = new RemoteScreenController();
-//    }
-
+    public static MainController getInstance() {
+        return instance;
+    }
 
     public void initialize() {
         logger.trace("MainController.initialize");
@@ -117,6 +125,7 @@ public class MainController extends AnchorPane {
         FilteredList<Computer> computerFilteredList = new FilteredList<>(ComputerData.getInstance().getComputersList(), computer -> true);
         computerListController.setPaneBehind(this.pnlOverview);
         computerListController.loadList(computerFilteredList);
+        checkPing.disableProperty().bind(isRunPingerButtonDisabled);
         updateCounters();
 
         filterPingerGroup.setOnKeyReleased(keyEvent -> {
@@ -163,28 +172,39 @@ public class MainController extends AnchorPane {
             isViewOnly = newValue;
         });
 
+        PingerData.getInstance().getPingerObservableList().addListener((ListChangeListener<? super Pinger>) c -> {
+            createPingerGroups(filterPingerGroup.getText());
+            pingListGroupController.getPingerListView().getChildren().clear();
+            if (c.getList().size() == 0) {
+                isRunPingerButtonDisabled.set(true);
+            }
+        });
+
     }
 
-    private void createPingerGroups(String filterText) {
+    public void createPingerGroups(String filterText) {
         flowPaneGroupPinger.getChildren().clear();
         PingerData.getInstance().getPingerObservableList()
                 .stream()
                 .filter(pinger -> pinger.getName().toLowerCase().contains(filterText.toLowerCase()))
                 .forEach(pingerGroup -> {
-                    PingGroupItemController item = new PingGroupItemController(pingerGroup);
+                    PingGroupItemController item = new PingGroupItemController(pingerGroup, pnlSetting);
                     pingGroupItemControllerList.add(item);
                     item.getMainPane().setOnMouseClicked(event -> {
+                        isRunPingerButtonDisabled.set(false);
                         isCheckPingRunning = false;
                         pingItemsScrollPane.setVvalue(0);
                         selectItemStyle(item);
                         passPing.set(0);
                         totalProgressLabel.setText("");
                         totalProgress.setProgress(0);
+                        totalProgress.setVisible(false);
                         toggleGroupPinger.getSelectedToggle();
                         ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(item.getName().getText());
                         pingListGroupController.loadList(pingerList);
                         pingListGroupController.resetProgressBar();
                     });
+
                     flowPaneGroupPinger.getChildren().add(item);
                 });
     }
@@ -201,7 +221,7 @@ public class MainController extends AnchorPane {
             pnlOverview.setStyle("-fx-background-color : #02030A");
             pnlOverview.toFront();
         }
-        if (actionEvent.getSource() == btnSettingsScreen) {
+        if (actionEvent.getSource() == btnPingerScreen) {
             pnlSetting.setVisible(true);
             pnlSetting.setStyle("-fx-background-color : #02050A");
             pnlSetting.toFront();
@@ -245,37 +265,45 @@ public class MainController extends AnchorPane {
     private void resetCounterAndProgressBarForPingerScreen() {
         pingListGroupController.resetProgressBar();
         totalProgress.setProgress(0);
+        totalProgress.setVisible(true);
         passPing.set(0);
     }
 
     private void sendPing(PingerItem pingerItem, AtomicReference<Double> progress, double buffer, int listSize) {
         logger.info("Send Ping to: " + pingerItem.getIpAddress());
-        try {
-            InetAddress ip = InetAddress.getByName(pingerItem.getIpAddress());
-            if (ip != null && ip.isReachable(3000) && isCheckPingRunning) {
-                Platform.runLater(() -> pingerItem.setProgressValue(102));
-                passPing.addAndGet(1);
-            } else if (isCheckPingRunning) {
+        if (Utils.isValidateIpAddress(pingerItem.getIpAddress())) {
+            try {
+                InetAddress ip = InetAddress.getByName(pingerItem.getIpAddress());
+                if (ip != null && ip.isReachable(3000) && isCheckPingRunning) {
+                    Platform.runLater(() -> pingerItem.setProgressValue(102));
+                    passPing.addAndGet(1);
+                } else if (isCheckPingRunning) {
+                    Platform.runLater(() -> pingerItem.setProgressValue(100));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                if (isCheckPingRunning) {
+                    Platform.runLater(() -> pingerItem.setProgressValue(100));
+                }
+            }
+        } else {
+            if (isCheckPingRunning) {
                 Platform.runLater(() -> pingerItem.setProgressValue(100));
             }
-            if (isCheckPingRunning) {
-                progress.updateAndGet(v -> v + buffer);
-                Platform.runLater(() -> {
-                    totalProgress.setProgress(progress.get());
-                    totalProgressLabel.setText(String.format("%s/%s", passPing.get(), listSize));
-                });
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            if (isCheckPingRunning) {
-                Platform.runLater(() -> pingerItem.setProgressValue(100));
-            }
+        }
+
+        if (isCheckPingRunning) {
+            progress.updateAndGet(v -> v + buffer);
+            Platform.runLater(() -> {
+                totalProgress.setProgress(progress.get());
+                totalProgressLabel.setText(String.format("%s/%s", passPing.get(), listSize));
+            });
         }
     }
 
     public void addPingerItemHandler() {
         logger.trace("addPingerItemHandler");
-        AddEditPingerItemsController addEditPingerItemsController = new AddEditPingerItemsController(pnlSetting);
+        AddEditPingerItemsController addEditPingerItemsController = new AddEditPingerItemsController(pnlSetting, null, false);
         addEditPingerItemsController.show();
     }
 }

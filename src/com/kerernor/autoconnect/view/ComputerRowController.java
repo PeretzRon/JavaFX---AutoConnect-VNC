@@ -69,7 +69,7 @@ public class ComputerRowController extends ListCell<Computer> {
             setText(null);
             setGraphic(null);
         } else {
-            setStyle(" -fx-background-color: transparent;"); // TODO: move to css file
+            setStyle(" -fx-background-color: transparent;");
             loadAndSetValues(computer);
             setText(null);
             setGraphic(mainPane);
@@ -101,7 +101,7 @@ public class ComputerRowController extends ListCell<Computer> {
 
     @FXML
     public void removeComputer() {
-        ConfirmPopupController confirmPopupController = new ConfirmPopupController(paneBehind, computer);
+        ConfirmPopupController confirmPopupController = new ConfirmPopupController(paneBehind, computer, null);
         confirmPopupController.openPopup();
 
     }

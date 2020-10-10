@@ -21,6 +21,7 @@ public class PingerItem {
     public PingerItem(String ipAddress, String name) {
         this.ipAddress = ipAddress;
         this.name = name;
+        value = new SimpleDoubleProperty(0);
     }
 
     public String getIpAddress() {

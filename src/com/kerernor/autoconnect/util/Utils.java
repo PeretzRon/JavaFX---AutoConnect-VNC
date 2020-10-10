@@ -53,6 +53,7 @@ public class Utils {
     public static final String TEXT_ADD_NEW_COMPUTER_POPUP = "Add new computer";
     public static final String TEXT_EDIT_COMPUTER_POPUP = "Edit ";
     public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong ip address, try again";
+    public static final String TEXT_ADD_NEW_GROUP_PINGER_POPUP_TITTLE = "ADD new group Pinger";
 
 
     // Style
@@ -92,5 +93,10 @@ public class Utils {
 
         newStage.setX(centerXPosition - newStage.getWidth() / 2d);
         newStage.setY(centerYPosition - newStage.getHeight() / 2d);
+    }
+
+    public static boolean isValidateIpAddress(final String ip) {
+        String PATTERN = "^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$";
+        return ip.matches(PATTERN);
     }
 }

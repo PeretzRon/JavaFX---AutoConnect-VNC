@@ -37,11 +37,11 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button fx:id="btnSettingsScreen" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@../style/style.css" text="Settings">
+            <Button fx:id="btnPingerScreen" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@../style/style.css" text="Pinger">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/icons8_Slider__32px.png" />
+                        <Image url="@../images/icons8_Xbox_Menu_32px.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -65,7 +65,7 @@
       </VBox>
       <StackPane layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
          <children>
-            <Pane fx:id="pnlCustomer" prefHeight="200.0" prefWidth="200.0" visible="false" />
+<!--            <Pane fx:id="pnlCustomer" prefHeight="200.0" prefWidth="200.0" visible="false" />-->
             <Pane fx:id="pnlSetting" prefHeight="200.0" prefWidth="200.0" stylesheets="@../style/style.css">
                <children>
                   <AnchorPane prefHeight="576.0" prefWidth="793.0">
@@ -84,24 +84,38 @@
                               <PingListGroupController fx:id="pingListGroupController" layoutX="22.0" layoutY="225.0" prefHeight="284.0" prefWidth="763.0" style="-fx-background-color: #05071F;" />
                            </content>
                         </ScrollPane>
-                        <ProgressBar fx:id="totalProgress" layoutX="22.0" layoutY="533.0" prefHeight="18.0" prefWidth="651.0" progress="0.0" />
+                        <ProgressBar fx:id="totalProgress" layoutX="22.0" layoutY="533.0" prefHeight="18.0" styleClass="total-pinger-progress-bar" prefWidth="651.0" progress="0.0" visible="false" />
                         <Label fx:id="totalProgressLabel" alignment="CENTER" layoutX="700.0" layoutY="533.0" prefHeight="18.0" prefWidth="74.0" text="Label" textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font></Label>
-                        <HBox layoutX="23.0" layoutY="37.0" prefHeight="33.0" prefWidth="200.0" spacing="10.0">
+                        <HBox layoutX="23.0" layoutY="37.0" prefHeight="34.0" prefWidth="407.0" spacing="10.0">
                            <children>
-                              <TextField fx:id="filterPingerGroup" />
-                              <Button fx:id="checkPing" mnemonicParsing="false" onAction="#checkPingHandler" prefHeight="26.0" prefWidth="101.0" text="Run!" />
-                              <Button fx:id="addPingerItem" mnemonicParsing="false" onAction="#addPingerItemHandler" prefHeight="26.0" prefWidth="101.0" text="Add" />
+                              <TextField fx:id="filterPingerGroup" promptText="Filter groups...." style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 2em; -fx-text-fill: #fff;" />
+                              <Button fx:id="checkPing" mnemonicParsing="false" onAction="#checkPingHandler" prefHeight="26.0" prefWidth="101.0" styleClass="pinger-screen-btn" text="Run!">
+                                 <graphic>
+                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/play.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="addPingerItem" mnemonicParsing="false" onAction="#addPingerItemHandler" prefHeight="3.0" prefWidth="140.0" styleClass="pinger-screen-btn" text="Add new group">
+                                 <graphic>
+                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/add.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
                            </children>
                         </HBox>
                      </children>
                   </AnchorPane>
                </children>
             </Pane>
-            <Pane fx:id="pnlMenus" prefHeight="200.0" prefWidth="200.0" visible="false" />
-            <Pane fx:id="pnlOverview" prefHeight="576.0" prefWidth="773.0" visible="false">
+<!--            <Pane fx:id="pnlMenus" prefHeight="200.0" prefWidth="200.0" visible="false" />-->
+            <Pane fx:id="pnlOverview" prefHeight="576.0" prefWidth="773.0" visible="true">
                <children>
                   <StackPane alignment="TOP_CENTER" layoutX="474.0" layoutY="-9.0" prefHeight="122.0" prefWidth="307.0" styleClass="bordered-titled-border" stylesheets="@../style/style.css">
                      <children>
