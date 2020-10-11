@@ -21,6 +21,27 @@ public class KorEvents {
         }
     }
 
+    public static class PingerEvent extends Event {
+        public static final EventType<PingerEvent> UPDATE_PINGER_ITEM = new EventType("UPDATE_PINGER_ITEM");
+        public static final EventType<PingerEvent> UPDATE_PINGER_NAME = new EventType("UPDATE_PINGER_NAME");
+        private final String name;
+        private final int listSize;
+
+        public PingerEvent(EventType<PingerEvent> eventType, String name,  int listSize) {
+            super(eventType);
+            this.name = name;
+            this.listSize = listSize;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getListSize() {
+            return listSize;
+        }
+    }
+
     public static class ConnectVNCEvent extends Event{
         public static final EventType<ConnectVNCEvent> CONNECT_VNC_EVENT_EVENT = new EventType("ConnectVNCEvent");
         private final String ipAddress;

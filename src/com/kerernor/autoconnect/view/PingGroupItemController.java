@@ -3,6 +3,7 @@ package com.kerernor.autoconnect.view;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
+import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
@@ -64,6 +65,15 @@ public class PingGroupItemController extends HBox {
     public void editPingGroupHandler(MouseEvent event) {
         event.consume();
         AddEditPingerItemsController addEditPingerItemsController = new AddEditPingerItemsController(behindPane, pingerItem, true);
+
+        addEditPingerItemsController.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_ITEM, event2 -> {
+            fireEvent(event2);
+        });
+
+        addEditPingerItemsController.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_NAME, event2 -> {
+            fireEvent(event2);
+        });
+
         addEditPingerItemsController.show();
     }
 

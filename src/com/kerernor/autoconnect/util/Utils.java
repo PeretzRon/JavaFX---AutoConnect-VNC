@@ -34,6 +34,7 @@ public class Utils {
     // Images file paths
     public static final String RCGW_ICON = IMAGES_BASE_PATH + "antenna.png";
     public static final String STATION_ICON = IMAGES_BASE_PATH + "stationKO.png";
+    public static final String APP_ICON = IMAGES_BASE_PATH + "ko.png";
 
     // Data paths
     public static final String COMPUTER_DATA = "data.json";
@@ -54,6 +55,7 @@ public class Utils {
     public static final String TEXT_EDIT_COMPUTER_POPUP = "Edit ";
     public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong ip address, try again";
     public static final String TEXT_ADD_NEW_GROUP_PINGER_POPUP_TITTLE = "ADD new group Pinger";
+    public static final String APP_NAME = "ControlKO";
 
 
     // Style

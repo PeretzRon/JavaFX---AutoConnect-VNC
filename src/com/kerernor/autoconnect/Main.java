@@ -7,6 +7,7 @@ import com.kerernor.autoconnect.util.Utils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -46,9 +47,10 @@ public class Main extends Application {
             Scene scene = new Scene(rootLayout);
 
             // Show scene and configure the root layout
-            this.primaryStage.setTitle("Remote App");
+            this.primaryStage.setTitle(Utils.APP_NAME);
             this.primaryStage.initStyle(StageStyle.UNDECORATED);   // set stage borderless
             this.primaryStage.setScene(scene);
+            this.primaryStage.getIcons().add(new Image(Utils.APP_ICON));
             this.primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();

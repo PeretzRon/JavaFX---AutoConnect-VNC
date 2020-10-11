@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class ThreadManger {
     private static ThreadManger instance = new ThreadManger();
-    private ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+    private ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(15);
     private ThreadManger () {
 
     }

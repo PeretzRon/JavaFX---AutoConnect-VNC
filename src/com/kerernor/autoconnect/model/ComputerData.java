@@ -10,10 +10,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.log4j.Logger;
 
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -78,7 +76,7 @@ public class ComputerData {
         computersList = FXCollections.observableArrayList(); // FXCollection is for better performance
         computerListSize = Bindings.size(computersList);
         Computer[] computers;
-        try (Reader reader = new FileReader(Utils.COMPUTER_DATA)) {
+        try (Reader reader = new InputStreamReader(new FileInputStream(Utils.COMPUTER_DATA), StandardCharsets.UTF_8)) {
             Gson gson = new Gson();
             computers = gson.fromJson(reader, Computer[].class);
         }

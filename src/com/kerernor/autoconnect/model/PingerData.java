@@ -2,15 +2,12 @@ package com.kerernor.autoconnect.model;
 
 import com.google.gson.Gson;
 import com.kerernor.autoconnect.util.Utils;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.log4j.Logger;
 
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,7 +32,7 @@ public class PingerData {
         logger.trace("PingerData.loadData");
         pingerObservableList = FXCollections.observableArrayList(); // FXCollection is for better performance
         Pinger[] pingers;
-        try (Reader reader = new FileReader(Utils.PINGER_DATA)) {
+        try (Reader reader = new InputStreamReader(new FileInputStream(Utils.PINGER_DATA), StandardCharsets.UTF_8)) {
             Gson gson = new Gson();
             pingers = gson.fromJson(reader, Pinger[].class);
             pingerObservableList.addAll(Arrays.asList(pingers));

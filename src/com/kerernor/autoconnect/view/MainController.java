@@ -168,19 +168,33 @@ public class MainController extends AnchorPane {
             connectToVNC(event.getIpAddress(), event.getBehindParent());
         });
 
-
         viewOnlyCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             isViewOnly = newValue;
         });
 
-        PingerData.getInstance().getPingerObservableList().addListener((ListChangeListener<? super Pinger>) c -> {
-            createPingerGroups(filterPingerGroup.getText());
+        flowPaneGroupPinger.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_ITEM, event -> {
             pingListGroupController.getPingerListView().getChildren().clear();
-            if (c.getList().size() == 0) {
-                isRunPingerButtonDisabled.set(true);
-            }
+            ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(event.getName());
+            pingListGroupController.loadList(pingerList);
+            pingListGroupController.resetProgressBar();
         });
 
+        flowPaneGroupPinger.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_NAME, event -> {
+            refreshPingerItemWhenUpdated(event.getListSize());
+        });
+
+
+        PingerData.getInstance().getPingerObservableList().addListener((ListChangeListener<? super Pinger>) c -> {
+            refreshPingerItemWhenUpdated(c.getList().size());
+        });
+    }
+
+    private void refreshPingerItemWhenUpdated(int listSize) {
+        createPingerGroups(filterPingerGroup.getText());
+        pingListGroupController.getPingerListView().getChildren().clear();
+        if (listSize == 0) {
+            isRunPingerButtonDisabled.set(true);
+        }
     }
 
     public void createPingerGroups(String filterText) {

@@ -3,5 +3,5 @@
 <?import javafx.scene.control.TextField?>
 
 
-<fx:root fx:id="search" promptText="Filter..." type="TextField" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="search" promptText="Filter..." type="TextField" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
 </fx:root>

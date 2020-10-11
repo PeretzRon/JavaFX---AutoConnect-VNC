@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainPane" prefHeight="350.0" prefWidth="349.0" styleClass="add-edit-popup" stylesheets="@../../style/popupStyle.css" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="mainPane" prefHeight="350.0" prefWidth="349.0" styleClass="add-edit-popup" stylesheets="@../../style/popupStyle.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <Label fx:id="addEditComputerLabel" styleClass="sub-title" text="Add/Edit Computer" BorderPane.alignment="CENTER_LEFT">
          <font>

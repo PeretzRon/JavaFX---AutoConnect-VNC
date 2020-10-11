@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="mainPane" alignment="TOP_CENTER" prefHeight="474.0" prefWidth="459.0" styleClass="add-edit-pinger-popup" stylesheets="@../../style/popupStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="mainPane" alignment="TOP_CENTER" prefHeight="474.0" prefWidth="459.0" styleClass="add-edit-pinger-popup" stylesheets="@../../style/popupStyle.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints hgrow="ALWAYS" />
       <ColumnConstraints />
@@ -92,7 +92,7 @@
             <HBox alignment="CENTER_LEFT" prefHeight="273.0" prefWidth="744.0">
                <children>
                   <ListView fx:id="addedItemsList" prefHeight="170.0" prefWidth="277.0" styleClass="add-ping-list" />
-                  <ImageView fx:id="deleteItemFromList" onMouseClicked="#deleteItemFromListHandler" fitHeight="38.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="deleteItemFromList" fitHeight="38.0" fitWidth="28.0" onMouseClicked="#deleteItemFromListHandler" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../images/dustbin.png" />
                      </image>

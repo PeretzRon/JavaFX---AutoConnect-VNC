@@ -4,6 +4,7 @@ import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.model.PingerItem;
+import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -28,7 +29,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddEditPingerItemsController {
+public class AddEditPingerItemsController extends GridPane {
 
     @FXML
     private GridPane mainPane;
@@ -142,9 +143,16 @@ public class AddEditPingerItemsController {
             pingerItem = new Pinger(groupName, pingerItemList);
             PingerData.getInstance().add(pingerItem);
         } else {
-            pingerItem.setName(groupName);
-            pingerItem.setData(pingerItemList);
-            //TODO: refreshList
+            if (pingerItem.getName().equals(groupName)) {
+                pingerItem.setName(groupName);
+                pingerItem.setData(pingerItemList);
+                fireEvent(new KorEvents.PingerEvent(KorEvents.PingerEvent.UPDATE_PINGER_ITEM, groupName, PingerData.getInstance().getPingerObservableList().size()));
+            } else {
+                pingerItem.setName(groupName);
+                pingerItem.setData(pingerItemList);
+                fireEvent(new KorEvents.PingerEvent(KorEvents.PingerEvent.UPDATE_PINGER_NAME, groupName, PingerData.getInstance().getPingerObservableList().size()));
+            }
+
 
         }
 

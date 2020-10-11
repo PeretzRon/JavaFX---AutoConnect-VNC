@@ -1,6 +1,7 @@
 
 #button-connect {
     -fx-border-radius: 40px;
+    -fx-background-radius: 40px;
     -fx-border-color: white;
 }
 
@@ -13,9 +14,7 @@
     -fx-background-color: #1620A1;
 }
 
-.button:pressed {
-    -fx-background-color: #1620A1;
-}
+
 
 .selected-menu-item {
     -fx-background-color: #10165F;
