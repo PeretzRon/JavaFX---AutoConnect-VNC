@@ -7,14 +7,14 @@ import com.kerernor.autoconnect.model.eComputerType;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Popup;
@@ -49,19 +49,47 @@ public class AddEditComputerPopup extends Popup {
     @FXML
     private RadioButton rcgwRadioButton;
 
+    @FXML
+    private Button saveButton;
+
 
     private Parent paneBehind;
     private Computer computer;
     private Stage stage;
+    private BooleanProperty isValidIPAddress;
+    private BooleanProperty isValidLocationTextField;
+    private BooleanProperty isValidNameTextField;
+    private boolean isEdit;
 
-    public AddEditComputerPopup(Parent paneBehind) {
+    public AddEditComputerPopup(Parent paneBehind, boolean isEdit) {
         this.paneBehind = paneBehind;
+        this.isEdit = isEdit;
+        isValidLocationTextField = new SimpleBooleanProperty(true);
+        isValidNameTextField = new SimpleBooleanProperty(true);
+        isValidIPAddress = new SimpleBooleanProperty(true);
     }
 
     @FXML
     public void initialize() {
-        Platform.runLater(() ->  mainPane.requestFocus());
+        Platform.runLater(() -> mainPane.requestFocus());
+        if (isEdit) {
+            isValidLocationTextField = new SimpleBooleanProperty(false);
+            isValidNameTextField = new SimpleBooleanProperty(false);
+            isValidIPAddress = new SimpleBooleanProperty(false);
+        }
 
+        saveButton.disableProperty().bind(Bindings.or(isValidIPAddress, isValidLocationTextField).or(isValidNameTextField));
+        computerIPAddress.setOnKeyReleased(event -> {
+            isValidIPAddress.setValue(!Utils.isValidateIpAddress(computerIPAddress.getText()));
+        });
+
+        computerLocation.setOnKeyReleased(event -> {
+            isValidLocationTextField.setValue(Utils.isNullOrEmptyString(computerLocation.getText()));
+        });
+
+        computerName.setOnKeyReleased(event -> {
+            isValidNameTextField.setValue(Utils.isNullOrEmptyString(computerName.getText()));
+        });
     }
 
     public BorderPane loadView() {
@@ -78,7 +106,7 @@ public class AddEditComputerPopup extends Popup {
     }
 
 
-    public void openPopup(boolean isUpdate, Computer computer) {
+    public void openPopup(Computer computer) {
         // TODO: - Delete
         fireEvent(new KorEvents.SearchComputerEvent(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, "Event"));
 
@@ -91,7 +119,7 @@ public class AddEditComputerPopup extends Popup {
         stage.initStyle(StageStyle.UNDECORATED);
 
         // select radio button
-        if (isUpdate) {
+        if (isEdit) {
             setValues(computer);
             addEditComputerLabel.setText(Utils.TEXT_EDIT_COMPUTER_POPUP + computer.getName());
         } else {

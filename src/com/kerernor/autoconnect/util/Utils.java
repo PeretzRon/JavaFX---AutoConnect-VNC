@@ -60,6 +60,7 @@ public class Utils {
 
     // Style
     public static final String PINGER_GROUP_ITEM_SELECTED = "pinger-item-selected";
+
     /**
      * This method gets the blur effect.
      *
@@ -100,5 +101,9 @@ public class Utils {
     public static boolean isValidateIpAddress(final String ip) {
         String PATTERN = "^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$";
         return ip.matches(PATTERN);
+    }
+
+    public static boolean isNullOrEmptyString(final String str) {
+        return str != null && str.length() == 0;
     }
 }

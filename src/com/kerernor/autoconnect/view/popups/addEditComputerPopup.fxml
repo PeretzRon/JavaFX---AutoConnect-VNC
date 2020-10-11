@@ -79,7 +79,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Button focusTraversable="true" mnemonicParsing="false" onAction="#saveClickAction" styleClass="button-add-edit-popup" text="Save" />
+                  <Button fx:id="saveButton" focusTraversable="true" mnemonicParsing="false" onAction="#saveClickAction" styleClass="button-add-edit-popup" text="Save" />
                   <Button focusTraversable="true" mnemonicParsing="false" onAction="#closeClickAction" styleClass="button-add-edit-popup" text="Cancel" />
                </children>
                <VBox.margin>

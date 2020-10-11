@@ -257,8 +257,8 @@ public class MainController extends AnchorPane {
     }
 
     public void addNewComputer() {
-        AddEditComputerPopup addEditComputerPopup = new AddEditComputerPopup(pnlOverview);
-        addEditComputerPopup.openPopup(false, null);
+        AddEditComputerPopup addEditComputerPopup = new AddEditComputerPopup(pnlOverview, false);
+        addEditComputerPopup.openPopup(null);
     }
 
     private void connectToVNC(String ip, Parent paneBehind) {

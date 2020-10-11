@@ -78,13 +78,10 @@ public class AlertPopupController {
 
     private void locateStageDownToParentStage() {
         Stage primaryStage = (Stage) paneBehind.getScene().getWindow();
-        double centerXPosition = primaryStage.getX() + primaryStage.getWidth()/2d;
+        double centerXPosition = primaryStage.getX() + primaryStage.getWidth() / 2d;
         double centerYPosition = primaryStage.getY() + primaryStage.getHeight();
 
-        stage.setX(centerXPosition - stage.getWidth()/2d);
+        stage.setX(centerXPosition - stage.getWidth() / 2d);
         stage.setY(centerYPosition - stage.getHeight());
     }
-
-
-
 }

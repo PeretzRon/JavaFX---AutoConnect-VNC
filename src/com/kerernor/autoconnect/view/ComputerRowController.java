@@ -107,13 +107,13 @@ public class ComputerRowController extends ListCell<Computer> {
     }
 
     public void editComputer() {
-        AddEditComputerPopup addEditComputerPopup = new AddEditComputerPopup(paneBehind);
+        AddEditComputerPopup addEditComputerPopup = new AddEditComputerPopup(paneBehind, true);
 
         // TODO: delete
         addEditComputerPopup.addEventHandler(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, event -> {
             fireEvent(event);
         });
 
-        addEditComputerPopup.openPopup(true, computer);
+        addEditComputerPopup.openPopup(computer);
     }
 }
