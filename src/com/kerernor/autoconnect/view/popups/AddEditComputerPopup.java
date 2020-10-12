@@ -128,12 +128,15 @@ public class AddEditComputerPopup extends Popup {
             addEditComputerLabel.setText(Utils.TEXT_ADD_NEW_COMPUTER_POPUP);
         }
 
-        // Set out of focus closing ability
-        stage.focusedProperty().addListener((observableValue, wasFocused, isNowFocused) -> {
-            if (!isNowFocused) {
-                closeClickAction();
-            }
-        });
+        if (Utils.IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING) {
+            // Set out of focus closing ability
+            stage.focusedProperty().addListener((observableValue, wasFocused, isNowFocused) -> {
+                if (!isNowFocused) {
+                    closeClickAction();
+                }
+            });
+        }
+
 
         // Prevent the window from closing in case of out of focus
         stage.initModality(Modality.NONE);

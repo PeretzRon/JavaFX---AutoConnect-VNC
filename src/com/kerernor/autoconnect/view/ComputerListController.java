@@ -2,6 +2,8 @@ package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
+import com.kerernor.autoconnect.model.ComputerData;
+import com.kerernor.autoconnect.model.eComputerType;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.beans.InvalidationListener;
@@ -14,6 +16,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+import java.util.Collections;
 
 public class ComputerListController extends ListView {
 
@@ -22,6 +25,11 @@ public class ComputerListController extends ListView {
 
     private Pane paneBehind;
 
+    private int current;
+
+    public int getCurrent() {
+        return current;
+    }
 
     public ListView<Computer> getComputerListView() {
         return computerListView;
@@ -61,6 +69,12 @@ public class ComputerListController extends ListView {
             observable.next();
             int index = observable.getTo();
             computerListView.scrollTo(index - 1);
+        });
+
+        computerListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                current = ComputerData.getInstance().getComputerIndexInListByIP(newValue.getIp());
+            }
         });
 
         computerListView.setCellFactory(computerListView1 -> {

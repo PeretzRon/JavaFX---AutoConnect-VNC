@@ -152,8 +152,6 @@ public class AddEditPingerItemsController extends GridPane {
                 pingerItem.setData(pingerItemList);
                 fireEvent(new KorEvents.PingerEvent(KorEvents.PingerEvent.UPDATE_PINGER_NAME, groupName, PingerData.getInstance().getPingerObservableList().size()));
             }
-
-
         }
 
         closeClickAction();
@@ -167,14 +165,6 @@ public class AddEditPingerItemsController extends GridPane {
         stage.setResizable(false);
         stage.initStyle(StageStyle.UNDECORATED);
 
-
-        // Set out of focus closing ability
-        stage.focusedProperty().addListener((observableValue, wasFocused, isNowFocused) -> {
-            if (!isNowFocused) {
-                closeClickAction();
-            }
-        });
-
         if (isEditItem) {
             addEditPingItemTitle.setText(Utils.TEXT_EDIT_COMPUTER_POPUP + pingerItem.getName());
             groupNameTextField.setText(pingerItem.getName());
@@ -184,6 +174,15 @@ public class AddEditPingerItemsController extends GridPane {
             });
         } else {
             addEditPingItemTitle.setText(Utils.TEXT_ADD_NEW_GROUP_PINGER_POPUP_TITTLE);
+        }
+
+        if (Utils.IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING) {
+            // Set out of focus closing ability
+            stage.focusedProperty().addListener((observableValue, wasFocused, isNowFocused) -> {
+                if (!isNowFocused) {
+                    closeClickAction();
+                }
+            });
         }
 
         // Prevent the window from closing in case of out of focus

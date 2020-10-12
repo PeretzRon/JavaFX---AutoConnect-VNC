@@ -59,6 +59,8 @@ public class Utils {
     // App setting properties
     public static final String ULTRA_VNC_PROGRAM_PATH = "UltraVncProgramPath";
     public static final String ULTRA_VNC_SCRIPT_FOR_CONNECTION = "UltraVncScriptForConnection";
+    public static final String IS_POPUP_CLOSE_IF_LOSE_FOCUS = "isPopupCloseIfLoseFocus";
+    public static boolean IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING = true;
 
     // Sizes and amounts
     public static final int BLUR_SIZE = 5;
@@ -144,6 +146,7 @@ public class Utils {
             properties.load(inputStream);
             Utils.VNC_PROGRAM_PATH = properties.getProperty(ULTRA_VNC_PROGRAM_PATH);
             Utils.VNC_SCRIPT_PATH = properties.getProperty(ULTRA_VNC_SCRIPT_FOR_CONNECTION);
+            Utils.IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING = Boolean.parseBoolean(properties.getProperty(IS_POPUP_CLOSE_IF_LOSE_FOCUS));
         } catch (IOException e) {
             logger.error("failed to load app settings");
         }

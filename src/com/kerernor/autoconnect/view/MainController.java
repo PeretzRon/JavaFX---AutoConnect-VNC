@@ -20,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -28,6 +29,8 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -360,5 +363,24 @@ public class MainController extends AnchorPane {
         logger.trace("addPingerItemHandler");
         AddEditPingerItemsController addEditPingerItemsController = new AddEditPingerItemsController(pnlSetting, null, false);
         addEditPingerItemsController.show();
+    }
+
+    public void DownComputerInList(MouseEvent mouseEvent) {
+        int currentIndex = computerListController.getCurrent();
+        if (currentIndex >= 0 && currentIndex < ComputerData.getInstance().getComputersList().size() - 1) {
+            Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex + 1);
+            computerListController.getComputerListView().getSelectionModel().select(currentIndex + 1);
+            computerListController.getComputerListView().scrollTo(currentIndex + 1);
+        }
+
+    }
+
+    public void UpComputerInList(MouseEvent mouseEvent) {
+        int currentIndex = computerListController.getCurrent();
+        if (currentIndex > 0 && currentIndex <= ComputerData.getInstance().getComputersList().size() - 1) {
+            Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex - 1);
+            computerListController.getComputerListView().getSelectionModel().select(currentIndex - 1);
+            computerListController.getComputerListView().scrollTo(currentIndex - 1);
+        }
     }
 }

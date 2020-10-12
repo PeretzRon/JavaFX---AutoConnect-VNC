@@ -78,13 +78,6 @@ public class ConfirmPopupController extends GridPane {
         stage.setResizable(false);
         stage.initStyle(StageStyle.UNDECORATED);
 
-        // Set out of focus closing ability
-        stage.focusedProperty().addListener((observableValue, wasFocused, isNowFocused) -> {
-            if (!isNowFocused) {
-                closeClickAction();
-            }
-        });
-
         // Prevent the window from closing in case of out of focus
         stage.initModality(Modality.NONE);
         stage.initOwner(paneBehind.getScene().getWindow());

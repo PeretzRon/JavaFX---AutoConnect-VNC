@@ -124,5 +124,18 @@ public class ComputerData {
         });
     }
 
+    public int getComputerIndexInListByIP(String ip) {
+        int index = 0;
+
+        for (Computer computer : computersList) {
+            if (computer.getIp().equals(ip)) {
+                return index;
+            }
+            index++;
+        }
+
+        return -1;
+    }
+
 
 }
