@@ -1,7 +1,6 @@
 package com.kerernor.autoconnect;
 
 import com.kerernor.autoconnect.model.ComputerData;
-import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.application.Application;
@@ -12,8 +11,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-import org.scenicview.ScenicView;
 
 import java.io.IOException;
 
@@ -26,11 +23,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        PropertyConfigurator.configure("D:\\Projects\\IntelliJ Projects\\AutoConnectKO\\src\\com\\kerernor\\autoconnect\\config\\log4j.properties");
+        Utils.loadAndSetLoggerSetting();
         logger.trace("********************** Start Main *************************");
         this.primaryStage = primaryStage;
         initRootLayout();
         makeStageDraggable();
+        Utils.loadAppSettings();
         Scene scene = primaryStage.getScene();
         //ScenicView.show(scene);
     }
@@ -59,7 +57,7 @@ public class Main extends Application {
     }
 
     private void makeStageDraggable() {
-        logger.info("makeStageDraggable");
+        logger.trace("makeStageDraggable");
         this.rootLayout.setOnMousePressed(event -> {
             x = event.getSceneX();
             y = event.getSceneY();

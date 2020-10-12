@@ -35,6 +35,9 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MainController extends AnchorPane {
 
     @FXML
+    public Pane pnlAbout;
+
+    @FXML
     private Button checkPing;
 
     @FXML
@@ -65,6 +68,9 @@ public class MainController extends AnchorPane {
     private Button btnPingerScreen;
 
     @FXML
+    private Button btnAbout;
+
+    @FXML
     private Pane pnlSetting;
 
     @FXML
@@ -91,7 +97,6 @@ public class MainController extends AnchorPane {
     @FXML
     private CheckBox viewOnlyCheckBox;
 
-
     @FXML
     FlowPane flowPaneGroupPinger;
 
@@ -104,13 +109,19 @@ public class MainController extends AnchorPane {
     @FXML
     private TextField filterPingerGroup;
 
+    @FXML
+    private Label aboutFirstLine;
+
+    @FXML
+    private Label aboutSecondLine;
+
     private static MainController instance = new MainController();
     private final Logger logger = Logger.getLogger(MainController.class);
     private boolean isViewOnly = false;
     private final AtomicInteger passPing = new AtomicInteger(0);
     private boolean isCheckPingRunning = false;
     private final List<PingGroupItemController> pingGroupItemControllerList = new ArrayList<>();
-    private BooleanProperty isRunPingerButtonDisabled = new SimpleBooleanProperty(true);
+    private final BooleanProperty isRunPingerButtonDisabled = new SimpleBooleanProperty(true);
 
     public static MainController getInstance() {
         return instance;
@@ -120,9 +131,12 @@ public class MainController extends AnchorPane {
         logger.trace("MainController.initialize");
         toggleGroupPinger = new ToggleGroup();
         totalProgressLabel.setText("");
+        aboutFirstLine.setText(Utils.COPYRIGHT);
+        aboutSecondLine.setText(Utils.VERSION);
         btnRemoteScreen.getStyleClass().add("selected-menu-item");
         pnlOverview.toFront();
         pnlSetting.setVisible(false);
+        pnlAbout.setVisible(false);
         FilteredList<Computer> computerFilteredList = new FilteredList<>(ComputerData.getInstance().getComputersList(), computer -> true);
         computerListController.setPaneBehind(this.pnlOverview);
         computerListController.loadList(computerFilteredList);
@@ -173,6 +187,7 @@ public class MainController extends AnchorPane {
         });
 
         flowPaneGroupPinger.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_ITEM, event -> {
+            logger.trace("KorEvents.PingerEvent.UPDATE_PINGER_ITEM");
             pingListGroupController.getPingerListView().getChildren().clear();
             ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(event.getName());
             pingListGroupController.loadList(pingerList);
@@ -180,16 +195,19 @@ public class MainController extends AnchorPane {
         });
 
         flowPaneGroupPinger.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_NAME, event -> {
+            logger.trace("KorEvents.PingerEvent.UPDATE_PINGER_NAME");
             refreshPingerItemWhenUpdated(event.getListSize());
         });
 
 
         PingerData.getInstance().getPingerObservableList().addListener((ListChangeListener<? super Pinger>) c -> {
+            logger.trace("ListChangeListener - Pinger");
             refreshPingerItemWhenUpdated(c.getList().size());
         });
     }
 
     private void refreshPingerItemWhenUpdated(int listSize) {
+        logger.trace("refreshPingerItemWhenUpdated");
         createPingerGroups(filterPingerGroup.getText());
         pingListGroupController.getPingerListView().getChildren().clear();
         if (listSize == 0) {
@@ -222,6 +240,7 @@ public class MainController extends AnchorPane {
 
                     flowPaneGroupPinger.getChildren().add(item);
                 });
+
     }
 
     private void selectItemStyle(PingGroupItemController item) {
@@ -231,10 +250,12 @@ public class MainController extends AnchorPane {
     }
 
     public void handleClicks(ActionEvent actionEvent) {
+        logger.trace("ChangeScreenHandler");
         if (actionEvent.getSource() == btnRemoteScreen) {
             pnlOverview.setStyle("-fx-background-color : #02030A");
             btnRemoteScreen.getStyleClass().add("selected-menu-item");
             btnPingerScreen.getStyleClass().remove("selected-menu-item");
+            btnAbout.getStyleClass().remove("selected-menu-item");
             pnlOverview.toFront();
         }
         if (actionEvent.getSource() == btnPingerScreen) {
@@ -242,7 +263,17 @@ public class MainController extends AnchorPane {
             pnlSetting.setStyle("-fx-background-color : #02050A");
             btnPingerScreen.getStyleClass().add("selected-menu-item");
             btnRemoteScreen.getStyleClass().remove("selected-menu-item");
+            btnAbout.getStyleClass().remove("selected-menu-item");
             pnlSetting.toFront();
+        }
+
+        if (actionEvent.getSource() == btnAbout) {
+            pnlAbout.setVisible(true);
+            pnlAbout.setStyle("-fx-background-color : #02050A");
+            btnAbout.getStyleClass().add("selected-menu-item");
+            btnRemoteScreen.getStyleClass().remove("selected-menu-item");
+            btnPingerScreen.getStyleClass().remove("selected-menu-item");
+            pnlAbout.toFront();
         }
 
         if (actionEvent.getSource() == btnExitApp) {
@@ -266,6 +297,7 @@ public class MainController extends AnchorPane {
     }
 
     public void checkPingHandler() {
+        logger.trace("Start Sending Ping");
         isCheckPingRunning = true;
         int listSizeOfCurrentSelected = pingListGroupController.getListToSendPing().size();
         AtomicReference<Double> progress = new AtomicReference<>((double) 0);

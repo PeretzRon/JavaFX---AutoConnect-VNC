@@ -1,10 +1,18 @@
 package com.kerernor.autoconnect.util;
 
+import com.kerernor.autoconnect.Main;
 import javafx.scene.Parent;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.Effect;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.util.Properties;
 
 public class Utils {
 
@@ -37,12 +45,20 @@ public class Utils {
     public static final String APP_ICON = IMAGES_BASE_PATH + "ko.png";
 
     // Data paths
-    public static final String COMPUTER_DATA = "data.json";
-    public static final String PINGER_DATA = "pingData.json";
+    public static final String COMPUTER_DATA = "data/data.json";
+    public static final String PINGER_DATA = "data/pingData.json";
 
     // Config files paths
-    public static final String LOG_4_J_CONFIG = CONFIG_BASE_PATH + "log4j.properties";
+    public static final String LOG_4_J_CONFIG = "config/log4j.properties";
+    public static final String APP_SETTINGS = "config/settings.properties";
 
+    // VNC Script paths
+    public static String VNC_PROGRAM_PATH = "C:\\Program Files (x86)\\uvnc bvba\\UltraVNC";
+    public static String VNC_SCRIPT_PATH = "C:\\Program Files (x86)\\uvnc bvba\\UltraVNC";
+
+    // App setting properties
+    public static final String ULTRA_VNC_PROGRAM_PATH = "UltraVncProgramPath";
+    public static final String ULTRA_VNC_SCRIPT_FOR_CONNECTION = "UltraVncScriptForConnection";
 
     // Sizes and amounts
     public static final int BLUR_SIZE = 5;
@@ -56,6 +72,8 @@ public class Utils {
     public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong ip address, try again";
     public static final String TEXT_ADD_NEW_GROUP_PINGER_POPUP_TITTLE = "ADD new group Pinger";
     public static final String APP_NAME = "ControlKO";
+    public static final String COPYRIGHT = "Copyright " + "\u00a9" + " Ron Peretz (2020)";
+    public static final String VERSION = "Version 1.0.0";
 
 
     // Style
@@ -105,5 +123,29 @@ public class Utils {
 
     public static boolean isNullOrEmptyString(final String str) {
         return str != null && str.length() == 0;
+    }
+
+    public static void loadAndSetLoggerSetting() {
+        Properties props = new Properties();
+        try (InputStream inputStream = new FileInputStream(LOG_4_J_CONFIG)) {
+            props.load(inputStream);
+            PropertyConfigurator.configure(props);
+            logger.info("loadAndSetLoggerSetting");
+        } catch (IOException e) {
+            logger.error("failed to load log4j settings");
+        }
+    }
+
+    public static void loadAppSettings() {
+        logger.info("loadAppSettings");
+        Properties properties = new Properties();
+
+        try (InputStream inputStream = new FileInputStream(APP_SETTINGS)) {
+            properties.load(inputStream);
+            Utils.VNC_PROGRAM_PATH = properties.getProperty(ULTRA_VNC_PROGRAM_PATH);
+            Utils.VNC_SCRIPT_PATH = properties.getProperty(ULTRA_VNC_SCRIPT_FOR_CONNECTION);
+        } catch (IOException e) {
+            logger.error("failed to load app settings");
+        }
     }
 }

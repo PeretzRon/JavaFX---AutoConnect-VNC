@@ -10,8 +10,8 @@ import java.io.FileWriter;
 
 public class VNCRemote {
 
-    private static final String mPathToVNC = "C:\\Program Files (x86)\\uvnc bvba\\UltraVNC";
-    private static final String mPathScript = "C:\\Script\\run.bat";
+    private static final String mPathToVNC = Utils.VNC_PROGRAM_PATH;
+    private static final String mPathScript = Utils.VNC_SCRIPT_PATH;
     private static final String mAdminPassword = "P@ssw0rd";
     private static Logger logger = Logger.getLogger(VNCRemote.class);
 
@@ -33,8 +33,10 @@ public class VNCRemote {
                 myWriter.close();
                 Runtime.getRuntime().exec(
                         "cmd /c run.bat", null, new File("C:\\Script\\"));
+                logger.info("connected to: " + ip + " ViewOnly: " + isViewOnlySelected);
             } catch (Exception e1) {
                 e1.printStackTrace();
+                logger.error(e1);
             }
         } else {
             logger.info("Wrong ip address: " + ip + " Can't to connect to client");

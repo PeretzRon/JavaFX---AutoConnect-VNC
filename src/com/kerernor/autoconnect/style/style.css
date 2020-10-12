@@ -14,8 +14,6 @@
     -fx-background-color: #1620A1;
 }
 
-
-
 .selected-menu-item {
     -fx-background-color: #10165F;
 }
@@ -59,7 +57,6 @@
     -fx-background-insets: 1, 1;
     -fx-padding: 1;
 }
-
 
 .list-cell:hover {
     -fx-background-color: #10165F;

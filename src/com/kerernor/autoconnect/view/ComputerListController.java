@@ -63,7 +63,6 @@ public class ComputerListController extends ListView {
             computerListView.scrollTo(index -1);
         });
 
-
         computerListView.setCellFactory(computerListView1 -> {
             ComputerRowController currentComputer = new ComputerRowController(this.paneBehind);
 
