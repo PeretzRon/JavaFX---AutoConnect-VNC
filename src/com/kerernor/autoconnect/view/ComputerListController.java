@@ -60,14 +60,14 @@ public class ComputerListController extends ListView {
         computerListView.getItems().addListener((ListChangeListener<? super Computer>) observable -> {
             observable.next();
             int index = observable.getTo();
-            computerListView.scrollTo(index -1);
+            computerListView.scrollTo(index - 1);
         });
 
         computerListView.setCellFactory(computerListView1 -> {
             ComputerRowController currentComputer = new ComputerRowController(this.paneBehind);
 
             // fire this event
-            currentComputer.addEventFilter(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, event ->  {
+            currentComputer.addEventFilter(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, event -> {
                 event.consume();
                 fireEvent(event);
             });

@@ -23,7 +23,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Utils.loadAndSetLoggerSetting();
+
         logger.trace("********************** Start Main *************************");
         this.primaryStage = primaryStage;
         initRootLayout();
@@ -72,6 +72,7 @@ public class Main extends Application {
 
     @Override
     public void init() throws Exception {
+        Utils.loadAndSetLoggerSetting();
         ComputerData.getInstance().loadData();
         PingerData.getInstance().loadData();
     }

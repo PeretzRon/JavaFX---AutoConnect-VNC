@@ -122,6 +122,7 @@ public class MainController extends AnchorPane {
     private boolean isCheckPingRunning = false;
     private final List<PingGroupItemController> pingGroupItemControllerList = new ArrayList<>();
     private final BooleanProperty isRunPingerButtonDisabled = new SimpleBooleanProperty(true);
+    private Button currentSelectedMenuButton;
 
     public static MainController getInstance() {
         return instance;
@@ -129,6 +130,7 @@ public class MainController extends AnchorPane {
 
     public void initialize() {
         logger.trace("MainController.initialize");
+        currentSelectedMenuButton = btnRemoteScreen;
         toggleGroupPinger = new ToggleGroup();
         totalProgressLabel.setText("");
         aboutFirstLine.setText(Utils.COPYRIGHT);
@@ -251,14 +253,16 @@ public class MainController extends AnchorPane {
 
     public void handleClicks(ActionEvent actionEvent) {
         logger.trace("ChangeScreenHandler");
-        if (actionEvent.getSource() == btnRemoteScreen) {
+        if (actionEvent.getSource() == btnRemoteScreen && currentSelectedMenuButton != btnRemoteScreen) {
+            currentSelectedMenuButton = btnRemoteScreen;
             pnlOverview.setStyle("-fx-background-color : #02030A");
             btnRemoteScreen.getStyleClass().add("selected-menu-item");
             btnPingerScreen.getStyleClass().remove("selected-menu-item");
             btnAbout.getStyleClass().remove("selected-menu-item");
             pnlOverview.toFront();
         }
-        if (actionEvent.getSource() == btnPingerScreen) {
+        if (actionEvent.getSource() == btnPingerScreen && currentSelectedMenuButton != btnPingerScreen) {
+            currentSelectedMenuButton = btnPingerScreen;
             pnlSetting.setVisible(true);
             pnlSetting.setStyle("-fx-background-color : #02050A");
             btnPingerScreen.getStyleClass().add("selected-menu-item");
@@ -267,7 +271,8 @@ public class MainController extends AnchorPane {
             pnlSetting.toFront();
         }
 
-        if (actionEvent.getSource() == btnAbout) {
+        if (actionEvent.getSource() == btnAbout && currentSelectedMenuButton != btnAbout) {
+            currentSelectedMenuButton = btnAbout;
             pnlAbout.setVisible(true);
             pnlAbout.setStyle("-fx-background-color : #02050A");
             btnAbout.getStyleClass().add("selected-menu-item");
