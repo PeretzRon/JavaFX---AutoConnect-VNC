@@ -183,9 +183,7 @@ public class MainController extends AnchorPane {
 //            System.out.println(event.getText());
         });
 
-        computerListController.addEventHandler(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, event -> {
-            connectToVNC(event.getIpAddress(), event.getBehindParent());
-        });
+        computerListController.addEventHandler(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, event -> connectToVNC(event.getIpAddress(), event.getBehindParent()));
 
         viewOnlyCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             isViewOnly = newValue;
@@ -285,6 +283,7 @@ public class MainController extends AnchorPane {
         }
 
         if (actionEvent.getSource() == btnExitApp) {
+            ThreadManger.getInstance().shutDown();
             Platform.exit();
         }
     }
@@ -313,11 +312,9 @@ public class MainController extends AnchorPane {
 
         resetCounterAndProgressBarForPingerScreen();
         totalProgressLabel.setText("0/" + listSizeOfCurrentSelected);
-        pingListGroupController.getListToSendPing().forEach(pingerItem -> {
-            ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
-                sendPing(pingerItem, progress, buffer, listSizeOfCurrentSelected);
-            });
-        });
+        pingListGroupController.getListToSendPing().forEach(pingerItem -> ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
+            sendPing(pingerItem, progress, buffer, listSizeOfCurrentSelected);
+        }));
     }
 
     private void resetCounterAndProgressBarForPingerScreen() {

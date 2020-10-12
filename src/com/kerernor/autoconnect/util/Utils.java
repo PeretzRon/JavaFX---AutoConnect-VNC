@@ -139,16 +139,19 @@ public class Utils {
     }
 
     public static void loadAppSettings() {
-        logger.info("loadAppSettings");
-        Properties properties = new Properties();
+        ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
+            logger.info("loadAppSettings");
+            Properties properties = new Properties();
 
-        try (InputStream inputStream = new FileInputStream(APP_SETTINGS)) {
-            properties.load(inputStream);
-            Utils.VNC_PROGRAM_PATH = properties.getProperty(ULTRA_VNC_PROGRAM_PATH);
-            Utils.VNC_SCRIPT_PATH = properties.getProperty(ULTRA_VNC_SCRIPT_FOR_CONNECTION);
-            Utils.IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING = Boolean.parseBoolean(properties.getProperty(IS_POPUP_CLOSE_IF_LOSE_FOCUS));
-        } catch (IOException e) {
-            logger.error("failed to load app settings");
-        }
+            try (InputStream inputStream = new FileInputStream(APP_SETTINGS)) {
+                properties.load(inputStream);
+                Utils.VNC_PROGRAM_PATH = properties.getProperty(ULTRA_VNC_PROGRAM_PATH);
+                Utils.VNC_SCRIPT_PATH = properties.getProperty(ULTRA_VNC_SCRIPT_FOR_CONNECTION);
+                Utils.IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING = Boolean.parseBoolean(properties.getProperty(IS_POPUP_CLOSE_IF_LOSE_FOCUS));
+            } catch (IOException e) {
+                logger.error("failed to load app settings");
+            }
+        });
+
     }
 }
