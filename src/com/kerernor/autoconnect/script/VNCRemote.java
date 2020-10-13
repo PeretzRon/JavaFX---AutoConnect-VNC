@@ -24,7 +24,7 @@ public class VNCRemote {
         logger.info("Try to connect via VNC to: " + ip + " ViewOnly: " + isViewOnlySelected);
         if (Utils.isValidateIpAddress(ip)) {
             try {
-                FileWriter myWriter = new FileWriter(mPathScript);
+                FileWriter myWriter = new FileWriter(mPathScript + "run.bat");
                 String isViewOnly = isViewOnlySelected ? "-viewonly" : "";
                 String dataToWrite = String.format("cd %s\n" +
                         "vncviewer.exe  -connect %s  %s -password %s", mPathToVNC, isViewOnly, ip, mAdminPassword);
@@ -32,7 +32,7 @@ public class VNCRemote {
                 myWriter.write(dataToWrite);
                 myWriter.close();
                 Runtime.getRuntime().exec(
-                        "cmd /c run.bat", null, new File("C:\\Script\\"));
+                        "cmd /c run.bat", null, new File(mPathScript));
                 logger.info("connected to: " + ip + " ViewOnly: " + isViewOnlySelected);
             } catch (Exception e1) {
                 e1.printStackTrace();

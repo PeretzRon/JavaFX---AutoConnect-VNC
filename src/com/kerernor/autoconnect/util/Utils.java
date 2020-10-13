@@ -54,7 +54,7 @@ public class Utils {
 
     // VNC Script paths
     public static String VNC_PROGRAM_PATH = "C:\\Program Files (x86)\\uvnc bvba\\UltraVNC";
-    public static String VNC_SCRIPT_PATH = "C:\\Program Files (x86)\\uvnc bvba\\UltraVNC";
+    public static String VNC_SCRIPT_PATH = "C:\\Programs\\ControlKO\\vnc\\";
 
     // App setting properties
     public static final String ULTRA_VNC_PROGRAM_PATH = "UltraVncProgramPath";
