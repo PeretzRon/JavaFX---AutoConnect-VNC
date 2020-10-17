@@ -43,6 +43,10 @@ public class ComputerRowController extends ListCell<Computer> {
     private FXMLLoader loader;
     private Parent paneBehind;
 
+    public void initialize() {
+
+    }
+
     public FXMLLoader loadView() {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.COMPUTER_ROW_VIEW));
         loader.setController(this);
@@ -85,9 +89,9 @@ public class ComputerRowController extends ListCell<Computer> {
         computerLocation.setText(computer.getItemLocation());
         computerIP.setText(computer.getIp());
         if (computer.getComputerType() == eComputerType.RCGW) {
-            computerType.setImage(new Image(Utils.RCGW_ICON));
+            computerType.setImage(Utils.appImages.get(Utils.RCGW_ICON));
         } else {
-            computerType.setImage(new Image(Utils.STATION_ICON));
+            computerType.setImage(Utils.appImages.get(Utils.STATION_ICON));
         }
     }
 

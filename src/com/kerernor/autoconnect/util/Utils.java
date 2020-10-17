@@ -4,6 +4,7 @@ import com.kerernor.autoconnect.Main;
 import javafx.scene.Parent;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.Effect;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -12,11 +13,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 public class Utils {
 
     private static Logger logger = Logger.getLogger(Utils.class);
+    public static Map<String, Image> appImages = new HashMap<>();
 
     // Base paths
     public static final String BASE_PATH = "com/kerernor/autoconnect/";
@@ -152,6 +156,10 @@ public class Utils {
                 logger.error("failed to load app settings");
             }
         });
+    }
 
+    public static void loadImages() {
+        appImages.put(Utils.RCGW_ICON, new Image(Utils.RCGW_ICON));
+        appImages.put(Utils.STATION_ICON, new Image(Utils.STATION_ICON));
     }
 }

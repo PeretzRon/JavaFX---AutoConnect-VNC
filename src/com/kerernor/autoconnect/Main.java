@@ -73,6 +73,7 @@ public class Main extends Application {
     @Override
     public void init() throws Exception {
         Utils.loadAndSetLoggerSetting();
+        Utils.loadImages();
         ComputerData.getInstance().loadData();
         PingerData.getInstance().loadData();
     }

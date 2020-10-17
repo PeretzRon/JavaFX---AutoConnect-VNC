@@ -7,9 +7,7 @@ import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
-import com.sun.javafx.robot.FXRobot;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
@@ -29,7 +27,6 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -289,9 +286,9 @@ public class MainController extends AnchorPane {
     }
 
     private void updateCounters() {
-        totalComputers.textProperty().bind(Bindings.concat(ComputerData.getInstance().computerListSizeProperty()));
-        stationCounter.textProperty().bind(Bindings.concat(ComputerData.getInstance().getStationsCounterItems()));
-        rcgwCounter.textProperty().bind(Bindings.concat(ComputerData.getInstance().getRcgwCounterItems()));
+        totalComputers.textProperty().bind(ComputerData.getInstance().computerListSizeProperty().asString());
+        stationCounter.textProperty().bind(ComputerData.getInstance().getStationsCounterItems().asString());
+        rcgwCounter.textProperty().bind(ComputerData.getInstance().getRcgwCounterItems().asString());
     }
 
     public void addNewComputer() {
