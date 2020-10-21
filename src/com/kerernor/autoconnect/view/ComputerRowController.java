@@ -7,17 +7,24 @@ import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.ConfirmPopupController;
+import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.Objects;
 
 public class ComputerRowController extends ListCell<Computer> {
 
@@ -38,13 +45,53 @@ public class ComputerRowController extends ListCell<Computer> {
 
     @FXML
     private ImageView removeBtnID;
+    @FXML
+    private ImageView connectBtn;
+
+    @FXML
+    private Button addToDrawerButton;
 
     private Computer computer;
     private FXMLLoader loader;
     private Parent paneBehind;
 
-    public void initialize() {
+    private DoubleProperty dragXDiff = new SimpleDoubleProperty(0);
+    private double DRAWER_BUTTON_RIGHT_MARIGN;
+    private double DRAWER_BUTTON_WIDTH;
 
+    public void initialize() {
+        mainPane.getLeft().translateXProperty().bind(dragXDiff);
+        DRAWER_BUTTON_RIGHT_MARIGN = HBox.getMargin(addToDrawerButton).getLeft();
+        DRAWER_BUTTON_WIDTH = addToDrawerButton.getPrefWidth();
+        dragXDiff.setValue(DRAWER_BUTTON_RIGHT_MARIGN + DRAWER_BUTTON_WIDTH);
+
+        mainPane.setOnMouseDragged(event -> {
+            DragHandler.drag(DRAWER_BUTTON_RIGHT_MARIGN,
+                    DRAWER_BUTTON_WIDTH,
+                    dragXDiff, event.getSceneX(),
+                    this);
+        });
+
+        mainPane.setOnMouseReleased(event -> {
+            event.consume();
+            if (addToDrawerButton != null) {
+                Platform.runLater(() -> {
+                    DragHandler.handleEndDrag(this);
+                    if (DragHandler.isDrawerShown(this) && isReleaseOnAddToDrawerButton(event)) {
+
+                    }
+                });
+            }
+
+        });
+    }
+
+    private boolean isReleaseOnAddToDrawerButton(javafx.scene.input.MouseEvent event) {
+        if (addToDrawerButton != null) {
+            return event.getX() > mainPane.getWidth() - addToDrawerButton.getWidth();
+        } else {
+            return false;
+        }
     }
 
     public FXMLLoader loadView() {
@@ -89,9 +136,9 @@ public class ComputerRowController extends ListCell<Computer> {
         computerLocation.setText(computer.getItemLocation());
         computerIP.setText(computer.getIp());
         if (computer.getComputerType() == eComputerType.RCGW) {
-            computerType.setImage(Utils.appImages.get(Utils.RCGW_ICON));
+            computerType.setImage(Utils.getImageByName(Utils.RCGW_ICON));
         } else {
-            computerType.setImage(Utils.appImages.get(Utils.STATION_ICON));
+            computerType.setImage(Utils.getImageByName(Utils.STATION_ICON));
         }
     }
 

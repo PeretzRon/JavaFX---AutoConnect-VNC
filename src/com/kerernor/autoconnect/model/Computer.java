@@ -1,5 +1,6 @@
 package com.kerernor.autoconnect.model;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Computer {
@@ -65,5 +66,18 @@ public class Computer {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Computer computer = (Computer) o;
+        return Objects.equals(id, computer.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

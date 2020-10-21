@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -158,8 +159,7 @@ public class Utils {
         });
     }
 
-    public static void loadImages() {
-        appImages.put(Utils.RCGW_ICON, new Image(Utils.RCGW_ICON));
-        appImages.put(Utils.STATION_ICON, new Image(Utils.STATION_ICON));
+    public static Image getImageByName(String name) {
+        return appImages.computeIfAbsent(name, s -> new Image(name));
     }
 }
