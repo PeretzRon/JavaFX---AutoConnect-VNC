@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -35,7 +36,13 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MainController extends AnchorPane {
 
     @FXML
-    public Pane pnlAbout;
+    private Button btnOpenWindowScreen;
+
+    @FXML
+    private Pane pnlAbout;
+
+    @FXML
+    private Pane pnlOpenWindow;
 
     @FXML
     private Button checkPing;
@@ -123,6 +130,7 @@ public class MainController extends AnchorPane {
     private final List<PingGroupItemController> pingGroupItemControllerList = new ArrayList<>();
     private final BooleanProperty isRunPingerButtonDisabled = new SimpleBooleanProperty(true);
     private Button currentSelectedMenuButton;
+    private List<Button> screenButtonsList = new ArrayList<>();
 
     public static MainController getInstance() {
         return instance;
@@ -131,6 +139,10 @@ public class MainController extends AnchorPane {
     public void initialize() {
         logger.trace("MainController.initialize");
         currentSelectedMenuButton = btnRemoteScreen;
+        screenButtonsList.add(btnRemoteScreen);
+        screenButtonsList.add(btnPingerScreen);
+        screenButtonsList.add(btnOpenWindowScreen);
+        screenButtonsList.add(btnAbout);
         toggleGroupPinger = new ToggleGroup();
         totalProgressLabel.setText("");
         aboutFirstLine.setText(Utils.COPYRIGHT);
@@ -251,38 +263,34 @@ public class MainController extends AnchorPane {
 
     public void handleClicks(ActionEvent actionEvent) {
         logger.trace("ChangeScreenHandler");
+
         if (actionEvent.getSource() == btnRemoteScreen && currentSelectedMenuButton != btnRemoteScreen) {
-            currentSelectedMenuButton = btnRemoteScreen;
-            pnlOverview.setStyle("-fx-background-color : #02030A");
-            btnRemoteScreen.getStyleClass().add("selected-menu-item");
-            btnPingerScreen.getStyleClass().remove("selected-menu-item");
-            btnAbout.getStyleClass().remove("selected-menu-item");
-            pnlOverview.toFront();
-        }
-        if (actionEvent.getSource() == btnPingerScreen && currentSelectedMenuButton != btnPingerScreen) {
-            currentSelectedMenuButton = btnPingerScreen;
-            pnlSetting.setVisible(true);
-            pnlSetting.setStyle("-fx-background-color : #02050A");
-            btnPingerScreen.getStyleClass().add("selected-menu-item");
-            btnRemoteScreen.getStyleClass().remove("selected-menu-item");
-            btnAbout.getStyleClass().remove("selected-menu-item");
-            pnlSetting.toFront();
-        }
-
-        if (actionEvent.getSource() == btnAbout && currentSelectedMenuButton != btnAbout) {
-            currentSelectedMenuButton = btnAbout;
-            pnlAbout.setVisible(true);
-            pnlAbout.setStyle("-fx-background-color : #02050A");
-            btnAbout.getStyleClass().add("selected-menu-item");
-            btnRemoteScreen.getStyleClass().remove("selected-menu-item");
-            btnPingerScreen.getStyleClass().remove("selected-menu-item");
-            pnlAbout.toFront();
-        }
-
-        if (actionEvent.getSource() == btnExitApp) {
+            changeScreenHandler(btnRemoteScreen, pnlOverview);
+        } else if (actionEvent.getSource() == btnPingerScreen && currentSelectedMenuButton != btnPingerScreen) {
+            changeScreenHandler(btnPingerScreen, pnlSetting);
+        } else if (actionEvent.getSource() == btnAbout && currentSelectedMenuButton != btnAbout) {
+            changeScreenHandler(btnAbout, pnlAbout);
+        } else if (actionEvent.getSource() == btnOpenWindowScreen && currentSelectedMenuButton != btnOpenWindowScreen) {
+            changeScreenHandler(btnOpenWindowScreen, pnlOpenWindow);
+        } else if (actionEvent.getSource() == btnExitApp) {
             ThreadManger.getInstance().shutDown();
             Platform.exit();
         }
+    }
+
+    private void changeScreenHandler(Button selectedMenuButton, Pane selectedMenuPane) {
+        this.currentSelectedMenuButton = selectedMenuButton;
+        for (Button button : screenButtonsList) {
+            if (button == currentSelectedMenuButton) {
+                selectedMenuPane.setVisible(true);
+                selectedMenuPane.setStyle(Utils.COLOR_DARK_BLACK);
+                button.getStyleClass().add("selected-menu-item");
+            } else {
+                button.getStyleClass().remove("selected-menu-item");
+            }
+        }
+
+        selectedMenuPane.toFront();
     }
 
     private void updateCounters() {

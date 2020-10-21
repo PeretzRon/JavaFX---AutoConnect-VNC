@@ -84,6 +84,7 @@ public class Utils {
 
     // Style
     public static final String PINGER_GROUP_ITEM_SELECTED = "pinger-item-selected";
+    public static final String COLOR_DARK_BLACK = "-fx-background-color : #02050A";
 
     /**
      * This method gets the blur effect.
