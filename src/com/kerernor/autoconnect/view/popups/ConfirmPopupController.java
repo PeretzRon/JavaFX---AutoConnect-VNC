@@ -30,21 +30,30 @@ public class ConfirmPopupController extends GridPane {
     private Label subTitle;
 
     private final Parent paneBehind;
-    private final Computer computer;
-    private final Pinger pingerItem;
+    private Computer computer = null;
+    private Pinger pingerItem = null;
+    private final Object object;
     private Stage stage;
 
-    public ConfirmPopupController(Parent paneBehind, Computer computer, Pinger pingerItem) {
+    public ConfirmPopupController(Parent paneBehind, Object object) {
         super();
         this.paneBehind = paneBehind;
-        this.computer = computer;
-        this.pingerItem = pingerItem;
+        this.object = object;
+        castObjectToItem();
+    }
+
+    private void castObjectToItem() {
+        if (object instanceof Computer) {
+            computer = (Computer) object;
+        } else if (object instanceof Pinger) {
+            pingerItem = (Pinger) object;
+        }
     }
 
     @FXML
     private void initialize() {
         mainTitle.setText(Utils.TEXT_CONFIRM_DELETE_TITLE);
-        if(computer != null) {
+        if (computer != null) {
             subTitle.setText(Utils.TExT_CONFIRM_DELETE_COMPUTER_MESSAGE + computer.toString());
         } else if (pingerItem != null) {
             subTitle.setText(Utils.TExT_CONFIRM_DELETE_COMPUTER_MESSAGE + pingerItem.toString());

@@ -57,7 +57,7 @@ public class PingGroupItemController extends HBox {
     @FXML
     public void deletePingGroupHandler(MouseEvent event) {
         event.consume();
-        ConfirmPopupController confirmPopupController = new ConfirmPopupController(behindPane, null, pingerItem);
+        ConfirmPopupController confirmPopupController = new ConfirmPopupController(behindPane, pingerItem);
         confirmPopupController.openPopup();
     }
 

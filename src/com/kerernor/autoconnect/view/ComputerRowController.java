@@ -103,7 +103,7 @@ public class ComputerRowController extends ListCell<Computer> {
 
     @FXML
     public void removeComputer() {
-        ConfirmPopupController confirmPopupController = new ConfirmPopupController(paneBehind, computer, null);
+        ConfirmPopupController confirmPopupController = new ConfirmPopupController(paneBehind, computer);
         confirmPopupController.openPopup();
 
     }
