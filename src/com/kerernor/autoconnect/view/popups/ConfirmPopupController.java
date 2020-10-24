@@ -5,7 +5,9 @@ import com.kerernor.autoconnect.model.Computer;
 import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
+import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,6 +20,9 @@ import javafx.stage.StageStyle;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class ConfirmPopupController extends GridPane {
 
@@ -33,6 +38,7 @@ public class ConfirmPopupController extends GridPane {
     private final Computer computer;
     private final Pinger pingerItem;
     private Stage stage;
+    ScheduledFuture<?> t;
 
     public ConfirmPopupController(Parent paneBehind, Computer computer, Pinger pingerItem) {
         super();
@@ -44,7 +50,7 @@ public class ConfirmPopupController extends GridPane {
     @FXML
     private void initialize() {
         mainTitle.setText(Utils.TEXT_CONFIRM_DELETE_TITLE);
-        if(computer != null) {
+        if (computer != null) {
             subTitle.setText(Utils.TExT_CONFIRM_DELETE_COMPUTER_MESSAGE + computer.toString());
         } else if (pingerItem != null) {
             subTitle.setText(Utils.TExT_CONFIRM_DELETE_COMPUTER_MESSAGE + pingerItem.toString());
@@ -86,20 +92,25 @@ public class ConfirmPopupController extends GridPane {
 
         // Blur the pane behind
         paneBehind.effectProperty().setValue(Utils.getBlurEffect());
-        logger.info("paneBehind - BlueEffect");
+      //  logger.info("paneBehind - BlueEffect");
+
+        t =  ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
+            Platform.runLater(this::closeClickAction);
+        }, 4000, TimeUnit.MILLISECONDS);
 
     }
 
     public void closeClickAction() {
-        // Revert the blur effect from the pane behind
         logger.trace("close confirm popup - NO Action");
+        // Revert the blur effect from the pane behind
+        stopTimer();
         paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
-        logger.info("paneBehind - no effect");
+       // logger.info("paneBehind - no effect");
         stage.close();
     }
 
     public void confirmClickAction() {
-        logger.trace("close confirm popup - CONFIRM THE Action");
+       // logger.trace("close confirm popup - CONFIRM THE Action");
         if (computer != null) {
             ComputerData.getInstance().remove(computer);
         } else if (pingerItem != null) {
@@ -107,6 +118,11 @@ public class ConfirmPopupController extends GridPane {
         }
 
         closeClickAction();
+    }
+
+    private void stopTimer() {
+        logger.info("ConfirmPopupController.stopTimer");
+        t.cancel(false);
     }
 
 }

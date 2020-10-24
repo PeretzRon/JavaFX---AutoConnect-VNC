@@ -4,6 +4,7 @@ import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
 import com.kerernor.autoconnect.model.eComputerType;
 import com.kerernor.autoconnect.util.KorEvents;
+import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.ConfirmPopupController;
@@ -18,6 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class ComputerRowController extends ListCell<Computer> {
 
@@ -105,6 +107,7 @@ public class ComputerRowController extends ListCell<Computer> {
     public void removeComputer() {
         ConfirmPopupController confirmPopupController = new ConfirmPopupController(paneBehind, computer, null);
         confirmPopupController.openPopup();
+//       this.removeEventHandler
 
     }
 
@@ -112,9 +115,7 @@ public class ComputerRowController extends ListCell<Computer> {
         AddEditComputerPopup addEditComputerPopup = new AddEditComputerPopup(paneBehind, true);
 
         // TODO: delete
-        addEditComputerPopup.addEventHandler(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, event -> {
-            fireEvent(event);
-        });
+        fireEvent(new KorEvents.SearchComputerEvent(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, computer.getName()));
 
         addEditComputerPopup.openPopup(computer);
     }

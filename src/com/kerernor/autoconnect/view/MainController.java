@@ -189,7 +189,8 @@ public class MainController extends AnchorPane {
 
         // TODO: delete
         computerListController.addEventHandler(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, event -> {
-//            System.out.println(event.getText());
+            event.consume();
+            System.out.println(event.getText());
         });
 
         computerListController.addEventHandler(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, event -> connectToVNC(event.getIpAddress(), event.getBehindParent()));
