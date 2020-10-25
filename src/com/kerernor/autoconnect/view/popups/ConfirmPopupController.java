@@ -31,16 +31,29 @@ public class ConfirmPopupController extends GridPane {
     @FXML
     private Label subTitle;
 
-    private final Parent paneBehind;
+    private Parent paneBehind;
     private Computer computer = null;
     private Pinger pingerItem = null;
-    private final Object object;
+    private Object object;
     private Stage stage;
+
+    private static ConfirmPopupController instance = null;
 
     private KorTypes.ConfirmPopUpControllerTypes callback;
 
-    public ConfirmPopupController(Parent paneBehind, Object object) {
-        super();
+    private ConfirmPopupController() {
+
+    }
+
+    public static ConfirmPopupController getInstance() {
+        if (instance == null) {
+            instance = new ConfirmPopupController();
+        }
+
+        return instance;
+    }
+
+    public void setConfiguration(Parent paneBehind, Object object) {
         this.paneBehind = paneBehind;
         this.object = object;
         castObjectToItem();
@@ -105,6 +118,7 @@ public class ConfirmPopupController extends GridPane {
 
     }
 
+    @FXML
     public void closeClickAction() {
         // Revert the blur effect from the pane behind
         logger.trace("close confirm popup - NO Action");
@@ -114,6 +128,7 @@ public class ConfirmPopupController extends GridPane {
         stage.close();
     }
 
+    @FXML
     public void confirmClickAction() {
         logger.trace("close confirm popup - CONFIRM THE Action");
         callback = KorTypes.ConfirmPopUpControllerTypes.CONFIRM;

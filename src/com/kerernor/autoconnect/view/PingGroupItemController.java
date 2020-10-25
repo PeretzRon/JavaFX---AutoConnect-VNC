@@ -20,6 +20,8 @@ import java.io.IOException;
 
 public class PingGroupItemController extends HBox {
 
+    //TODO: add logger
+
     @FXML
     private HBox mainPane;
 
@@ -58,9 +60,9 @@ public class PingGroupItemController extends HBox {
     }
 
     @FXML
-    public void deletePingGroupHandler(MouseEvent event) {
-        event.consume();
-        ConfirmPopupController confirmPopupController = new ConfirmPopupController(behindPane, pingerItem);
+    public void deletePingGroupHandler() {
+        ConfirmPopupController confirmPopupController = ConfirmPopupController.getInstance();
+        confirmPopupController.setConfiguration(behindPane, pingerItem);
         confirmPopupController.openPopup();
     }
 
@@ -98,6 +100,7 @@ public class PingGroupItemController extends HBox {
         addEditPingerItemsController.removeEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_NAME, infoEditPingerGroupName);
         addEditPingerItemsController.removeEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_ITEM, infoEditPingerItems);
         addEditPingerItemsController.removeEventHandler(KorEvents.PingerEvent.EXIT, infoEditPingerExit);
+        infoEditPingerGroupName = infoEditPingerExit = infoEditPingerItems = null;
     }
 
     private HBox loadView() {
