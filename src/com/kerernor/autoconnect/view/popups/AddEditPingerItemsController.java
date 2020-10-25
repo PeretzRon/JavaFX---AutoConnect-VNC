@@ -64,7 +64,20 @@ public class AddEditPingerItemsController extends GridPane {
     private Pinger pingerItem;
     private boolean isEditItem;
 
-    public AddEditPingerItemsController(Parent paneBehind, Pinger pingerItem, boolean isEditItem) {
+    private static AddEditPingerItemsController instance = null;
+
+    private AddEditPingerItemsController() {
+    }
+
+    public static AddEditPingerItemsController getInstance() {
+        if (instance == null) {
+            instance = new AddEditPingerItemsController();
+        }
+
+        return instance;
+    }
+
+    public void setConfiguration(Parent paneBehind, Pinger pingerItem, boolean isEditItem) {
         this.paneBehind = paneBehind;
         this.pingerItem = pingerItem;
         this.isEditItem = isEditItem;
@@ -200,7 +213,7 @@ public class AddEditPingerItemsController extends GridPane {
     public void closeClickAction() {
         // Revert the blur effect from the pane behind
         paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
-
+        fireEvent(new KorEvents.PingerEvent(KorEvents.PingerEvent.EXIT));
         stage.close();
     }
 

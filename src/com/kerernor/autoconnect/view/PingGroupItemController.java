@@ -2,12 +2,11 @@ package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Pinger;
-import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
-import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
 import com.kerernor.autoconnect.view.popups.ConfirmPopupController;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,6 +35,10 @@ public class PingGroupItemController extends HBox {
     private final Pinger pingerItem;
     private Parent behindPane;
 
+    private EventHandler<KorEvents.PingerEvent> infoEditPingerItems;
+    private EventHandler<KorEvents.PingerEvent> infoEditPingerGroupName;
+    private EventHandler<KorEvents.PingerEvent> infoEditPingerExit;
+
     public PingGroupItemController(Pinger pingerItem, Parent behindPane) {
         this.pingerItem = pingerItem;
         this.behindPane = behindPane;
@@ -62,19 +65,39 @@ public class PingGroupItemController extends HBox {
     }
 
     @FXML
-    public void editPingGroupHandler(MouseEvent event) {
-        event.consume();
-        AddEditPingerItemsController addEditPingerItemsController = new AddEditPingerItemsController(behindPane, pingerItem, true);
+    public void editPingGroupHandler() {
+        AddEditPingerItemsController addEditPingerItemsController = AddEditPingerItemsController.getInstance();
+        addEditPingerItemsController.setConfiguration(behindPane, pingerItem, true);
 
-        addEditPingerItemsController.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_ITEM, event2 -> {
-            fireEvent(event2);
-        });
+        infoEditPingerItems = event -> {
+            event.consume();
+            fireEvent(event);
+            removeEventsHandler();
+        };
 
-        addEditPingerItemsController.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_NAME, event2 -> {
-            fireEvent(event2);
-        });
+        infoEditPingerGroupName = event -> {
+            event.consume();
+            fireEvent(event);
+            removeEventsHandler();
+        };
+
+        infoEditPingerExit = event -> {
+            event.consume();
+            removeEventsHandler();
+        };
+
+        addEditPingerItemsController.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_NAME, infoEditPingerGroupName);
+        addEditPingerItemsController.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_ITEM, infoEditPingerItems);
+        addEditPingerItemsController.addEventHandler(KorEvents.PingerEvent.EXIT, infoEditPingerExit);
 
         addEditPingerItemsController.show();
+    }
+
+    private void removeEventsHandler() {
+        AddEditPingerItemsController addEditPingerItemsController = AddEditPingerItemsController.getInstance();
+        addEditPingerItemsController.removeEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_NAME, infoEditPingerGroupName);
+        addEditPingerItemsController.removeEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_ITEM, infoEditPingerItems);
+        addEditPingerItemsController.removeEventHandler(KorEvents.PingerEvent.EXIT, infoEditPingerExit);
     }
 
     private HBox loadView() {

@@ -81,6 +81,7 @@ public class ComputerListController extends ListView {
             ComputerRowController currentComputer = new ComputerRowController(this.paneBehind);
 
             // fire this event
+            //TODO: this event handler is redundant
             currentComputer.addEventFilter(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, event -> {
                 event.consume();
                 fireEvent(event);

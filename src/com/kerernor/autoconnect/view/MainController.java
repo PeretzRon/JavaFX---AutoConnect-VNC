@@ -355,7 +355,9 @@ public class MainController extends AnchorPane {
 
     public void addPingerItemHandler() {
         logger.trace("addPingerItemHandler");
-        AddEditPingerItemsController addEditPingerItemsController = new AddEditPingerItemsController(pnlSetting, null, false);
+
+        AddEditPingerItemsController addEditPingerItemsController = AddEditPingerItemsController.getInstance();
+        addEditPingerItemsController.setConfiguration(pnlSetting, null, false);
         addEditPingerItemsController.show();
     }
 
