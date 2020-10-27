@@ -1,8 +1,11 @@
 package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.Main;
+import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.model.Pinger;
+import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.util.KorEvents;
+import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
 import com.kerernor.autoconnect.view.popups.ConfirmPopupController;
@@ -63,7 +66,15 @@ public class PingGroupItemController extends HBox {
     public void deletePingGroupHandler() {
         ConfirmPopupController confirmPopupController = ConfirmPopupController.getInstance();
         confirmPopupController.setConfiguration(behindPane, pingerItem);
-        confirmPopupController.openPopup();
+        KorTypes.ConfirmPopUpControllerTypes callback = confirmPopupController.openPopup();
+        switch (callback) {
+            case CONFIRM:
+                PingerData.getInstance().remove(pingerItem);
+                break;
+            case EXIT:
+            default:
+                break;
+        }
     }
 
     @FXML

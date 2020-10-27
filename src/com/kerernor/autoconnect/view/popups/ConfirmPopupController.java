@@ -107,12 +107,13 @@ public class ConfirmPopupController extends GridPane {
         // Prevent the window from closing in case of out of focus
         stage.initModality(Modality.NONE);
         stage.initOwner(paneBehind.getScene().getWindow());
-        stage.show();
-        Utils.centerNewStageToBehindStage(paneBehind, stage);
 
         // Blur the pane behind
         paneBehind.effectProperty().setValue(Utils.getBlurEffect());
         logger.info("paneBehind - BlueEffect");
+
+        Utils.showStageOnTopAndWait(stage);
+        Utils.centerNewStageToBehindStage(paneBehind, stage);
 
         return callback;
 
@@ -120,25 +121,24 @@ public class ConfirmPopupController extends GridPane {
 
     @FXML
     public void closeClickAction() {
-        // Revert the blur effect from the pane behind
         logger.trace("close confirm popup - NO Action");
-        paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
         callback = KorTypes.ConfirmPopUpControllerTypes.EXIT;
-        logger.info("paneBehind - no effect");
-        stage.close();
+        closeStage();
     }
 
     @FXML
     public void confirmClickAction() {
         logger.trace("close confirm popup - CONFIRM THE Action");
         callback = KorTypes.ConfirmPopUpControllerTypes.CONFIRM;
-        if (computer != null) {
-            ComputerData.getInstance().remove(computer);
-        } else if (pingerItem != null) {
-            PingerData.getInstance().remove(pingerItem);
-        }
+        closeStage();
+    }
 
-        closeClickAction();
+    private void closeStage() {
+        logger.trace("closeStage");
+        paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
+        logger.info("paneBehind - no effect");
+        stage.close();
+
     }
 
     public KorTypes.ConfirmPopUpControllerTypes getCallback() {

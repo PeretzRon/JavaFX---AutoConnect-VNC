@@ -1,6 +1,7 @@
 package com.kerernor.autoconnect.util;
 
 import com.kerernor.autoconnect.Main;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.Effect;
@@ -156,6 +157,12 @@ public class Utils {
                 logger.error("failed to load app settings");
             }
         });
+    }
+
+    public static void showStageOnTopAndWait(Stage stage) {
+        stage.setAlwaysOnTop(true);
+        stage.showAndWait();
+        Platform.runLater(() -> stage.setAlwaysOnTop(false));
     }
 
     public static void loadImages() {

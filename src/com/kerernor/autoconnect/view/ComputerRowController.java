@@ -2,6 +2,8 @@ package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
+import com.kerernor.autoconnect.model.ComputerData;
+import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.model.eComputerType;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.KorTypes;
@@ -107,7 +109,14 @@ public class ComputerRowController extends ListCell<Computer> {
         ConfirmPopupController confirmPopupController = ConfirmPopupController.getInstance();
         confirmPopupController.setConfiguration(paneBehind, computer);
         KorTypes.ConfirmPopUpControllerTypes callback = confirmPopupController.openPopup();
-
+        switch (callback) {
+            case CONFIRM:
+                ComputerData.getInstance().remove(computer);
+                break;
+            case EXIT:
+            default:
+                break;
+        }
     }
 
     public void editComputer() {
