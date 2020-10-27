@@ -14,6 +14,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -203,6 +204,30 @@ public class MainController extends AnchorPane {
         PingerData.getInstance().getPingerObservableList().addListener((ListChangeListener<? super Pinger>) c -> {
             logger.trace("ListChangeListener - Pinger");
             refreshPingerItemWhenUpdated(c.getList().size());
+        });
+
+
+        pnlSetting.setOnMousePressed(event -> {
+            EventTarget eventTarget = event.getTarget();
+            AtomicInteger count = new AtomicInteger();
+            flowPaneGroupPinger.getChildren().forEach(node -> {
+                count.getAndIncrement();
+                String s = "#pnlSetting";
+                boolean check = false;
+//                Node node1 = node.lookup(s);
+                ((PingGroupItemController) node).getChildren().forEach(node2 -> {
+                    boolean equals = node2.equals(eventTarget);
+                    if (equals) {
+                        System.out.println(((PingGroupItemController) node).getName().getText());
+                    }
+                });
+
+//                check = node.lookup(s).equals(eventTarget);
+//                if (check) {
+//                    System.out.println(check);
+//                    System.out.println(count.get());
+//                }
+            });
         });
     }
 
