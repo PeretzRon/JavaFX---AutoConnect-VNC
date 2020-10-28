@@ -32,6 +32,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainController extends AnchorPane {
 
@@ -209,24 +211,28 @@ public class MainController extends AnchorPane {
 
         pnlSetting.setOnMousePressed(event -> {
             EventTarget eventTarget = event.getTarget();
-            AtomicInteger count = new AtomicInteger();
             flowPaneGroupPinger.getChildren().forEach(node -> {
-                count.getAndIncrement();
-                String s = "#pnlSetting";
-                boolean check = false;
-//                Node node1 = node.lookup(s);
+                String target = eventTarget.toString();
+                System.out.println(target.toString());
+                Pattern pattern = Pattern.compile(".*\\[id=(.*)[,\\]].*");
+                Matcher matcher = pattern.matcher(target);
+                String id = "";
+                if (matcher.find()) {
+                    id = matcher.group(1);
+                    if (id.contains(",")) {
+                        id = id.substring(0, id.indexOf(","));
+                    }
+                }
+                final String finalID = id;
                 ((PingGroupItemController) node).getChildren().forEach(node2 -> {
-                    boolean equals = node2.equals(eventTarget);
-                    if (equals) {
+//                    boolean equals = node2.equals(eventTarget);
+                    boolean check = node.lookup("#" + finalID).equals(eventTarget);
+                    if (check) {
                         System.out.println(((PingGroupItemController) node).getName().getText());
                     }
                 });
 
-//                check = node.lookup(s).equals(eventTarget);
-//                if (check) {
-//                    System.out.println(check);
-//                    System.out.println(count.get());
-//                }
+
             });
         });
     }
@@ -264,6 +270,8 @@ public class MainController extends AnchorPane {
                     });
 
                     flowPaneGroupPinger.getChildren().add(item);
+                    item.setId("PingerItemID");
+                    item.setStyle(".justStyle");
                 });
 
     }
