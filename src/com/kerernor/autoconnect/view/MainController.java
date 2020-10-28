@@ -16,6 +16,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -30,6 +31,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
@@ -211,29 +213,33 @@ public class MainController extends AnchorPane {
 
         pnlSetting.setOnMousePressed(event -> {
             EventTarget eventTarget = event.getTarget();
-            flowPaneGroupPinger.getChildren().forEach(node -> {
-                String target = eventTarget.toString();
-                System.out.println(target.toString());
-                Pattern pattern = Pattern.compile(".*\\[id=(.*)[,\\]].*");
-                Matcher matcher = pattern.matcher(target);
-                String id = "";
-                if (matcher.find()) {
-                    id = matcher.group(1);
-                    if (id.contains(",")) {
-                        id = id.substring(0, id.indexOf(","));
-                    }
+            String target = eventTarget.toString();
+
+            Pattern pattern = Pattern.compile(".*\\[text=(.*)[,\\]].*");
+            Matcher matcher = pattern.matcher(target);
+            String id = "";
+            if (matcher.find()) {
+                id = matcher.group(1);
+                if (id.contains(",")) {
+                    id = id.substring(0, id.indexOf(","));
                 }
-                final String finalID = id;
-                ((PingGroupItemController) node).getChildren().forEach(node2 -> {
-//                    boolean equals = node2.equals(eventTarget);
-                    boolean check = node.lookup("#" + finalID).equals(eventTarget);
+            }
+            final String finalID = id;
+            AtomicBoolean isFound = new AtomicBoolean(false);
+            flowPaneGroupPinger.getChildren().forEach(node -> {
+                Node selectedNode = node.lookup("#" + finalID);
+                if (selectedNode != null) {
+                    boolean check = selectedNode.equals(eventTarget);
                     if (check) {
+                        isFound.set(true);
                         System.out.println(((PingGroupItemController) node).getName().getText());
                     }
-                });
-
+                }
 
             });
+            if (!isFound.get()) {
+                System.out.println("NotFound: " + target);
+            }
         });
     }
 
