@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
@@ -33,6 +34,13 @@ public class PingGroupItemController extends HBox {
 
     @FXML
     private ImageView deleteItem;
+
+    @FXML
+    private VBox labelVbox;
+
+    public VBox getLabelVbox() {
+        return labelVbox;
+    }
 
     private final Pinger pingerItem;
     private Parent behindPane;

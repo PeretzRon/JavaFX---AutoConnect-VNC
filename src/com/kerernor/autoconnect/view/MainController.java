@@ -7,6 +7,7 @@ import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
+import com.sun.javafx.scene.control.skin.LabeledText;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -24,6 +25,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -215,7 +217,7 @@ public class MainController extends AnchorPane {
             EventTarget eventTarget = event.getTarget();
             String target = eventTarget.toString();
 
-            Pattern pattern = Pattern.compile(".*\\[text=(.*)[,\\]].*");
+            Pattern pattern = Pattern.compile(".*\\[id=(.*)[,\\]].*");
             Matcher matcher = pattern.matcher(target);
             String id = "";
             if (matcher.find()) {
@@ -235,8 +237,18 @@ public class MainController extends AnchorPane {
                         System.out.println(((PingGroupItemController) node).getName().getText());
                     }
                 }
-
             });
+
+            if (eventTarget instanceof Text) {
+                for (Node child : flowPaneGroupPinger.getChildren()) {
+                    PingGroupItemController item = (PingGroupItemController) child;
+                    if(item.getLabelVbox().getChildren().contains(((Node)event.getTarget()).getParent())) {
+                        isFound.set(true);
+                        System.out.println(item.getName().getText());
+                    }
+                }
+            }
+
             if (!isFound.get()) {
                 System.out.println("NotFound: " + target);
             }
