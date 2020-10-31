@@ -7,6 +7,7 @@ import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
+import com.kerernor.autoconnect.view.popups.AlertPopupController;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -36,6 +37,9 @@ public class MainController extends AnchorPane {
 
     @FXML
     public Pane pnlAbout;
+
+    @FXML
+    public LastConnectionsPopupController lastConnectionsPopupController;
 
     @FXML
     private Button checkPing;
@@ -123,6 +127,7 @@ public class MainController extends AnchorPane {
     private final List<PingGroupItemController> pingGroupItemControllerList = new ArrayList<>();
     private final BooleanProperty isRunPingerButtonDisabled = new SimpleBooleanProperty(true);
     private Button currentSelectedMenuButton;
+    private ObservableList<LastConnectionItem> historyConnectionList = LastConnectionData.getInstance().getLastConnectionItems();
 
     public static MainController getInstance() {
         return instance;
@@ -142,6 +147,7 @@ public class MainController extends AnchorPane {
         FilteredList<Computer> computerFilteredList = new FilteredList<>(ComputerData.getInstance().getComputersList(), computer -> true);
         computerListController.setPaneBehind(this.pnlOverview);
         computerListController.loadList(computerFilteredList);
+        lastConnectionsPopupController.show();
         checkPing.disableProperty().bind(isRunPingerButtonDisabled);
         updateCounters();
 
@@ -297,6 +303,16 @@ public class MainController extends AnchorPane {
     }
 
     private void connectToVNC(String ip, Parent paneBehind) {
+        if (!Utils.isValidateIpAddress(ip)) {
+            logger.info("Wrong ip address: " + ip + " Can't to connect to client");
+
+            // TODO: make singleton
+            AlertPopupController alertPopupController = new AlertPopupController(mainPane);
+            alertPopupController.show();
+            return;
+        }
+
+        historyConnectionList.add(0, new LastConnectionItem(ip));
         VNCRemote.connect(ip, paneBehind, isViewOnly);
     }
 

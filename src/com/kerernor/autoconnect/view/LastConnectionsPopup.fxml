@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.kerernor.autoconnect.view.LastConnectionListController?>
+<?import javafx.scene.layout.GridPane?>
+<fx:root xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" type="GridPane">
+    <LastConnectionListController fx:id="lastConnectionListController" />
+</fx:root>

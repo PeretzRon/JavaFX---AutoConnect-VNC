@@ -11,6 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.log4j.Logger;
+import org.scenicview.ScenicView;
 
 import java.io.IOException;
 
@@ -30,7 +31,7 @@ public class Main extends Application {
         makeStageDraggable();
         Utils.loadAppSettings();
         Scene scene = primaryStage.getScene();
-        //ScenicView.show(scene);
+//        ScenicView.show(scene);
     }
 
     public static void main(String[] args) {

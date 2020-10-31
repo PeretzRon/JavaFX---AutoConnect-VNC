@@ -37,6 +37,9 @@ public class Utils {
     public static final String SEARCH_AREA = VIEWS_BASE_PATH + "searchArea.fxml";
     public static final String PINGER_LIST = VIEWS_BASE_PATH + "pingListGroup.fxml";
     public static final String PINGER_ROW_VIEW = VIEWS_BASE_PATH + "pingRowItem.fxml";
+    public static final String LAST_CONNECTION_ROW_VIEW = VIEWS_BASE_PATH + "LastConnectionRow.fxml";
+    public static final String LAST_CONNECTION_LIST_VIEW = VIEWS_BASE_PATH + "LastConnectionList.fxml";
+    public static final String LAST_CONNECTION_POPUP_VIEW = VIEWS_BASE_PATH + "LastConnectionsPopup.fxml";
     public static final String CONFIRM_POPUP = VIEWS_POPUPS_BASE_PATH + "confirmPopup.fxml";
     public static final String ALERT_POPUP = VIEWS_POPUPS_BASE_PATH + "alertPopup.fxml";
     public static final String ADD_EDIT_COMPUTER_POPUP = VIEWS_POPUPS_BASE_PATH + "addEditComputerPopup.fxml";
