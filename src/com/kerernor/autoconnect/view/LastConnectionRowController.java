@@ -1,6 +1,7 @@
 package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.Main;
+import com.kerernor.autoconnect.model.LastConnectionData;
 import com.kerernor.autoconnect.model.LastConnectionItem;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.fxml.FXML;
@@ -29,6 +30,14 @@ public class LastConnectionRowController extends ListCell<LastConnectionItem> {
     private LastConnectionItem lastConnectionItem;
     private FXMLLoader loader;
 
+    @FXML
+    public void initialize() {
+        deleteRowButton.setOnMouseClicked(event -> {
+            event.consume();
+            LastConnectionData.getInstance().removeHistoryItem(lastConnectionItem);
+        });
+    }
+
 
     public FXMLLoader loadView() {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.LAST_CONNECTION_ROW_VIEW));
@@ -46,11 +55,11 @@ public class LastConnectionRowController extends ListCell<LastConnectionItem> {
     @Override
     protected void updateItem(LastConnectionItem item, boolean empty) {
         super.updateItem(item, empty);
+        this.lastConnectionItem = item;
         if (empty || item == null) {
             setText(null);
             setGraphic(null);
         } else {
-//            setStyle(" -fx-background-color: transparent;");
             loadAndSetValues(item);
             setText(null);
             setGraphic(mainPane);

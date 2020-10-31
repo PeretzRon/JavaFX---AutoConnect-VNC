@@ -15,4 +15,11 @@ public class LastConnectionItem {
     public void setIp(String ip) {
         this.ip = ip;
     }
+
+    @Override
+    public String toString() {
+        return "LastConnectionItem{" +
+                "ip='" + ip + '\'' +
+                '}';
+    }
 }

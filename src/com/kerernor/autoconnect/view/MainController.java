@@ -81,9 +81,6 @@ public class MainController extends AnchorPane {
     private Pane pnlOverview;
 
     @FXML
-    private Pane pnlMenus;
-
-    @FXML
     private Label totalComputers;
 
     @FXML
@@ -119,6 +116,9 @@ public class MainController extends AnchorPane {
     @FXML
     private Label aboutSecondLine;
 
+    @FXML
+    private Button openCloseHistoryButton;
+
     private static MainController instance = new MainController();
     private final Logger logger = Logger.getLogger(MainController.class);
     private boolean isViewOnly = false;
@@ -127,7 +127,8 @@ public class MainController extends AnchorPane {
     private final List<PingGroupItemController> pingGroupItemControllerList = new ArrayList<>();
     private final BooleanProperty isRunPingerButtonDisabled = new SimpleBooleanProperty(true);
     private Button currentSelectedMenuButton;
-    private ObservableList<LastConnectionItem> historyConnectionList = LastConnectionData.getInstance().getLastConnectionItems();
+    private final BooleanProperty isHistoryListEmpty = new SimpleBooleanProperty(true);
+    private boolean isHistoryListOpen = false;
 
     public static MainController getInstance() {
         return instance;
@@ -145,10 +146,13 @@ public class MainController extends AnchorPane {
         pnlSetting.setVisible(false);
         pnlAbout.setVisible(false);
         FilteredList<Computer> computerFilteredList = new FilteredList<>(ComputerData.getInstance().getComputersList(), computer -> true);
+        FilteredList<LastConnectionItem> historySearchFilteredList = new FilteredList<>(LastConnectionData.getInstance().getLastConnectionItems(), pingItemsScrollPane -> true);
         computerListController.setPaneBehind(this.pnlOverview);
         computerListController.loadList(computerFilteredList);
-        lastConnectionsPopupController.show();
+        lastConnectionsPopupController.setList(historySearchFilteredList);
         checkPing.disableProperty().bind(isRunPingerButtonDisabled);
+        isHistoryListEmpty.set(historySearchFilteredList.size() == 0);
+        openCloseHistoryButton.disableProperty().bind(isHistoryListEmpty);
         updateCounters();
 
         filterPingerGroup.setOnKeyReleased(keyEvent -> {
@@ -159,16 +163,37 @@ public class MainController extends AnchorPane {
 
         createPingerGroups("");
 
-
         Platform.runLater(() -> quickConnectTextField.requestFocus());
+
         quickConnectTextField.setOnKeyReleased(keyEvent -> {
+            String input = quickConnectTextField.getText();
+
             if (keyEvent.getCode() == KeyCode.ENTER) {
-                connectToVNC(quickConnectTextField.getText(), mainPane);
+                connectToVNC(input);
+            }
+
+            historySearchFilteredList.setPredicate(input.isEmpty() ? lastConnectionItem -> true :
+                    lastConnectionItem -> lastConnectionItem.getIp().contains(input));
+
+            if (historySearchFilteredList.isEmpty()) {
+                lastConnectionsPopupController.hide();
+            } else if (isHistoryListOpen) {
+                openLastConnectionPopupController();
+            }
+        });
+
+        LastConnectionData.getInstance().getLastConnectionItems().addListener((ListChangeListener<? super LastConnectionItem>) c -> {
+            if (c.getList().size() == 0) {
+                lastConnectionsPopupController.hide();
+                isHistoryListOpen = false;
+                isHistoryListEmpty.set(true);
+            } else {
+                isHistoryListEmpty.set(false);
             }
         });
 
         quickConnectBtn.setOnAction(actionEvent -> {
-            connectToVNC(quickConnectTextField.getText(), mainPane);
+            connectToVNC(quickConnectTextField.getText());
         });
 
         searchAreaController.getSearch().setOnKeyReleased(keyEvent -> {
@@ -183,10 +208,13 @@ public class MainController extends AnchorPane {
 
         // TODO: delete
         computerListController.addEventHandler(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, event -> {
+            event.consume();
 //            System.out.println(event.getText());
         });
 
-        computerListController.addEventHandler(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, event -> connectToVNC(event.getIpAddress(), event.getBehindParent()));
+        computerListController.addEventHandler(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, event -> {
+            connectToVNC(event.getIpAddress());
+        });
 
         viewOnlyCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             isViewOnly = newValue;
@@ -210,6 +238,23 @@ public class MainController extends AnchorPane {
             logger.trace("ListChangeListener - Pinger");
             refreshPingerItemWhenUpdated(c.getList().size());
         });
+
+        openCloseHistoryButton.setOnMouseClicked(event -> {
+            if (lastConnectionsPopupController.isShow()) {
+                lastConnectionsPopupController.hide();
+                isHistoryListOpen = false;
+            } else {
+                openLastConnectionPopupController();
+            }
+        });
+    }
+
+    private void openLastConnectionPopupController() {
+        if (LastConnectionData.getInstance().getLastConnectionItems().size() > 0) {
+            logger.trace("openLastConnectionPopupController");
+            lastConnectionsPopupController.show();
+            isHistoryListOpen = true;
+        }
     }
 
     private void refreshPingerItemWhenUpdated(int listSize) {
@@ -302,7 +347,7 @@ public class MainController extends AnchorPane {
         addEditComputerPopup.openPopup(null);
     }
 
-    private void connectToVNC(String ip, Parent paneBehind) {
+    private void connectToVNC(String ip) {
         if (!Utils.isValidateIpAddress(ip)) {
             logger.info("Wrong ip address: " + ip + " Can't to connect to client");
 
@@ -312,8 +357,8 @@ public class MainController extends AnchorPane {
             return;
         }
 
-        historyConnectionList.add(0, new LastConnectionItem(ip));
-        VNCRemote.connect(ip, paneBehind, isViewOnly);
+        LastConnectionData.getInstance().getLastConnectionItems().add(0, new LastConnectionItem(ip));
+        VNCRemote.connect(ip, isViewOnly);
     }
 
     public void checkPingHandler() {
@@ -395,4 +440,5 @@ public class MainController extends AnchorPane {
             computerListController.getComputerListView().scrollTo(currentIndex - 1);
         }
     }
+
 }

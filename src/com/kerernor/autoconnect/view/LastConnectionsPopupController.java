@@ -1,10 +1,11 @@
 package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.Main;
+import com.kerernor.autoconnect.model.LastConnectionItem;
 import com.kerernor.autoconnect.util.Utils;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
@@ -12,18 +13,18 @@ import java.io.IOException;
 public class LastConnectionsPopupController extends GridPane {
 
     @FXML
-    private LastConnectionListController lastConnectionListController;
+    private GridPane mainPane;
 
     @FXML
-    private Button bbb;
+    private LastConnectionListController lastConnectionListController;
 
     public LastConnectionsPopupController() {
-
+        loadView();
     }
 
     @FXML
     public void initialize() {
-        lastConnectionListController.loadList();
+        mainPane.setVisible(false);
     }
 
     public FXMLLoader loadView() {
@@ -39,7 +40,20 @@ public class LastConnectionsPopupController extends GridPane {
         return loader;
     }
 
+    public boolean isShow() {
+        return mainPane.isVisible();
+    }
+
     public void show() {
-        loadView();
+        mainPane.setVisible(true);
+        lastConnectionListController.getLastConnectionList().scrollTo(0);
+    }
+
+    public void setList(FilteredList<LastConnectionItem> historySearchFilteredList) {
+        lastConnectionListController.loadList(historySearchFilteredList);
+    }
+
+    public void hide() {
+        mainPane.setVisible(false);
     }
 }

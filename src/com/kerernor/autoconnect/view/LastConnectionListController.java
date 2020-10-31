@@ -4,7 +4,7 @@ import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.LastConnectionData;
 import com.kerernor.autoconnect.model.LastConnectionItem;
 import com.kerernor.autoconnect.util.Utils;
-import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
@@ -19,7 +19,6 @@ public class LastConnectionListController extends ListView {
     public LastConnectionListController() {
         super();
         loadView();
-//        lastConnectionList.
     }
 
     private void loadView() {
@@ -34,9 +33,8 @@ public class LastConnectionListController extends ListView {
         }
     }
 
-    public void loadList() {
-        LastConnectionData.getInstance().getLastConnectionItems().add(new LastConnectionItem("121212"));
-        lastConnectionList.setItems(LastConnectionData.getInstance().getLastConnectionItems());
+    public void loadList(FilteredList<LastConnectionItem> historySearchFilteredList) {
+        lastConnectionList.setItems(historySearchFilteredList);
 
         lastConnectionList.setCellFactory(o -> {
             LastConnectionRowController lastConnectionRowController = new LastConnectionRowController();
@@ -44,4 +42,7 @@ public class LastConnectionListController extends ListView {
         });
     }
 
+    public ListView<LastConnectionItem> getLastConnectionList() {
+        return lastConnectionList;
+    }
 }

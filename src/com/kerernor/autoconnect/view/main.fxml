@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.kerernor.autoconnect.view.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
+<?import com.kerernor.autoconnect.view.PingListGroupController?>
+<?import com.kerernor.autoconnect.view.SearchAreaController?>
+<?import com.kerernor.autoconnect.view.ComputerListController?>
+<?import com.kerernor.autoconnect.view.LastConnectionsPopupController?>
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kerernor.autoconnect.view.MainController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -77,7 +91,7 @@
       </VBox>
       <StackPane layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
          <children>
-<!--            <Pane fx:id="pnlCustomer" prefHeight="200.0" prefWidth="200.0" visible="false" />-->
+            <!--            <Pane fx:id="pnlCustomer" prefHeight="200.0" prefWidth="200.0" visible="false" />-->
             <Pane fx:id="pnlSetting" prefHeight="200.0" prefWidth="200.0" stylesheets="@../style/style.css" visible="true">
                <children>
                   <AnchorPane prefHeight="576.0" prefWidth="793.0">
@@ -234,6 +248,7 @@
                   <CheckBox fx:id="viewOnlyCheckBox" layoutX="504.0" layoutY="66.0" text="View Only" textFill="WHITE" />
                   <Button id="button-connect" fx:id="quickConnectBtn" layoutX="689.0" layoutY="29.0" stylesheets="@../style/style.css" text="Connect" />
                   <LastConnectionsPopupController fx:id="lastConnectionsPopupController" layoutX="500.0" layoutY="59.0" prefHeight="159.0" prefWidth="206.0" />
+                  <Button fx:id="openCloseHistoryButton" layoutX="702.0" layoutY="59.0" mnemonicParsing="false" text="^" />
                   <!--                  <LastConnectionListController fx:id="lastConnectionListController"/>-->
                </children>
             </Pane>

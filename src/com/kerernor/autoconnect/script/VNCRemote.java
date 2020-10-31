@@ -15,7 +15,7 @@ public class VNCRemote {
     private static final String mAdminPassword = "P@ssw0rd";
     private static Logger logger = Logger.getLogger(VNCRemote.class);
 
-    public static void connect(String ip, Parent parent, boolean isViewOnlySelected) {
+    public static void connect(String ip, boolean isViewOnlySelected) {
         logger.info("Try to connect via VNC to: " + ip + " ViewOnly: " + isViewOnlySelected);
         try {
             FileWriter myWriter = new FileWriter(mPathScript + "run.bat");
