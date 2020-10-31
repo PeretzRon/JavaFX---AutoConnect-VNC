@@ -36,6 +36,9 @@ public class LastConnectionData {
     public void addHistoryItemIfNotExist(LastConnectionItem itemToAdd) {
         Optional<LastConnectionItem> itemExistInList = lastConnectionItems.stream().filter(item -> item.getIp().equals(itemToAdd.getIp())).findAny();
         itemExistInList.ifPresent(item -> lastConnectionItems.remove(item));
+        if (lastConnectionItems.size() > Utils.MAX_HISTORY_CONNECT_LIST) {
+            lastConnectionItems.remove(lastConnectionItems.size() - 1);
+        }
         lastConnectionItems.add(0, itemToAdd);
     }
 
@@ -59,8 +62,11 @@ public class LastConnectionData {
             lastConnectionItemsList = gson.fromJson(reader, LastConnectionItem[].class);
         }
 
+        int count = 0;
         for (LastConnectionItem lastConnectionItem : lastConnectionItemsList) {
-            lastConnectionItems.add(lastConnectionItem);
+            if (count++ < Utils.MAX_HISTORY_CONNECT_LIST) {
+                lastConnectionItems.add(lastConnectionItem);
+            }
         }
     }
 
