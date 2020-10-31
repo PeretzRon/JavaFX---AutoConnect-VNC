@@ -1,6 +1,7 @@
 package com.kerernor.autoconnect.util;
 
 import com.kerernor.autoconnect.model.Computer;
+import com.kerernor.autoconnect.model.LastConnectionItem;
 import javafx.event.Event;
 import javafx.event.EventType;
 import javafx.scene.Parent;
@@ -67,17 +68,17 @@ public class KorEvents {
         }
     }
 
-    public static class AddComputerEvent extends Event {
-        public static final EventType<AddComputerEvent> ADD_COMPUTER_EVENT = new EventType("AddComputerEvent");
-        private final Computer computer;
+    public static class SearchHistoryConnectionEvent extends Event {
+        public static final EventType<SearchHistoryConnectionEvent> SEARCH_HISTORY_CONNECTION_EVENT_EVENT_TYPE = new EventType("SearchHistoryConnncectionEvent");
+        private final LastConnectionItem lastConnectionItem;
 
-        public AddComputerEvent(EventType<AddComputerEvent> eventType, Computer computer) {
+        public SearchHistoryConnectionEvent(EventType<SearchHistoryConnectionEvent> eventType, LastConnectionItem lastConnectionItem) {
             super(eventType);
-            this.computer = computer;
+            this.lastConnectionItem = lastConnectionItem;
         }
 
-        public Computer getComputer() {
-            return computer;
+        public LastConnectionItem getLastConnectionItem() {
+            return lastConnectionItem;
         }
     }
 }

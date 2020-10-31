@@ -16,8 +16,8 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -36,10 +36,10 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MainController extends AnchorPane {
 
     @FXML
-    public Pane pnlAbout;
+    private Pane pnlAbout;
 
     @FXML
-    public LastConnectionsPopupController lastConnectionsPopupController;
+    private LastConnectionsPopupController lastConnectionsPopupController;
 
     @FXML
     private Button checkPing;
@@ -117,7 +117,7 @@ public class MainController extends AnchorPane {
     private Label aboutSecondLine;
 
     @FXML
-    private Button openCloseHistoryButton;
+    private ImageView openCloseHistoryImage;
 
     private static MainController instance = new MainController();
     private final Logger logger = Logger.getLogger(MainController.class);
@@ -152,13 +152,12 @@ public class MainController extends AnchorPane {
         lastConnectionsPopupController.setList(historySearchFilteredList);
         checkPing.disableProperty().bind(isRunPingerButtonDisabled);
         isHistoryListEmpty.set(historySearchFilteredList.size() == 0);
-        openCloseHistoryButton.disableProperty().bind(isHistoryListEmpty);
+        openCloseHistoryImage.disableProperty().bind(isHistoryListEmpty);
         updateCounters();
 
         filterPingerGroup.setOnKeyReleased(keyEvent -> {
             String input = filterPingerGroup.getText();
             createPingerGroups(input);
-
         });
 
         createPingerGroups("");
@@ -178,7 +177,9 @@ public class MainController extends AnchorPane {
             if (historySearchFilteredList.isEmpty()) {
                 lastConnectionsPopupController.hide();
             } else if (isHistoryListOpen) {
-                openLastConnectionPopupController();
+                if (!lastConnectionsPopupController.isShow()) {
+                    openLastConnectionPopupController();
+                }
             }
         });
 
@@ -239,14 +240,24 @@ public class MainController extends AnchorPane {
             refreshPingerItemWhenUpdated(c.getList().size());
         });
 
-        openCloseHistoryButton.setOnMouseClicked(event -> {
-            if (lastConnectionsPopupController.isShow()) {
-                lastConnectionsPopupController.hide();
-                isHistoryListOpen = false;
-            } else {
-                openLastConnectionPopupController();
-            }
+        openCloseHistoryImage.setOnMouseClicked(event -> {
+                if (lastConnectionsPopupController.isShow()) {
+                    lastConnectionsPopupController.hide();
+                    isHistoryListOpen = false;
+                } else {
+                    openLastConnectionPopupController();
+                }
         });
+
+        lastConnectionsPopupController.addEventFilter(KorEvents.SearchHistoryConnectionEvent.SEARCH_HISTORY_CONNECTION_EVENT_EVENT_TYPE, event -> {
+            event.consume();
+            quickConnectTextField.setText(event.getLastConnectionItem().getIp());
+            lastConnectionsPopupController.hide();
+            isHistoryListOpen = false;
+            quickConnectTextField.requestFocus();
+            quickConnectTextField.selectEnd();
+        });
+
     }
 
     private void openLastConnectionPopupController() {
@@ -357,7 +368,10 @@ public class MainController extends AnchorPane {
             return;
         }
 
-        LastConnectionData.getInstance().getLastConnectionItems().add(0, new LastConnectionItem(ip));
+        LastConnectionData.getInstance().addHistoryItemIfNotExist((new LastConnectionItem(ip)));
+        lastConnectionsPopupController.hide();
+        isHistoryListOpen = false;
+        lastConnectionsPopupController.getLastConnectionListController().getLastConnectionList().getSelectionModel().select(0);
         VNCRemote.connect(ip, isViewOnly);
     }
 
@@ -441,4 +455,11 @@ public class MainController extends AnchorPane {
         }
     }
 
+    public LastConnectionsPopupController getLastConnectionsPopupController() {
+        return lastConnectionsPopupController;
+    }
+
+    public void setHistoryListOpen(boolean historyListOpen) {
+        isHistoryListOpen = historyListOpen;
+    }
 }

@@ -1,6 +1,5 @@
 package com.kerernor.autoconnect.util;
 
-import com.kerernor.autoconnect.Main;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.effect.BoxBlur;
@@ -13,7 +12,6 @@ import org.apache.log4j.PropertyConfigurator;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -55,6 +53,7 @@ public class Utils {
     // Data paths
     public static final String COMPUTER_DATA = "data/data.json";
     public static final String PINGER_DATA = "data/pingData.json";
+    public static final String LAST_CONNECTIONS_HISTORY_DATA = "data/lastConnectionsHistory.json";
 
     // Config files paths
     public static final String LOG_4_J_CONFIG = "config/log4j.properties";

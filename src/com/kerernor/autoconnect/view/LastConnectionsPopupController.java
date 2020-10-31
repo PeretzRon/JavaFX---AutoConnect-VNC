@@ -7,6 +7,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
@@ -17,6 +18,8 @@ public class LastConnectionsPopupController extends GridPane {
 
     @FXML
     private LastConnectionListController lastConnectionListController;
+
+    private Logger logger = Logger.getLogger(LastConnectionsPopupController.class);
 
     public LastConnectionsPopupController() {
         loadView();
@@ -45,8 +48,10 @@ public class LastConnectionsPopupController extends GridPane {
     }
 
     public void show() {
+        logger.trace("LastConnectionsPopupController.show");
         mainPane.setVisible(true);
         lastConnectionListController.getLastConnectionList().scrollTo(0);
+        lastConnectionListController.getLastConnectionList().requestFocus();
     }
 
     public void setList(FilteredList<LastConnectionItem> historySearchFilteredList) {
@@ -54,6 +59,11 @@ public class LastConnectionsPopupController extends GridPane {
     }
 
     public void hide() {
+        logger.trace("LastConnectionsPopupController.hide");
         mainPane.setVisible(false);
+    }
+
+    public LastConnectionListController getLastConnectionListController() {
+        return lastConnectionListController;
     }
 }

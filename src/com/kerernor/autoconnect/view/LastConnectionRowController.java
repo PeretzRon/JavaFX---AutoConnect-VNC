@@ -3,16 +3,14 @@ package com.kerernor.autoconnect.view;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.LastConnectionData;
 import com.kerernor.autoconnect.model.LastConnectionItem;
+import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-
 
 import java.io.IOException;
 
@@ -35,6 +33,11 @@ public class LastConnectionRowController extends ListCell<LastConnectionItem> {
         deleteRowButton.setOnMouseClicked(event -> {
             event.consume();
             LastConnectionData.getInstance().removeHistoryItem(lastConnectionItem);
+        });
+
+        mainPane.setOnMouseClicked(event -> {
+            event.consume();
+            fireEvent(new KorEvents.SearchHistoryConnectionEvent(KorEvents.SearchHistoryConnectionEvent.SEARCH_HISTORY_CONNECTION_EVENT_EVENT_TYPE, lastConnectionItem));
         });
     }
 
