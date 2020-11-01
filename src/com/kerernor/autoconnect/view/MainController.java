@@ -1,6 +1,7 @@
 package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.model.*;
+import com.kerernor.autoconnect.script.OpenRemoteWindow;
 import com.kerernor.autoconnect.script.VNCRemote;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.ThreadManger;
@@ -34,6 +35,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MainController extends AnchorPane {
+
+    @FXML
+    private TextField ipTextFieldForRemoteWindow;
+
+    @FXML
+    private Button openRemoteWindowBtn;
 
     @FXML
     private Button btnOpenWindowScreen;
@@ -216,6 +223,16 @@ public class MainController extends AnchorPane {
         PingerData.getInstance().getPingerObservableList().addListener((ListChangeListener<? super Pinger>) c -> {
             logger.trace("ListChangeListener - Pinger");
             refreshPingerItemWhenUpdated(c.getList().size());
+        });
+
+        openRemoteWindowBtn.setOnMouseClicked(event -> {
+            logger.trace("Main.openRemoteWindowBtn");
+            String input = ipTextFieldForRemoteWindow.getText();
+            if (Utils.isValidateIpAddress(input)) {
+                OpenRemoteWindow.openRemoteWindow(input);
+            } else {
+                logger.warn("Wrong ip");
+            }
         });
     }
 
