@@ -1,7 +1,6 @@
 package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.Main;
-import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.util.KorEvents;
@@ -15,9 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-
 
 import java.io.IOException;
 

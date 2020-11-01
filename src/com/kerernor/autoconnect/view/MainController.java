@@ -179,6 +179,8 @@ public class MainController extends AnchorPane {
             } else if (isHistoryListOpen) {
                 if (!lastConnectionsPopupController.isShow()) {
                     openLastConnectionPopupController();
+                    quickConnectTextField.requestFocus();
+                    quickConnectTextField.selectEnd();
                 }
             }
         });
