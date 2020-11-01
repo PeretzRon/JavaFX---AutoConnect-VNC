@@ -9,8 +9,11 @@ import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
 import com.kerernor.autoconnect.view.popups.AlertPopupController;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -140,7 +143,8 @@ public class MainController extends AnchorPane {
         toggleGroupPinger = new ToggleGroup();
         totalProgressLabel.setText("");
         aboutFirstLine.setText(Utils.COPYRIGHT);
-        aboutSecondLine.setText(Utils.VERSION);
+        aboutSecondLine.textProperty().bind(Bindings.concat(Utils.VERSION, Utils.VERSION_NUMBER));
+//        aboutSecondLine.setText(Utils.VERSION + Utils.VERSION_NUMBER);
         btnRemoteScreen.getStyleClass().add("selected-menu-item");
         pnlOverview.toFront();
         pnlSetting.setVisible(false);
@@ -367,6 +371,7 @@ public class MainController extends AnchorPane {
             // TODO: make singleton
             AlertPopupController alertPopupController = new AlertPopupController(mainPane);
             alertPopupController.show();
+            quickConnectTextField.requestFocus();
             return;
         }
 

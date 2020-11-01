@@ -1,6 +1,8 @@
 package com.kerernor.autoconnect.util;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.Parent;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.Effect;
@@ -67,6 +69,7 @@ public class Utils {
     public static final String ULTRA_VNC_PROGRAM_PATH = "UltraVncProgramPath";
     public static final String ULTRA_VNC_SCRIPT_FOR_CONNECTION = "UltraVncScriptForConnection";
     public static final String IS_POPUP_CLOSE_IF_LOSE_FOCUS = "isPopupCloseIfLoseFocus";
+    public static final String VERSION_NUMBER_PROPERTIES = "versionNumber";
     public static boolean IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING = true;
 
     // Sizes and amounts
@@ -83,7 +86,8 @@ public class Utils {
     public static final String TEXT_ADD_NEW_GROUP_PINGER_POPUP_TITTLE = "ADD new group Pinger";
     public static final String APP_NAME = "ControlKO";
     public static final String COPYRIGHT = "Copyright " + "\u00a9" + " Ron Peretz (2020)";
-    public static final String VERSION = "Version 1.0.0";
+    public static String VERSION = "Version ";
+    public static StringProperty VERSION_NUMBER = new SimpleStringProperty("1.0.1");
 
 
     // Style
@@ -156,6 +160,7 @@ public class Utils {
                 Utils.VNC_PROGRAM_PATH = properties.getProperty(ULTRA_VNC_PROGRAM_PATH);
                 Utils.VNC_SCRIPT_PATH = properties.getProperty(ULTRA_VNC_SCRIPT_FOR_CONNECTION);
                 Utils.IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING = Boolean.parseBoolean(properties.getProperty(IS_POPUP_CLOSE_IF_LOSE_FOCUS));
+                Platform.runLater(() -> Utils.VERSION_NUMBER.set(properties.getProperty(Utils.VERSION_NUMBER_PROPERTIES)));
             } catch (IOException e) {
                 logger.error("failed to load app settings");
             }
