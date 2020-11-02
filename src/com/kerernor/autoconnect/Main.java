@@ -19,6 +19,7 @@ public class Main extends Application {
     private double x, y;
     private Stage primaryStage;
     private AnchorPane rootLayout;
+    private FXMLLoader loader;
 
     private Logger logger = Logger.getLogger(Main.class);
 
@@ -42,9 +43,11 @@ public class Main extends Application {
         try {
             // Load root layout from fxml file.
             logger.trace("initRootLayout");
-            this.rootLayout = FXMLLoader.load(getClass().getResource(Utils.MAIN_VIEW));
+            loader = new FXMLLoader(getClass().getResource(Utils.MAIN_VIEW));
+            this.rootLayout = loader.load();
             Scene scene = new Scene(rootLayout);
-//            KorCommon.getInstance().setMainController();
+            KorCommon.getInstance().setMainController(loader.getController());
+
             // Show scene and configure the root layout
             this.primaryStage.setTitle(Utils.APP_NAME);
             this.primaryStage.initStyle(StageStyle.UNDECORATED);   // set stage borderless

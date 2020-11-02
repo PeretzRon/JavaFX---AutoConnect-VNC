@@ -37,6 +37,9 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MainController extends AnchorPane {
 
     @FXML
+    private ProgressBar processLoadingProgressBar;
+
+    @FXML
     private TextField ipTextFieldForRemoteWindow;
 
     @FXML
@@ -153,6 +156,7 @@ public class MainController extends AnchorPane {
         toggleGroupPinger = new ToggleGroup();
         totalProgressLabel.setText("");
         aboutFirstLine.setText(Utils.COPYRIGHT);
+        processLoadingProgressBar.setProgress(0);
         aboutSecondLine.setText(Utils.VERSION);
         btnRemoteScreen.getStyleClass().add("selected-menu-item");
         pnlOverview.toFront();
@@ -229,7 +233,8 @@ public class MainController extends AnchorPane {
             logger.trace("Main.openRemoteWindowBtn");
             String input = ipTextFieldForRemoteWindow.getText();
             if (Utils.isValidateIpAddress(input)) {
-                OpenRemoteWindow.openRemoteWindow(input);
+                processLoadingProgressBar.setProgress(-1);
+                ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> OpenRemoteWindow.openRemoteWindow(input));
             } else {
                 logger.warn("Wrong ip");
             }
@@ -402,5 +407,9 @@ public class MainController extends AnchorPane {
             computerListController.getComputerListView().getSelectionModel().select(currentIndex - 1);
             computerListController.getComputerListView().scrollTo(currentIndex - 1);
         }
+    }
+
+    public ProgressBar getProcessLoadingProgressBar() {
+        return processLoadingProgressBar;
     }
 }

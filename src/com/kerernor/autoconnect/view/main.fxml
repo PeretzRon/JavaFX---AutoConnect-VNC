@@ -94,6 +94,7 @@
                <HBox spacing="10">
                   <TextField fx:id="ipTextFieldForRemoteWindow"/>
                   <Button fx:id="openRemoteWindowBtn" text="GO!"/>
+                  <ProgressBar fx:id="processLoadingProgressBar"/>
                </HBox>
             </AnchorPane>
             </Pane>
