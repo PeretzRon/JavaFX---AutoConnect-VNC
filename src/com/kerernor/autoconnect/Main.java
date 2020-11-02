@@ -2,6 +2,7 @@ package com.kerernor.autoconnect;
 
 import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.model.PingerData;
+import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -43,7 +44,7 @@ public class Main extends Application {
             logger.trace("initRootLayout");
             this.rootLayout = FXMLLoader.load(getClass().getResource(Utils.MAIN_VIEW));
             Scene scene = new Scene(rootLayout);
-
+//            KorCommon.getInstance().setMainController();
             // Show scene and configure the root layout
             this.primaryStage.setTitle(Utils.APP_NAME);
             this.primaryStage.initStyle(StageStyle.UNDECORATED);   // set stage borderless
