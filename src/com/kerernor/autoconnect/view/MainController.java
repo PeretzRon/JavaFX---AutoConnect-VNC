@@ -37,6 +37,9 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MainController extends AnchorPane {
 
     @FXML
+    private Button cancelOpenRemoteWindowBtn;
+
+    @FXML
     private ProgressBar processLoadingProgressBar;
 
     @FXML
@@ -411,5 +414,9 @@ public class MainController extends AnchorPane {
 
     public ProgressBar getProcessLoadingProgressBar() {
         return processLoadingProgressBar;
+    }
+
+    public Button getCancelOpenRemoteWindowBtn() {
+        return cancelOpenRemoteWindowBtn;
     }
 }
