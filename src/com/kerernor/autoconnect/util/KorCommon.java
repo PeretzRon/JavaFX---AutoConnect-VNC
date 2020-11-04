@@ -1,11 +1,13 @@
 package com.kerernor.autoconnect.util;
 
 import com.kerernor.autoconnect.view.MainController;
+import com.kerernor.autoconnect.view.popups.AlertPopupController;
 
 public class KorCommon {
 
-    static KorCommon instance = null;
-    MainController mainController = null;
+    private static KorCommon instance = null;
+    private MainController mainController = null;
+    private AlertPopupController alertPopupController;
 
     private KorCommon() {
 
@@ -25,5 +27,9 @@ public class KorCommon {
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
+    }
+
+    public AlertPopupController getAlertPopupController() {
+        return alertPopupController;
     }
 }

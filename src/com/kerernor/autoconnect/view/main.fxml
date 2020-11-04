@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.kerernor.autoconnect.view.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kerernor.autoconnect.view.MainController">
+<?import com.kerernor.autoconnect.view.PingListGroupController?>
+<?import com.kerernor.autoconnect.view.SearchAreaController?>
+<?import com.kerernor.autoconnect.view.ComputerListController?>
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kerernor.autoconnect.view.MainController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -89,15 +103,40 @@
       </VBox>
       <StackPane layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
          <children>
-            <Pane fx:id="pnlOpenWindow" prefHeight="200.0" prefWidth="200.0" visible="false">
-            <AnchorPane>
-               <HBox spacing="10">
-                  <TextField fx:id="ipTextFieldForRemoteWindow"/>
-                  <Button fx:id="openRemoteWindowBtn" text="GO!"/>
-                  <ProgressBar fx:id="processLoadingProgressBar"/>
-                  <Button fx:id="cancelOpenRemoteWindowBtn" text="Cancel"/>
-               </HBox>
-            </AnchorPane>
+            <Pane fx:id="pnlOpenWindow" prefHeight="200.0" prefWidth="200.0" stylesheets="@../style/style.css" visible="true">
+               <Label layoutX="40.0" layoutY="21.0" text="Remote Folders" textFill="#e7e5e5">
+                  <font>
+                     <Font size="24.0" />
+                  </font>
+               </Label>
+               <VBox layoutX="40.0" layoutY="73.0" prefHeight="200.0" prefWidth="285.0">
+                  <children>
+                     <HBox prefHeight="52.0" prefWidth="269.0">
+                        <children>
+                        <TextField fx:id="ipTextFieldForRemoteWindow" prefHeight="38.0" prefWidth="296.0" promptText="Enter IP Address..." />
+                        </children>
+                     </HBox>
+                     <HBox prefHeight="94.0" prefWidth="220.0" spacing="10">
+                        <children>
+                           <Button fx:id="cancelOpenRemoteWindowBtn" prefHeight="60.0" prefWidth="88.0" text="Cancel">
+                              <styleClass>
+                                 <String fx:value="btn-square" />
+                                 <String fx:value="btn-color-gray" />
+                              </styleClass>
+                           </Button>
+                        <Button fx:id="openRemoteWindowBtn" prefHeight="60.0" prefWidth="129.0" text="GO!">
+                              <styleClass>
+                                 <String fx:value="btn-square" />
+                                 <String fx:value="btn-color-blue" />
+                              </styleClass>
+                        </Button>
+                        </children>
+                     </HBox>
+                  <HBox spacing="10">
+                     <ProgressBar fx:id="processLoadingProgressBar" prefHeight="18.0" prefWidth="289.0" visible="false" />
+                  </HBox>
+                  </children>
+               </VBox>
             </Pane>
             <Pane fx:id="pnlSetting" prefHeight="200.0" prefWidth="200.0" stylesheets="@../style/style.css" visible="false">
                <children>
@@ -152,7 +191,7 @@
                   </AnchorPane>
                </children>
             </Pane>
-            <Pane fx:id="pnlAbout" prefHeight="200.0" prefWidth="200.0" stylesheets="@../style/style.css" visible="true">
+            <Pane fx:id="pnlAbout" prefHeight="200.0" prefWidth="200.0" stylesheets="@../style/style.css" visible="false">
                <children>
                   <AnchorPane prefHeight="576.0" prefWidth="793.0">
                      <children>
@@ -177,7 +216,7 @@
                      </children>
                   </AnchorPane>
                </children></Pane>
-            <Pane fx:id="pnlOverview" prefHeight="576.0" prefWidth="773.0" visible="true">
+            <Pane fx:id="pnlOverview" prefHeight="576.0" prefWidth="773.0" visible="false">
                <children>
                   <StackPane alignment="TOP_CENTER" layoutX="474.0" layoutY="-9.0" prefHeight="122.0" prefWidth="307.0" styleClass="bordered-titled-border" stylesheets="@../style/style.css">
                      <children>
@@ -233,7 +272,7 @@
                         </ImageView>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                            <children>
-      
+
                               <ImageView fx:id="up" fitHeight="26.0" fitWidth="26.0" onMouseClicked="#DownComputerInList" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/down-arrow.png" />

@@ -237,6 +237,7 @@ public class MainController extends AnchorPane {
             String input = ipTextFieldForRemoteWindow.getText();
             if (Utils.isValidateIpAddress(input)) {
                 processLoadingProgressBar.setProgress(-1);
+                processLoadingProgressBar.setVisible(true);
                 ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> OpenRemoteWindow.openRemoteWindow(input));
             } else {
                 logger.warn("Wrong ip");

@@ -31,6 +31,7 @@ public class OpenRemoteWindow {
             EventHandler<MouseEvent> clickEvent = event -> {
                 if (p.isAlive()) {
                     p.destroy();
+                    logger.info("openRemoteWindow - operation canceled");
                 }
             };
 
@@ -44,7 +45,10 @@ public class OpenRemoteWindow {
             }
 
             cancelButton.removeEventHandler(MouseEvent.MOUSE_CLICKED, clickEvent);
-            Platform.runLater(() -> progressBar.setProgress(0));
+            if (p.exitValue() == 1) {
+                p.destroy();
+            }
+            Platform.runLater(() -> progressBar.setVisible(false));
 
         } catch (IOException e) {
             e.printStackTrace();
