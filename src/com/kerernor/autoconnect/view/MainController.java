@@ -230,6 +230,7 @@ public class MainController extends AnchorPane {
             AtomicBoolean isFound = new AtomicBoolean(false);
             flowPaneGroupPinger.getChildren().forEach(node -> {
                 Node selectedNode = node.lookup("#" + finalID);
+                Node e = node.lookup("Text");
                 if (selectedNode != null) {
                     boolean check = selectedNode.equals(eventTarget);
                     if (check) {
