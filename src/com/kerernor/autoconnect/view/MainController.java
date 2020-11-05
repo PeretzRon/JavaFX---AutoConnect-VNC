@@ -146,13 +146,10 @@ public class MainController extends AnchorPane {
         currentSelectedMenuButton = btnRemoteScreen;
         toggleGroupPinger = new ToggleGroup();
         totalProgressLabel.setText("");
-//        aboutFirstLine.setText(Utils.COPYRIGHT);
-//        aboutSecondLine.textProperty().bind(Bindings.concat(Utils.VERSION, Utils.VERSION_NUMBER));
-//        aboutSecondLine.setText(Utils.VERSION + Utils.VERSION_NUMBER);
         btnRemoteScreen.getStyleClass().add("selected-menu-item");
         pnlOverview.toFront();
         pnlSetting.setVisible(false);
-//        pnlAbout.setVisible(false);
+//        aboutScreenController.setVisible(false);
         FilteredList<Computer> computerFilteredList = new FilteredList<>(ComputerData.getInstance().getComputersList(), computer -> true);
         FilteredList<LastConnectionItem> historySearchFilteredList = new FilteredList<>(LastConnectionData.getInstance().getLastConnectionItems(), pingItemsScrollPane -> true);
         computerListController.setPaneBehind(this.pnlOverview);

@@ -2,41 +2,29 @@ package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.util.Utils;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
-public class AboutScreenController extends Pane {
+public class PingerScreenController extends Pane {
 
-    @FXML
-    private Pane pnlAbout;
-
-    @FXML
-    private Label aboutSecondLine;
-
-    @FXML
-    private Label aboutFirstLine;
-
-    private Logger logger = Logger.getLogger(AboutScreenController.class);
+    private Logger logger = Logger.getLogger(PingerScreenController.class);
     FXMLLoader loader = null;
 
     @FXML
     public void initialize() {
-        aboutFirstLine.setText(Utils.COPYRIGHT);
-        aboutSecondLine.textProperty().bind(Bindings.concat(Utils.VERSION, Utils.VERSION_NUMBER));
+
     }
 
-    public AboutScreenController() {
+    public PingerScreenController() {
         loadView();
     }
 
     private Pane loadView() {
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.ABOUT_SCREEN));
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.PINGER_SCREEN));
         loader.setController(this);
         loader.setRoot(this);
 
@@ -55,4 +43,5 @@ public class AboutScreenController extends Pane {
         this.toFront();
         logger.trace("showPane");
     }
+
 }

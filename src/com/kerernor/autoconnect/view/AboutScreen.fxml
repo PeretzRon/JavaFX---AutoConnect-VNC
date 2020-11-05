@@ -6,9 +6,8 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<Pane fx:id="pnlAbout" prefHeight="576.0" prefWidth="773.0" stylesheets="@../style/style.css"
+<fx:root type="Pane" fx:id="pnlAbout" prefHeight="576.0" prefWidth="773.0" stylesheets="@../style/style.css"
       xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1 ">
-    <children>
         <AnchorPane prefHeight="576.0" prefWidth="793.0">
             <children>
                 <HBox alignment="CENTER" layoutY="237.0" prefHeight="101.0" prefWidth="793.0">
@@ -33,6 +32,5 @@
                 </HBox>
             </children>
         </AnchorPane>
-    </children>
-</Pane>
+</fx:root>
 
