@@ -22,6 +22,7 @@
 <?import com.kerernor.autoconnect.view.SearchAreaController?>
 <?import com.kerernor.autoconnect.view.ComputerListController?>
 <?import com.kerernor.autoconnect.view.LastConnectionsPopupController?>
+<?import com.kerernor.autoconnect.view.AboutScreenController?>
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kerernor.autoconnect.view.MainController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -145,31 +146,32 @@
                   </AnchorPane>
                </children>
             </Pane>
-            <Pane fx:id="pnlAbout" prefHeight="200.0" prefWidth="200.0" stylesheets="@../style/style.css" visible="true">
-               <children>
-                  <AnchorPane prefHeight="576.0" prefWidth="793.0">
-                     <children>
-                        <HBox alignment="CENTER" layoutY="237.0" prefHeight="101.0" prefWidth="793.0">
-                           <children>
-                              <VBox alignment="CENTER" prefHeight="199.0" prefWidth="795.0">
-                                 <children>
-                                    <Label fx:id="aboutFirstLine" alignment="CENTER" prefHeight="73.0" prefWidth="604.0" text="LabelMain" textFill="WHITE">
-                                       <font>
-                                          <Font size="39.0" />
-                                       </font>
-                                    </Label>
-                                    <Label fx:id="aboutSecondLine" alignment="CENTER" prefHeight="101.0" prefWidth="206.0" text="LabelSub" textFill="WHITE">
-                                       <font>
-                                          <Font size="25.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </HBox>
-                     </children>
-                  </AnchorPane>
-               </children></Pane>
+<!--            <Pane fx:id="pnlAbout" prefHeight="200.0" prefWidth="200.0" stylesheets="@../style/style.css" visible="true">-->
+<!--               <children>-->
+<!--                  <AnchorPane prefHeight="576.0" prefWidth="793.0">-->
+<!--                     <children>-->
+<!--                        <HBox alignment="CENTER" layoutY="237.0" prefHeight="101.0" prefWidth="793.0">-->
+<!--                           <children>-->
+<!--                              <VBox alignment="CENTER" prefHeight="199.0" prefWidth="795.0">-->
+<!--                                 <children>-->
+<!--                                    <Label fx:id="aboutFirstLine" alignment="CENTER" prefHeight="73.0" prefWidth="604.0" text="LabelMain" textFill="WHITE">-->
+<!--                                       <font>-->
+<!--                                          <Font size="39.0" />-->
+<!--                                       </font>-->
+<!--                                    </Label>-->
+<!--                                    <Label fx:id="aboutSecondLine" alignment="CENTER" prefHeight="101.0" prefWidth="206.0" text="LabelSub" textFill="WHITE">-->
+<!--                                       <font>-->
+<!--                                          <Font size="25.0" />-->
+<!--                                       </font>-->
+<!--                                    </Label>-->
+<!--                                 </children>-->
+<!--                              </VBox>-->
+<!--                           </children>-->
+<!--                        </HBox>-->
+<!--                     </children>-->
+<!--                  </AnchorPane>-->
+<!--               </children></Pane>-->
+            <AboutScreenController fx:id="aboutScreenController"/>
             <Pane fx:id="pnlOverview" prefHeight="576.0" prefWidth="773.0" visible="true">
                <children>
                   <StackPane alignment="TOP_CENTER" layoutX="476.0" layoutY="-9.0" prefHeight="92.0" prefWidth="305.0" styleClass="bordered-titled-border" stylesheets="@../style/style.css">

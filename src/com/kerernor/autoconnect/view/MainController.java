@@ -2,6 +2,7 @@ package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.model.*;
 import com.kerernor.autoconnect.script.VNCRemote;
+import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
@@ -37,6 +38,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MainController extends AnchorPane {
+
+    @FXML
+    private AboutScreenController aboutScreenController;
 
     @FXML
     private Pane pnlAbout;
@@ -142,13 +146,13 @@ public class MainController extends AnchorPane {
         currentSelectedMenuButton = btnRemoteScreen;
         toggleGroupPinger = new ToggleGroup();
         totalProgressLabel.setText("");
-        aboutFirstLine.setText(Utils.COPYRIGHT);
-        aboutSecondLine.textProperty().bind(Bindings.concat(Utils.VERSION, Utils.VERSION_NUMBER));
+//        aboutFirstLine.setText(Utils.COPYRIGHT);
+//        aboutSecondLine.textProperty().bind(Bindings.concat(Utils.VERSION, Utils.VERSION_NUMBER));
 //        aboutSecondLine.setText(Utils.VERSION + Utils.VERSION_NUMBER);
         btnRemoteScreen.getStyleClass().add("selected-menu-item");
         pnlOverview.toFront();
         pnlSetting.setVisible(false);
-        pnlAbout.setVisible(false);
+//        pnlAbout.setVisible(false);
         FilteredList<Computer> computerFilteredList = new FilteredList<>(ComputerData.getInstance().getComputersList(), computer -> true);
         FilteredList<LastConnectionItem> historySearchFilteredList = new FilteredList<>(LastConnectionData.getInstance().getLastConnectionItems(), pingItemsScrollPane -> true);
         computerListController.setPaneBehind(this.pnlOverview);
@@ -339,12 +343,13 @@ public class MainController extends AnchorPane {
 
         if (actionEvent.getSource() == btnAbout && currentSelectedMenuButton != btnAbout) {
             currentSelectedMenuButton = btnAbout;
-            pnlAbout.setVisible(true);
-            pnlAbout.setStyle("-fx-background-color : #02050A");
+//            pnlAbout.setVisible(true);
+//            pnlAbout.setStyle("-fx-background-color : #02050A");
             btnAbout.getStyleClass().add("selected-menu-item");
             btnRemoteScreen.getStyleClass().remove("selected-menu-item");
             btnPingerScreen.getStyleClass().remove("selected-menu-item");
-            pnlAbout.toFront();
+//            pnlAbout.toFront();
+            aboutScreenController.showPane();
         }
 
         if (actionEvent.getSource() == btnExitApp) {

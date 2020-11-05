@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
@@ -20,6 +21,8 @@ public class AboutScreenController extends Pane {
 
     @FXML
     private Label aboutFirstLine;
+
+    private Logger logger = Logger.getLogger(AboutScreenController.class);
 
     @FXML
     public void initialize() {
@@ -38,5 +41,12 @@ public class AboutScreenController extends Pane {
         }
 
         return null;
+    }
+
+    public void showPane() {
+        this.setVisible(true);
+        this.setStyle("-fx-background-color : #02050A");
+        this.toFront();
+        logger.trace("showPane");
     }
 }

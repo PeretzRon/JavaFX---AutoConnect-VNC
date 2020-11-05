@@ -3,6 +3,7 @@ package com.kerernor.autoconnect;
 import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.model.LastConnectionData;
 import com.kerernor.autoconnect.model.PingerData;
+import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.MainController;
 import javafx.application.Application;
@@ -14,12 +15,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.log4j.Logger;
+import org.scenicview.ScenicView;
+
+import java.io.IOException;
 
 public class Main extends Application {
     private double x, y;
     private Stage primaryStage;
     private AnchorPane rootLayout;
-    private FXMLLoader fxmlLoader;
+    private FXMLLoader loader;
     private Logger logger = Logger.getLogger(Main.class);
 
     @Override
@@ -43,10 +47,10 @@ public class Main extends Application {
         try {
             // Load root layout from fxml file.
             logger.trace("initRootLayout");
-            fxmlLoader = new FXMLLoader(getClass().getResource(Utils.MAIN_VIEW));
-            this.rootLayout = fxmlLoader.load();
-//            this.rootLayout = fxmlLoader.load();
+            loader = new FXMLLoader(getClass().getResource(Utils.MAIN_VIEW));
+            this.rootLayout = loader.load();
             Scene scene = new Scene(rootLayout);
+            KorCommon.getInstance().setMainController(loader.getController());
 
             // Show scene and configure the root layout
             this.primaryStage.setTitle(Utils.APP_NAME);
@@ -54,7 +58,7 @@ public class Main extends Application {
             this.primaryStage.setScene(scene);
             this.primaryStage.getIcons().add(new Image(Utils.APP_ICON));
             this.primaryStage.show();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             logger.error("Error to init main stage");
         }
@@ -66,7 +70,7 @@ public class Main extends Application {
             x = event.getSceneX();
             y = event.getSceneY();
             if(!(event.getTarget() instanceof ImageView)) {
-                MainController mainController = fxmlLoader.getController();
+                MainController mainController = loader.getController();
                 if (mainController.getLastConnectionsPopupController().isShow()) {
                     mainController.getLastConnectionsPopupController().hide();
                     mainController.setHistoryListOpen(false);
