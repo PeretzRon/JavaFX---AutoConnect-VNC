@@ -6,6 +6,7 @@ import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.MainController;
+import com.kerernor.autoconnect.view.screens.RemoteScreenController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -33,7 +34,7 @@ public class Main extends Application {
 
         this.primaryStage = primaryStage;
         initRootLayout();
-//        makeStageDraggable();
+        makeStageDraggable();
         Utils.loadAppSettings();
         Scene scene = primaryStage.getScene();
 //        ScenicView.show(scene);
@@ -69,13 +70,14 @@ public class Main extends Application {
         this.rootLayout.setOnMousePressed(event -> {
             x = event.getSceneX();
             y = event.getSceneY();
-//            if(!(event.getTarget() instanceof ImageView)) {
-//                MainController mainController = loader.getController();
-//                if (mainController.getLastConnectionsPopupController().isShow()) {
-//                    mainController.getLastConnectionsPopupController().hide();
-//                    mainController.setHistoryListOpen(false);
-//                }
-//            }
+            if (!(event.getTarget() instanceof ImageView)) {
+                MainController mainController = loader.getController();
+                final RemoteScreenController remoteScreenController = mainController.getRemoteScreenController();
+                if (remoteScreenController.getLastConnectionsPopupController().isShow()) {
+                    remoteScreenController.getLastConnectionsPopupController().hide();
+                    remoteScreenController.setHistoryListOpen(false);
+                }
+            }
         });
 
         this.rootLayout.setOnMouseDragged(event -> {
