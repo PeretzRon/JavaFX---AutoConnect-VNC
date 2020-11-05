@@ -23,6 +23,7 @@
 <?import com.kerernor.autoconnect.view.ComputerListController?>
 <?import com.kerernor.autoconnect.view.LastConnectionsPopupController?>
 <?import com.kerernor.autoconnect.view.AboutScreenController?>
+<?import com.kerernor.autoconnect.view.PingerScreenController?>
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kerernor.autoconnect.view.MainController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -171,6 +172,7 @@
 <!--                     </children>-->
 <!--                  </AnchorPane>-->
 <!--               </children></Pane>-->
+            <PingerScreenController fx:id="pingerScreenController"/>
             <AboutScreenController fx:id="aboutScreenController"/>
             <Pane fx:id="pnlOverview" prefHeight="576.0" prefWidth="773.0" visible="true">
                <children>

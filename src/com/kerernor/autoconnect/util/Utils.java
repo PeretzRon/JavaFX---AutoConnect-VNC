@@ -34,7 +34,7 @@ public class Utils {
     public static final String MAIN_VIEW = VIEWS_BASE_PATH + "main.fxml";
     public static final String COMPUTER_LIST = VIEWS_BASE_PATH + "computerList.fxml";
     public static final String ABOUT_SCREEN = VIEWS_BASE_PATH + "AboutScreen.fxml";
-    public static final String PINGER_SCREEN = VIEWS_BASE_PATH + "PingerScreen.fxml";
+    public static final String PINGER_SCREEN = VIEWS_BASE_PATH + "pingerScreen.fxml";
     public static final String COMPUTER_ROW_VIEW = VIEWS_BASE_PATH + "computerRow.fxml";
     public static final String SEARCH_AREA = VIEWS_BASE_PATH + "searchArea.fxml";
     public static final String PINGER_LIST = VIEWS_BASE_PATH + "pingListGroup.fxml";

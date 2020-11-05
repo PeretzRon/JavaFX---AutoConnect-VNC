@@ -15,10 +15,8 @@ public class AboutScreenController extends Pane {
 
     @FXML
     private Pane pnlAbout;
-
     @FXML
     private Label aboutSecondLine;
-
     @FXML
     private Label aboutFirstLine;
 

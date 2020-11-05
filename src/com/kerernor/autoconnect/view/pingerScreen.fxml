@@ -7,7 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<fx:root type="Pane" fx:id="pnlSetting" prefHeight="200.0" prefWidth="200.0" stylesheets="@../style/style.css">
+<fx:root type="Pane" fx:id="pnlSetting"  prefHeight="576.0" prefWidth="773.0" stylesheets="@../style/style.css"   xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <AnchorPane prefHeight="576.0" prefWidth="793.0">
             <children>
