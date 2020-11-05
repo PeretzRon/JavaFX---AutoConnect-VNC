@@ -28,13 +28,15 @@ public class Utils {
     public static final String VIEWS_BASE_PATH = "view/";
     public static final String IMAGES_BASE_PATH = BASE_PATH + "images/";
     public static final String VIEWS_POPUPS_BASE_PATH = VIEWS_BASE_PATH + "popups/";
+    public static final String VIEWS_SCREENS_BASE_PATH = VIEWS_BASE_PATH + "screens/";
     public static final String CONFIG_BASE_PATH = BASE_PATH + "config/";
 
     // View paths
     public static final String MAIN_VIEW = VIEWS_BASE_PATH + "main.fxml";
     public static final String COMPUTER_LIST = VIEWS_BASE_PATH + "computerList.fxml";
-    public static final String ABOUT_SCREEN = VIEWS_BASE_PATH + "AboutScreen.fxml";
-    public static final String PINGER_SCREEN = VIEWS_BASE_PATH + "pingerScreen.fxml";
+    public static final String REMOTE_SCREEN = VIEWS_SCREENS_BASE_PATH + "remoteScreen.fxml";
+    public static final String PINGER_SCREEN = VIEWS_SCREENS_BASE_PATH + "pingerScreen.fxml";
+    public static final String ABOUT_SCREEN = VIEWS_SCREENS_BASE_PATH + "AboutScreen.fxml";
     public static final String COMPUTER_ROW_VIEW = VIEWS_BASE_PATH + "computerRow.fxml";
     public static final String SEARCH_AREA = VIEWS_BASE_PATH + "searchArea.fxml";
     public static final String PINGER_LIST = VIEWS_BASE_PATH + "pingListGroup.fxml";

@@ -1,4 +1,4 @@
-package com.kerernor.autoconnect.view;
+package com.kerernor.autoconnect.view.screens;
 
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Pinger;
@@ -7,6 +7,8 @@ import com.kerernor.autoconnect.model.PingerItem;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
+import com.kerernor.autoconnect.view.PingGroupItemController;
+import com.kerernor.autoconnect.view.PingListGroupController;
 import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;

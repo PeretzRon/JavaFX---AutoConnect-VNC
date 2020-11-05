@@ -1,9 +1,8 @@
 package com.kerernor.autoconnect.util;
 
-import com.kerernor.autoconnect.view.AboutScreenController;
+import com.kerernor.autoconnect.view.screens.AboutScreenController;
 import com.kerernor.autoconnect.view.MainController;
-import com.kerernor.autoconnect.view.PingerScreenController;
-import com.kerernor.autoconnect.view.popups.AlertPopupController;
+import com.kerernor.autoconnect.view.screens.PingerScreenController;
 
 public class KorCommon {
 

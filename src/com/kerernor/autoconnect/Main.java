@@ -69,13 +69,13 @@ public class Main extends Application {
         this.rootLayout.setOnMousePressed(event -> {
             x = event.getSceneX();
             y = event.getSceneY();
-            if(!(event.getTarget() instanceof ImageView)) {
-                MainController mainController = loader.getController();
-                if (mainController.getLastConnectionsPopupController().isShow()) {
-                    mainController.getLastConnectionsPopupController().hide();
-                    mainController.setHistoryListOpen(false);
-                }
-            }
+//            if(!(event.getTarget() instanceof ImageView)) {
+//                MainController mainController = loader.getController();
+//                if (mainController.getLastConnectionsPopupController().isShow()) {
+//                    mainController.getLastConnectionsPopupController().hide();
+//                    mainController.setHistoryListOpen(false);
+//                }
+//            }
         });
 
         this.rootLayout.setOnMouseDragged(event -> {

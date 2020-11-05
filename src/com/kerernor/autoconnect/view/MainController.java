@@ -10,6 +10,9 @@ import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.AlertPopupController;
+import com.kerernor.autoconnect.view.screens.AboutScreenController;
+import com.kerernor.autoconnect.view.screens.PingerScreenController;
+import com.kerernor.autoconnect.view.screens.RemoteScreenController;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -31,6 +34,8 @@ import java.util.Collections;
 
 public class MainController extends AnchorPane {
 
+    @FXML
+    private RemoteScreenController remoteScreenController;
     @FXML
     private PingerScreenController pingerScreenController;
     @FXML
@@ -60,8 +65,6 @@ public class MainController extends AnchorPane {
     @FXML
     private Button btnAbout;
 
-    @FXML
-    private Pane pnlOverview;
 
     @FXML
     private Label totalComputers;
@@ -86,10 +89,10 @@ public class MainController extends AnchorPane {
 
     private static MainController instance = new MainController();
     private final Logger logger = Logger.getLogger(MainController.class);
-    private boolean isViewOnly = false;
+//    private boolean isViewOnly = false;
     private Button currentSelectedMenuButton;
-    private final BooleanProperty isHistoryListEmpty = new SimpleBooleanProperty(true);
-    private boolean isHistoryListOpen = false;
+//    private final BooleanProperty isHistoryListEmpty = new SimpleBooleanProperty(true);
+//    private boolean isHistoryListOpen = false;
 
     public static MainController getInstance() {
         return instance;
@@ -101,114 +104,96 @@ public class MainController extends AnchorPane {
         pingerScreenController.setVisible(false);
         aboutScreenController.setVisible(false);
         btnRemoteScreen.getStyleClass().add("selected-menu-item");
-        pnlOverview.toFront();
+//        pnlOverview.toFront();
+        remoteScreenController.showPane();
+//        FilteredList<Computer> computerFilteredList = new FilteredList<>(ComputerData.getInstance().getComputersList(), computer -> true);
+//        FilteredList<LastConnectionItem> historySearchFilteredList = new FilteredList<>(LastConnectionData.getInstance().getLastConnectionItems(), pingItemsScrollPane -> true);
+//        computerListController.setPaneBehind(this.pnlOverview);
+//        computerListController.loadList(computerFilteredList);
+//        lastConnectionsPopupController.setList(historySearchFilteredList);
+//        isHistoryListEmpty.set(historySearchFilteredList.size() == 0);
+//        openCloseHistoryImage.disableProperty().bind(isHistoryListEmpty);
+//        updateCounters();
+//
+//        Platform.runLater(() -> quickConnectTextField.requestFocus());
 
-        FilteredList<Computer> computerFilteredList = new FilteredList<>(ComputerData.getInstance().getComputersList(), computer -> true);
-        FilteredList<LastConnectionItem> historySearchFilteredList = new FilteredList<>(LastConnectionData.getInstance().getLastConnectionItems(), pingItemsScrollPane -> true);
-        computerListController.setPaneBehind(this.pnlOverview);
-        computerListController.loadList(computerFilteredList);
-        lastConnectionsPopupController.setList(historySearchFilteredList);
-        isHistoryListEmpty.set(historySearchFilteredList.size() == 0);
-        openCloseHistoryImage.disableProperty().bind(isHistoryListEmpty);
-        updateCounters();
 
-        Platform.runLater(() -> quickConnectTextField.requestFocus());
 
-        quickConnectTextField.setOnKeyReleased(keyEvent -> {
-            String input = quickConnectTextField.getText();
+//        LastConnectionData.getInstance().getLastConnectionItems().addListener((ListChangeListener<? super LastConnectionItem>) c -> {
+//            if (c.getList().size() == 0) {
+//                lastConnectionsPopupController.hide();
+//                isHistoryListOpen = false;
+//                isHistoryListEmpty.set(true);
+//            } else {
+//                isHistoryListEmpty.set(false);
+//            }
+//        });
 
-            if (keyEvent.getCode() == KeyCode.ENTER) {
-                connectToVNC(input);
-            }
+//        quickConnectBtn.setOnAction(actionEvent -> {
+//            connectToVNC(quickConnectTextField.getText());
+//        });
+//
+//        searchAreaController.getSearch().setOnKeyReleased(keyEvent -> {
+//            String input = searchAreaController.getSearch().getText();
+//
+//            computerFilteredList.setPredicate(input.isEmpty() ? computer -> true :
+//                    computer -> computer.getIp().contains(input) ||
+//                            computer.getName().contains(input) ||
+//                            computer.getItemLocation().contains(input));
+//            computerListController.scrollTo(0);
+//        });
 
-            historySearchFilteredList.setPredicate(input.isEmpty() ? lastConnectionItem -> true :
-                    lastConnectionItem -> lastConnectionItem.getIp().contains(input));
-
-            if (historySearchFilteredList.isEmpty()) {
-                lastConnectionsPopupController.hide();
-            } else if (isHistoryListOpen) {
-                if (!lastConnectionsPopupController.isShow()) {
-                    openLastConnectionPopupController();
-                    quickConnectTextField.requestFocus();
-                    quickConnectTextField.selectEnd();
-                }
-            }
-        });
-
-        LastConnectionData.getInstance().getLastConnectionItems().addListener((ListChangeListener<? super LastConnectionItem>) c -> {
-            if (c.getList().size() == 0) {
-                lastConnectionsPopupController.hide();
-                isHistoryListOpen = false;
-                isHistoryListEmpty.set(true);
-            } else {
-                isHistoryListEmpty.set(false);
-            }
-        });
-
-        quickConnectBtn.setOnAction(actionEvent -> {
-            connectToVNC(quickConnectTextField.getText());
-        });
-
-        searchAreaController.getSearch().setOnKeyReleased(keyEvent -> {
-            String input = searchAreaController.getSearch().getText();
-
-            computerFilteredList.setPredicate(input.isEmpty() ? computer -> true :
-                    computer -> computer.getIp().contains(input) ||
-                            computer.getName().contains(input) ||
-                            computer.getItemLocation().contains(input));
-            computerListController.scrollTo(0);
-        });
-
-        // TODO: delete
-        computerListController.addEventHandler(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, event -> {
-            event.consume();
-        });
-
-        computerListController.addEventHandler(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, event -> {
-            connectToVNC(event.getIpAddress());
-        });
-
-        viewOnlyCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            isViewOnly = newValue;
-        });
-
-        openCloseHistoryImage.setOnMouseClicked(event -> {
-                if (lastConnectionsPopupController.isShow()) {
-                    lastConnectionsPopupController.hide();
-                    isHistoryListOpen = false;
-                } else {
-                    openLastConnectionPopupController();
-                }
-        });
-
-        lastConnectionsPopupController.addEventFilter(KorEvents.SearchHistoryConnectionEvent.SEARCH_HISTORY_CONNECTION_EVENT_EVENT_TYPE, event -> {
-            event.consume();
-            quickConnectTextField.setText(event.getLastConnectionItem().getIp());
-            lastConnectionsPopupController.hide();
-            isHistoryListOpen = false;
-            quickConnectTextField.requestFocus();
-            quickConnectTextField.selectEnd();
-        });
+//        // TODO: delete
+//        computerListController.addEventHandler(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, event -> {
+//            event.consume();
+//        });
+//
+//        computerListController.addEventHandler(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, event -> {
+//            connectToVNC(event.getIpAddress());
+//        });
+//
+//        viewOnlyCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+//            isViewOnly = newValue;
+//        });
+//
+//        openCloseHistoryImage.setOnMouseClicked(event -> {
+//                if (lastConnectionsPopupController.isShow()) {
+//                    lastConnectionsPopupController.hide();
+//                    isHistoryListOpen = false;
+//                } else {
+//                    openLastConnectionPopupController();
+//                }
+//        });
+//
+//        lastConnectionsPopupController.addEventFilter(KorEvents.SearchHistoryConnectionEvent.SEARCH_HISTORY_CONNECTION_EVENT_EVENT_TYPE, event -> {
+//            event.consume();
+//            quickConnectTextField.setText(event.getLastConnectionItem().getIp());
+//            lastConnectionsPopupController.hide();
+//            isHistoryListOpen = false;
+//            quickConnectTextField.requestFocus();
+//            quickConnectTextField.selectEnd();
+//        });
 
     }
 
-    private void openLastConnectionPopupController() {
-        if (LastConnectionData.getInstance().getLastConnectionItems().size() > 0) {
-            logger.trace("openLastConnectionPopupController");
-            lastConnectionsPopupController.show();
-            isHistoryListOpen = true;
-        }
-    }
+//    private void openLastConnectionPopupController() {
+//        if (LastConnectionData.getInstance().getLastConnectionItems().size() > 0) {
+//            logger.trace("openLastConnectionPopupController");
+//            lastConnectionsPopupController.show();
+//            isHistoryListOpen = true;
+//        }
+//    }
 
     public void handleClicks(ActionEvent actionEvent) {
         logger.trace("ChangeScreenHandler");
         if (actionEvent.getSource() == btnRemoteScreen && currentSelectedMenuButton != btnRemoteScreen) {
             currentSelectedMenuButton = btnRemoteScreen;
-            pnlOverview.setStyle("-fx-background-color : #02030A");
+//            pnlOverview.setStyle("-fx-background-color : #02030A");
             btnRemoteScreen.getStyleClass().add("selected-menu-item");
             btnPingerScreen.getStyleClass().remove("selected-menu-item");
             btnAbout.getStyleClass().remove("selected-menu-item");
-            pnlOverview.toFront();
+//            pnlOverview.toFront();
+            remoteScreenController.showPane();
         }
         if (actionEvent.getSource() == btnPingerScreen && currentSelectedMenuButton != btnPingerScreen) {
             currentSelectedMenuButton = btnPingerScreen;
@@ -232,59 +217,59 @@ public class MainController extends AnchorPane {
         }
     }
 
-    private void updateCounters() {
-        totalComputers.textProperty().bind(ComputerData.getInstance().computerListSizeProperty().asString());
-        stationCounter.textProperty().bind(ComputerData.getInstance().getStationsCounterItems().asString());
-        rcgwCounter.textProperty().bind(ComputerData.getInstance().getRcgwCounterItems().asString());
-    }
+//    private void updateCounters() {
+//        totalComputers.textProperty().bind(ComputerData.getInstance().computerListSizeProperty().asString());
+//        stationCounter.textProperty().bind(ComputerData.getInstance().getStationsCounterItems().asString());
+//        rcgwCounter.textProperty().bind(ComputerData.getInstance().getRcgwCounterItems().asString());
+//    }
 
-    public void addNewComputer() {
-        AddEditComputerPopup addEditComputerPopup = new AddEditComputerPopup(pnlOverview, false);
-        addEditComputerPopup.openPopup(null);
-    }
+//    public void addNewComputer() {
+//        AddEditComputerPopup addEditComputerPopup = new AddEditComputerPopup(pnlOverview, false);
+//        addEditComputerPopup.openPopup(null);
+//    }
 
-    private void connectToVNC(String ip) {
-        if (!Utils.isValidateIpAddress(ip)) {
-            logger.info("Wrong ip address: " + ip + " Can't to connect to client");
+//    private void connectToVNC(String ip) {
+//        if (!Utils.isValidateIpAddress(ip)) {
+//            logger.info("Wrong ip address: " + ip + " Can't to connect to client");
+//
+//            // TODO: make singleton
+//            AlertPopupController alertPopupController = new AlertPopupController(mainPane);
+//            alertPopupController.show();
+//            quickConnectTextField.requestFocus();
+//            return;
+//        }
+//
+//        LastConnectionData.getInstance().addHistoryItemIfNotExist((new LastConnectionItem(ip)));
+//        lastConnectionsPopupController.hide();
+//        isHistoryListOpen = false;
+//        lastConnectionsPopupController.getLastConnectionListController().getLastConnectionList().getSelectionModel().select(0);
+//        VNCRemote.connect(ip, isViewOnly);
+//    }
 
-            // TODO: make singleton
-            AlertPopupController alertPopupController = new AlertPopupController(mainPane);
-            alertPopupController.show();
-            quickConnectTextField.requestFocus();
-            return;
-        }
+//    public void DownComputerInList() {
+//        int currentIndex = computerListController.getCurrent();
+//        if (currentIndex >= 0 && currentIndex < ComputerData.getInstance().getComputersList().size() - 1) {
+//            Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex + 1);
+//            computerListController.getComputerListView().getSelectionModel().select(currentIndex + 1);
+//            computerListController.getComputerListView().scrollTo(currentIndex + 1);
+//        }
+//
+//    }
+//
+//    public void UpComputerInList() {
+//        int currentIndex = computerListController.getCurrent();
+//        if (currentIndex > 0 && currentIndex <= ComputerData.getInstance().getComputersList().size() - 1) {
+//            Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex - 1);
+//            computerListController.getComputerListView().getSelectionModel().select(currentIndex - 1);
+//            computerListController.getComputerListView().scrollTo(currentIndex - 1);
+//        }
+//    }
 
-        LastConnectionData.getInstance().addHistoryItemIfNotExist((new LastConnectionItem(ip)));
-        lastConnectionsPopupController.hide();
-        isHistoryListOpen = false;
-        lastConnectionsPopupController.getLastConnectionListController().getLastConnectionList().getSelectionModel().select(0);
-        VNCRemote.connect(ip, isViewOnly);
-    }
-
-    public void DownComputerInList() {
-        int currentIndex = computerListController.getCurrent();
-        if (currentIndex >= 0 && currentIndex < ComputerData.getInstance().getComputersList().size() - 1) {
-            Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex + 1);
-            computerListController.getComputerListView().getSelectionModel().select(currentIndex + 1);
-            computerListController.getComputerListView().scrollTo(currentIndex + 1);
-        }
-
-    }
-
-    public void UpComputerInList() {
-        int currentIndex = computerListController.getCurrent();
-        if (currentIndex > 0 && currentIndex <= ComputerData.getInstance().getComputersList().size() - 1) {
-            Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex - 1);
-            computerListController.getComputerListView().getSelectionModel().select(currentIndex - 1);
-            computerListController.getComputerListView().scrollTo(currentIndex - 1);
-        }
-    }
-
-    public LastConnectionsPopupController getLastConnectionsPopupController() {
-        return lastConnectionsPopupController;
-    }
-
-    public void setHistoryListOpen(boolean historyListOpen) {
-        isHistoryListOpen = historyListOpen;
-    }
+//    public LastConnectionsPopupController getLastConnectionsPopupController() {
+//        return lastConnectionsPopupController;
+//    }
+//
+//    public void setHistoryListOpen(boolean historyListOpen) {
+//        isHistoryListOpen = historyListOpen;
+//    }
 }

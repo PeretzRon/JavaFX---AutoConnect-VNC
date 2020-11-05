@@ -6,6 +6,7 @@ import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.model.eComputerType;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
+import com.kerernor.autoconnect.view.ComputerRowController;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.ListChangeListener;

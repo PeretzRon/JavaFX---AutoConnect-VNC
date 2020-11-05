@@ -1,4 +1,4 @@
-package com.kerernor.autoconnect.view;
+package com.kerernor.autoconnect.view.screens;
 
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.util.Utils;
