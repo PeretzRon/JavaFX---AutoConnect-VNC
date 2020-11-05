@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.util.Collections;
 
-public class RemoteScreenController extends Pane {
+public class RemoteScreenController extends Pane implements IDisplayable {
     @FXML
     public Pane pnlOverview;
     @FXML
@@ -229,6 +229,7 @@ public class RemoteScreenController extends Pane {
         }
     }
 
+    @Override
     public void showPane() {
         this.setVisible(true);
         this.setStyle("-fx-background-color : #02050A");

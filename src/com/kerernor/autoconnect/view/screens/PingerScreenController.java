@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class PingerScreenController extends Pane {
+public class PingerScreenController extends Pane implements IDisplayable {
 
     @FXML
     public Pane pnlSetting;
@@ -210,6 +210,7 @@ public class PingerScreenController extends Pane {
         item.getMainPane().getStyleClass().add(Utils.PINGER_GROUP_ITEM_SELECTED);
     }
 
+    @Override
     public void showPane() {
         this.setVisible(true);
         this.setStyle("-fx-background-color : #02050A");

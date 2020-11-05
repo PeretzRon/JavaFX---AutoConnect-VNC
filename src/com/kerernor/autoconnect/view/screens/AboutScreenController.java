@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
-public class AboutScreenController extends Pane {
+public class AboutScreenController extends Pane implements IDisplayable {
 
     @FXML
     private Pane pnlAbout;
@@ -47,6 +47,7 @@ public class AboutScreenController extends Pane {
         return null;
     }
 
+    @Override
     public void showPane() {
         this.setVisible(true);
         this.setStyle("-fx-background-color : #02050A");
