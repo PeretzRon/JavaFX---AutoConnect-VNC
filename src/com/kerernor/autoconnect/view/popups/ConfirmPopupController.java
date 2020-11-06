@@ -2,11 +2,11 @@ package com.kerernor.autoconnect.view.popups;
 
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
-import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.model.Pinger;
-import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.util.KorTypes;
+import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,7 +19,8 @@ import javafx.stage.StageStyle;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class ConfirmPopupController extends GridPane {
 
@@ -36,6 +37,7 @@ public class ConfirmPopupController extends GridPane {
     private Pinger pingerItem = null;
     private Object object;
     private Stage stage;
+    ScheduledFuture<?> timer;
 
     private static ConfirmPopupController instance = null;
 
@@ -112,8 +114,13 @@ public class ConfirmPopupController extends GridPane {
         paneBehind.effectProperty().setValue(Utils.getBlurEffect());
         logger.info("paneBehind - BlueEffect");
 
+        timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
+            Platform.runLater(this::closeClickAction);
+        }, Utils.TIME_FOR_CLOSE_POPUP, TimeUnit.MILLISECONDS);
+
         Utils.showStageOnTopAndWait(stage);
         Utils.centerNewStageToBehindStage(paneBehind, stage);
+
 
         return callback;
 
@@ -123,6 +130,8 @@ public class ConfirmPopupController extends GridPane {
     public void closeClickAction() {
         logger.trace("close confirm popup - NO Action");
         callback = KorTypes.ConfirmPopUpControllerTypes.EXIT;
+        stopTimer();
+        paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
         closeStage();
     }
 
@@ -144,4 +153,13 @@ public class ConfirmPopupController extends GridPane {
     public KorTypes.ConfirmPopUpControllerTypes getCallback() {
         return callback;
     }
+
+    private void stopTimer() {
+        logger.info("ConfirmPopupController.stopTimer");
+        if (timer != null) {
+            timer.cancel(true);
+            timer = null;
+        }
+    }
+
 }

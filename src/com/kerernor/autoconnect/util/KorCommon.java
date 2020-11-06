@@ -8,8 +8,8 @@ public class KorCommon {
 
     private static KorCommon instance = null;
     private MainController mainController = null;
-    private AboutScreenController aboutScreenController = null;
-    private PingerScreenController pingerScreenController = null;
+    private final AboutScreenController aboutScreenController = null;
+    private final PingerScreenController pingerScreenController = null;
 
     public static KorCommon getInstance() {
         if (instance == null) {

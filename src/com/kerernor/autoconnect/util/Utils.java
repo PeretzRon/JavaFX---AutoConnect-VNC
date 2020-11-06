@@ -84,6 +84,7 @@ public class Utils {
     public static final int BLUR_SIZE = 5;
     public static final int BLUR_ITERATIONS = 3;
     public static final int MAX_HISTORY_CONNECT_LIST = 50;
+    public static final int TIME_FOR_CLOSE_POPUP = 7000;
 
     // Text display
     public static final String TEXT_CONFIRM_DELETE_TITLE = "Deletion confirmation";
