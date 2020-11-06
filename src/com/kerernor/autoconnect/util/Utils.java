@@ -3,10 +3,14 @@ package com.kerernor.autoconnect.util;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.Event;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -175,6 +179,12 @@ public class Utils {
         stage.setAlwaysOnTop(true);
         stage.showAndWait();
         Platform.runLater(() -> stage.setAlwaysOnTop(false));
+    }
+
+    public static void onMouseClickNode(Node node) {
+        Event.fireEvent(node, new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
+                0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                true, true, true, true, true, true, null));
     }
 
     public static void loadImages() {
