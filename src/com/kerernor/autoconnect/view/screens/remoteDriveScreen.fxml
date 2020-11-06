@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import java.lang.String?>
+
+<fx:root  type="Pane" fx:id="pnlOpenWindow" prefHeight="576.0" prefWidth="773.0" stylesheets="@../../style/style.css"
+         xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <AnchorPane prefHeight="576.0" prefWidth="793.0">
+            <Label layoutX="40.0" layoutY="21.0" text="Remote Folders" textFill="#e7e5e5">
+                <font>
+                    <Font size="24.0"/>
+                </font>
+            </Label>
+            <VBox layoutX="40.0" layoutY="73.0" prefHeight="200.0" prefWidth="285.0">
+                <children>
+                    <HBox prefHeight="52.0" prefWidth="269.0">
+                        <children>
+                            <TextField fx:id="ipTextFieldForRemoteWindow" prefHeight="38.0" prefWidth="296.0"
+                                       promptText="Enter IP Address..."/>
+                        </children>
+                    </HBox>
+                    <HBox prefHeight="94.0" prefWidth="220.0" spacing="10">
+                        <children>
+                            <Button fx:id="cancelOpenRemoteWindowBtn" onAction="#cancelOpenRemoteWindowBtnHandler" prefHeight="60.0" prefWidth="88.0" text="Cancel">
+                                <styleClass>
+                                    <String fx:value="btn-square"/>
+                                    <String fx:value="btn-color-gray"/>
+                                </styleClass>
+                            </Button>
+                            <Button fx:id="openRemoteWindowBtn" onAction="#openRemoteWindowBtnHandler" prefHeight="60.0" prefWidth="129.0" text="GO!">
+                                <styleClass>
+                                    <String fx:value="btn-square"/>
+                                    <String fx:value="btn-color-blue"/>
+                                </styleClass>
+                            </Button>
+                        </children>
+                    </HBox>
+                    <HBox spacing="10">
+                        <ProgressBar fx:id="processLoadingProgressBar" prefHeight="18.0" prefWidth="289.0"
+                                     visible="false"/>
+                    </HBox>
+                </children>
+            </VBox>
+        </AnchorPane>
+    </children>
+</fx:root>
+
