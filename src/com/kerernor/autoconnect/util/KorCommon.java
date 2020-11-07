@@ -1,5 +1,6 @@
 package com.kerernor.autoconnect.util;
 
+import com.kerernor.autoconnect.view.popups.AlertPopupController;
 import com.kerernor.autoconnect.view.screens.AboutScreenController;
 import com.kerernor.autoconnect.view.MainController;
 import com.kerernor.autoconnect.view.screens.PingerScreenController;
@@ -10,6 +11,7 @@ public class KorCommon {
     private MainController mainController = null;
     private final AboutScreenController aboutScreenController = null;
     private final PingerScreenController pingerScreenController = null;
+    private final AlertPopupController alertPopupController = AlertPopupController.getInstance();
 
     public static KorCommon getInstance() {
         if (instance == null) {
@@ -33,5 +35,9 @@ public class KorCommon {
 
     public PingerScreenController getPingerScreenController() {
         return pingerScreenController;
+    }
+
+    public AlertPopupController getAlertPopupController() {
+        return alertPopupController;
     }
 }
