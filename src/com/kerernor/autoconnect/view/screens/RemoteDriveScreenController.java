@@ -1,6 +1,8 @@
 package com.kerernor.autoconnect.view.screens;
 
 import com.kerernor.autoconnect.Main;
+import com.kerernor.autoconnect.util.KorCommon;
+import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.application.Platform;
@@ -81,7 +83,9 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
             if (Utils.isValidateIpAddress(ip)) {
                 logger.trace("openRemoteWindowBtnInternal - " + ip);
                 processLoadingProgressBar.setVisible(true);
-                windowsProcess = new ProcessBuilder("explorer.exe", String.format("\\\\%s\\%s", ip, DRIVE)).start();
+                String pathToConnect = String.format("\\\\%s\\%s", ip, DRIVE);
+                logger.info("try connect to path: " + pathToConnect);
+                windowsProcess = new ProcessBuilder("explorer.exe", pathToConnect).start();
                 Instant startActionTimeInstant = Instant.now();
                 while (windowsProcess.isAlive()) {
                     if (Duration.between(startActionTimeInstant, Instant.now()).getSeconds() > Utils.TIMEOUT_FOR_PROCESS_TO_END_IN_SECONDS) {
@@ -91,9 +95,12 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
                     }
                 }
 
+                logger.info("Process exit value: " + windowsProcess.exitValue());
+
             } else {
                 // alert user
                 logger.error("can't open remote drive - ip isn't valid");
+                Platform.runLater(() -> KorCommon.getInstance().getAlertPopupController().show(KorTypes.AlertTypes.WARNING, Utils.WRONG_IP_ADDRESS_MASSAGE, pnlOpenWindow));
             }
         } catch (IOException e) {
             logger.error("unable to open window", e);
