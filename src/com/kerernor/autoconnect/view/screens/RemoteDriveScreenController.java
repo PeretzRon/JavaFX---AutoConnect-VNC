@@ -15,6 +15,9 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class RemoteDriveScreenController extends Pane implements IDisplayable {
 
@@ -31,7 +34,9 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
 
     private Logger logger = Logger.getLogger(RemoteDriveScreenController.class);
     private static final String DRIVE = "C$";
-    Process windowsProcess = null;
+    //    Process windowsProcess = null;
+    private AtomicInteger activeProcessCount = new AtomicInteger(0);
+    private List<Process> processList = new ArrayList<>();
 
     public RemoteDriveScreenController() {
         loadView();
@@ -39,7 +44,7 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
 
     @FXML
     public void initialize() {
-
+        processLoadingProgressBar.setVisible(false);
     }
 
     private Pane loadView() {
@@ -59,7 +64,6 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
     @FXML
     public void openRemoteWindowBtnHandler() {
         logger.trace("openRemoteWindowBtnHandler");
-        processLoadingProgressBar.setVisible(true);
         ThreadManger.getInstance().getThreadPoolExecutor().execute(this::openRemoteWindowBtnInternal);
     }
 
@@ -68,35 +72,73 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
 
         try {
             if (Utils.isValidateIpAddress(ip)) {
+                logger.trace("openRemoteWindowBtnHandler - " + ip);
                 processLoadingProgressBar.setVisible(true);
-                Instant startActionTimeInstant = Instant.now();
-                windowsProcess = new ProcessBuilder("explorer.exe", String.format("\\\\%s\\%s", ip, DRIVE)).start();
+                Process windowsProcess;
+                Instant startActionTimeInstant;
+                synchronized (this) {
+                    activeProcessCount.getAndIncrement();
+                    System.out.println(activeProcessCount.get());
+                    startActionTimeInstant = Instant.now();
+                    windowsProcess = new ProcessBuilder("explorer.exe", String.format("\\\\%s\\%s", ip, DRIVE)).start();
+                    processList.add(windowsProcess);
+                }
                 while (windowsProcess.isAlive()) {
                     if (Duration.between(startActionTimeInstant, Instant.now()).getSeconds() > Utils.TIMEOUT_FOR_PROCESS_TO_END_IN_SECONDS) {
                         logger.error("Abort Operation - timeout of " + Utils.TIMEOUT_FOR_PROCESS_TO_END_IN_SECONDS + " seconds");
-                        windowsProcess.destroy();
+                        cancelProcess(windowsProcess);
+                        return;
                     }
                 }
 
-                if (windowsProcess.exitValue() == 1) {
-                    windowsProcess.destroy();
+                if (windowsProcess.exitValue() == 0) {
+                    // process finish successfully
+                    cleanProcess(windowsProcess);
                 }
+
             } else {
                 // alert user
             }
         } catch (IOException e) {
             logger.error("unable to open window", e);
-        } finally {
-            Platform.runLater(() -> processLoadingProgressBar.setVisible(false));
         }
     }
 
     @FXML
     public void cancelOpenRemoteWindowBtnHandler() {
         logger.trace("cancelOpenRemoteWindowBtnHandler");
-        if (windowsProcess != null && windowsProcess.isAlive()) {
-            windowsProcess.destroy();
-            logger.info("openRemoteWindow - operation canceled by user");
+        if (!processList.isEmpty()) {
+            Process windowsProcess = processList.get(processList.size() - 1);
+            if (windowsProcess != null && windowsProcess.isAlive()) {
+                cancelProcess(windowsProcess);
+                logger.info("openRemoteWindow - operation canceled by user");
+            }
+        } else {
+            logger.trace("cancelOpenRemoteWindowBtnHandler - no process to cancel");
+            if (activeProcessCount.get() <= 0 && processLoadingProgressBar.isVisible()) {
+                processLoadingProgressBar.setVisible(false);
+                activeProcessCount.set(0);
+            }
+        }
+
+    }
+
+    private void cleanProcess(Process process) {
+        activeProcessCount.getAndDecrement();
+        System.out.println("cleanProcess " + activeProcessCount.get());
+        processList.remove(process);
+        if (activeProcessCount.get() == 0) {
+            Platform.runLater(() -> processLoadingProgressBar.setVisible(false));
+        }
+    }
+
+    private void cancelProcess(Process process) {
+        activeProcessCount.getAndDecrement();
+        logger.trace("cancelProcess " + activeProcessCount.get());
+        process.destroy();
+        processList.remove(process);
+        if (activeProcessCount.get() == 0) {
+            Platform.runLater(() -> processLoadingProgressBar.setVisible(false));
         }
     }
 
