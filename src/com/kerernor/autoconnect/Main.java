@@ -75,6 +75,7 @@ public class Main extends Application {
                 if (remoteScreenController.getLastConnectionsPopupController().isShow()) {
                     remoteScreenController.getLastConnectionsPopupController().hide();
                     remoteScreenController.setHistoryListOpen(false);
+                    logger.trace("hide last connection popup");
                 }
             }
         });

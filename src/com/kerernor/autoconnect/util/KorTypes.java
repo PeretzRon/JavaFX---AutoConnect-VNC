@@ -6,4 +6,9 @@ public class KorTypes {
         CONFIRM,
         EXIT
     }
+
+    public enum AlertTypes{
+        WARNING,
+        ERROR
+    }
 }

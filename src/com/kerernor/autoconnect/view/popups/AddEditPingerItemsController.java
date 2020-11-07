@@ -102,6 +102,15 @@ public class AddEditPingerItemsController extends GridPane {
         pingerItemsAddedObservableList = FXCollections.observableArrayList();
         pingerItemList = new ArrayList<>();
         addedItemsList.setItems(pingerItemsAddedObservableList);
+        addedItemsList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                String[] item = newValue.split("-");
+                String name = item[0];
+                String ip = item[1];
+                IPTextField.setText(ip);
+                nameItemTextField.setText(name);
+            }
+        });
         addedItemsList.setCellFactory(param -> {
             ListCell<String> cell = new ListCell<String>() {
                 @Override

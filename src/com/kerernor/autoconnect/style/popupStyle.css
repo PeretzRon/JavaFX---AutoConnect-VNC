@@ -84,3 +84,9 @@
 .scroll-pane  {
     -fx-background-color: black;
 }
+
+.kor-separator,
+.kor-separator:vertical .line {
+    -fx-background-color: "#4C535D";
+    -fx-border-width: 0;
+}

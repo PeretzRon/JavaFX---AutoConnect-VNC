@@ -1,21 +1,25 @@
 package com.kerernor.autoconnect.view.popups;
 
 import com.kerernor.autoconnect.Main;
+import com.kerernor.autoconnect.util.KorTypes;
+import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
-import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class AlertPopupController {
 
@@ -25,18 +29,32 @@ public class AlertPopupController {
     @FXML
     private Label massageLabel;
 
+    Logger logger = Logger.getLogger(AlertPopupController.class);
     private Stage stage;
-    private Parent paneBehind;
+    private static AlertPopupController instance = null;
+    BorderPane borderPane;
+    Parent paneBehind;
+    Scene scene;
+    ScheduledFuture<?> timer;
 
-    public AlertPopupController(Parent paneBehind) {
-        this.paneBehind = paneBehind;
+    private AlertPopupController() {
+        borderPane = loadView();
+        scene = new Scene(borderPane);
+    }
+
+    public static AlertPopupController getInstance() {
+        if (instance == null) {
+            instance = new AlertPopupController();
+
+        }
+        return instance;
     }
 
     public void initialize() {
-        massageLabel.setText(Utils.WRONG_IP_ADDRESS_MASSAGE);
+
     }
 
-    private HBox loadView() {
+    private BorderPane loadView() {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.ALERT_POPUP));
         loader.setController(this);
 
@@ -49,13 +67,14 @@ public class AlertPopupController {
         return null;
     }
 
-    public void show() {
-        HBox hBox = loadView();
-        FadeTransition ft = new FadeTransition(Duration.millis(1000), hBox);
-        ft.setFromValue(0.5);
-        ft.setToValue(1.0);
-        ft.play();
-        Scene scene = new Scene(hBox);
+    public void show(KorTypes.AlertTypes alertType, String msg, Parent paneBehind) {
+        this.paneBehind = paneBehind;
+        massageLabel.setText(msg);
+
+//        FadeTransition ft = new FadeTransition(Duration.millis(1000), hBox);
+//        ft.setFromValue(0.5);
+//        ft.setToValue(1.0);
+//        ft.play();
 
         stage = new Stage();
         stage.setScene(scene);
@@ -66,14 +85,24 @@ public class AlertPopupController {
         stage.initOwner(paneBehind.getScene().getWindow());
 
         autoClosePopUpTimer();
+        timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
+            Platform.runLater(this::autoClosePopUpTimer);
+        }, 3000, TimeUnit.MILLISECONDS);
         stage.show();
         locateStageDownToParentStage();
     }
 
     private void autoClosePopUpTimer() {
-        PauseTransition delay = new PauseTransition(Duration.seconds(3));
-        delay.setOnFinished(event -> stage.close());
-        delay.play();
+        if (timer != null) {
+            logger.trace("Close stage");
+            timer.cancel(true);
+            stage.hide();
+//            PauseTransition delay = new PauseTransition(Duration.seconds(3));
+//            delay.setOnFinished(event -> stage.close());
+//            delay.play();
+            timer = null;
+        }
+
     }
 
     private void locateStageDownToParentStage() {

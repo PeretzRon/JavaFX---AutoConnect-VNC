@@ -6,7 +6,9 @@ import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.model.LastConnectionData;
 import com.kerernor.autoconnect.model.LastConnectionItem;
 import com.kerernor.autoconnect.script.VNCRemote;
+import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorEvents;
+import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.ComputerListController;
 import com.kerernor.autoconnect.view.LastConnectionsPopupController;
@@ -193,10 +195,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
     private void connectToVNC(String ip) {
         if (!Utils.isValidateIpAddress(ip)) {
             logger.info("Wrong ip address: " + ip + " Can't to connect to client");
-
-            // TODO: make singleton
-            AlertPopupController alertPopupController = new AlertPopupController(pnlOverview);
-            alertPopupController.show();
+            KorCommon.getInstance().getAlertPopupController().show(KorTypes.AlertTypes.WARNING, Utils.WRONG_IP_ADDRESS_MASSAGE, pnlOverview);
             quickConnectTextField.requestFocus();
             return;
         }
