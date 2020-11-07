@@ -9,7 +9,10 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -24,21 +27,20 @@ public class MainController extends AnchorPane {
     private PingerScreenController pingerScreenController;
     @FXML
     private AboutScreenController aboutScreenController;
-
     @FXML
     private AnchorPane mainPane;
-
     @FXML
     private Button btnRemoteScreen;
-
     @FXML
     private Button btnExitApp;
-
     @FXML
     private Button btnPingerScreen;
-
     @FXML
     private Button btnAbout;
+    @FXML
+    private StackPane exitAppStackPane;
+    @FXML
+    private StackPane minimizeAppStackPane;
 
     private static MainController instance = new MainController();
     private final Logger logger = Logger.getLogger(MainController.class);
@@ -69,8 +71,7 @@ public class MainController extends AnchorPane {
         } else if (actionEvent.getSource() == btnAbout && currentSelectedMenuButton != btnAbout) {
             changeScreenHandler(btnAbout, aboutScreenController);
         } else if (actionEvent.getSource() == btnExitApp) {
-            ThreadManger.getInstance().shutDown();
-            Platform.exit();
+            exitApp();
         }
     }
 
@@ -85,6 +86,25 @@ public class MainController extends AnchorPane {
         }
 
         selectedMenuPane.showPane();
+    }
+
+    @FXML
+    public void exitAppHandler() {
+        exitApp();
+    }
+
+    @FXML
+    public void minimizeAppHandler() {
+        logger.trace("minimizeAppHandler");
+        Stage stage = (Stage) minimizeAppStackPane.getScene().getWindow();
+        // is stage minimizable into task bar. (true | false)
+        stage.setIconified(true);
+    }
+
+    private void exitApp() {
+        logger.trace("exitApp");
+        ThreadManger.getInstance().shutDown();
+        Platform.exit();
     }
 
     public RemoteScreenController getRemoteScreenController() {

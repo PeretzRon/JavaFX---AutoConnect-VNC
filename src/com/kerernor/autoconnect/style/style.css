@@ -108,3 +108,7 @@
     -fx-text-fill: #fff;
 }
 
+.hand-cursor-hover:hover {
+    -fx-cursor: hand;
+}
+
