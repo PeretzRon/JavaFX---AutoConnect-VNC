@@ -50,11 +50,11 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button fx:id="btnAbout" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@../style/style.css" text="About">
+            <Button fx:id="btnOpenWindowScreen" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@../style/style.css" text="Folders Access">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/icons8_Person_32px.png" />
+                        <Image url="@../images/icons8_Box_32px.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -62,11 +62,11 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button fx:id="btnOpenWindowScreen" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@../style/style.css" text="Folders Access">
+            <Button fx:id="btnAbout" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@../style/style.css" text="About">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/icons8_Box_32px.png" />
+                        <Image url="@../images/icons8_Person_32px.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -92,8 +92,8 @@
          <children>
             <RemoteScreenController fx:id="remoteScreenController"/>
             <PingerScreenController fx:id="pingerScreenController"/>
-            <AboutScreenController fx:id="aboutScreenController"/>
             <RemoteDriveScreenController fx:id="remoteDriveScreenController"/>
+            <AboutScreenController fx:id="aboutScreenController"/>
          </children>
       </StackPane>
    </children>
