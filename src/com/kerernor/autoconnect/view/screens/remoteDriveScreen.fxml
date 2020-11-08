@@ -11,47 +11,52 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
-<fx:root fx:id="pnlOpenWindow" prefHeight="576.0" prefWidth="773.0" stylesheets="@../../style/style.css" type="Pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<?import com.kerernor.autoconnect.view.LastRemoteDriveListController?>
+<fx:root fx:id="pnlOpenWindow" prefHeight="576.0" prefWidth="773.0" stylesheets="@../../style/style.css" type="Pane"
+         xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <AnchorPane prefHeight="576.0" prefWidth="793.0">
             <Label layoutX="40.0" layoutY="21.0" text="Remote Folders" textFill="#e7e5e5">
                 <font>
-                    <Font size="24.0" />
+                    <Font size="24.0"/>
                 </font>
             </Label>
             <VBox alignment="CENTER_LEFT" layoutX="40.0" layoutY="73.0" prefHeight="60.0" prefWidth="469.0">
                 <children>
                     <HBox alignment="CENTER" prefHeight="52.0" prefWidth="269.0" spacing="10.0">
                         <children>
-                            <TextField fx:id="ipTextFieldForRemoteWindow" prefHeight="38.0" prefWidth="296.0" promptText="Enter IP Address..." />
-                            <Button fx:id="openRemoteWindowBtn" onAction="#openRemoteWindowBtnHandler" prefHeight="37.0" prefWidth="94.0" text="Connect">
+                            <TextField fx:id="ipTextFieldForRemoteWindow" prefHeight="38.0" prefWidth="296.0"
+                                       promptText="Enter IP Address..."/>
+                            <Button fx:id="openRemoteWindowBtn" onAction="#openRemoteWindowBtnHandler" prefHeight="37.0"
+                                    prefWidth="94.0" text="Connect">
                                 <styleClass>
-                                    <String fx:value="btn-square" />
-                                    <String fx:value="btn-color-blue" />
+                                    <String fx:value="btn-square"/>
+                                    <String fx:value="btn-color-blue"/>
                                 </styleClass>
                             </Button>
-                            <Button fx:id="cancelOpenRemoteWindowBtn" onAction="#cancelOpenRemoteWindowBtnHandler" prefHeight="60.0" prefWidth="154.0" text="Cancel">
+                            <Button fx:id="cancelOpenRemoteWindowBtn" onAction="#cancelOpenRemoteWindowBtnHandler"
+                                    prefHeight="60.0" prefWidth="154.0" text="Cancel">
                                 <styleClass>
-                                    <String fx:value="btn-square" />
-                                    <String fx:value="btn-color-gray" />
+                                    <String fx:value="btn-square"/>
+                                    <String fx:value="btn-color-gray"/>
                                 </styleClass>
                             </Button>
                         </children>
-                  <padding>
-                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                  </padding>
+                        <padding>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                        </padding>
                     </HBox>
-               <HBox alignment="CENTER" prefHeight="52.0" prefWidth="269.0" spacing="10.0">
-                  <children>
-                     <ProgressBar fx:id="processLoadingProgressBar" prefHeight="18.0" prefWidth="509.0" />
-                  </children>
-                  <padding>
-                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                  </padding>
-               </HBox>
+                    <HBox alignment="CENTER" prefHeight="52.0" prefWidth="269.0" spacing="10.0">
+                        <children>
+                            <ProgressBar fx:id="processLoadingProgressBar" prefHeight="18.0" prefWidth="509.0"/>
+                        </children>
+                        <padding>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                        </padding>
+                    </HBox>
                 </children>
             </VBox>
+            <LastRemoteDriveListController fx:id="lastRemoteDriveListController"/>
         </AnchorPane>
     </children>
 </fx:root>

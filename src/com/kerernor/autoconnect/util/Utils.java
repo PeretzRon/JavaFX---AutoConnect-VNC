@@ -38,11 +38,13 @@ public class Utils {
     // View paths
     public static final String MAIN_VIEW = VIEWS_BASE_PATH + "main.fxml";
     public static final String COMPUTER_LIST = VIEWS_BASE_PATH + "computerList.fxml";
+    public static final String LAST_REMOTE_DRIVE_LIST = VIEWS_BASE_PATH + "lastRemoteDriveList.fxml";
     public static final String REMOTE_SCREEN = VIEWS_SCREENS_BASE_PATH + "remoteScreen.fxml";
     public static final String PINGER_SCREEN = VIEWS_SCREENS_BASE_PATH + "pingerScreen.fxml";
     public static final String ABOUT_SCREEN = VIEWS_SCREENS_BASE_PATH + "AboutScreen.fxml";
     public static final String REMOTE_DRIVE_SCREEN = VIEWS_SCREENS_BASE_PATH + "remoteDriveScreen.fxml";
     public static final String COMPUTER_ROW_VIEW = VIEWS_BASE_PATH + "computerRow.fxml";
+    public static final String LAST_REMOTE_DRIVE_ROW_VIEW = VIEWS_BASE_PATH + "lastRemoteDriveRow.fxml";
     public static final String SEARCH_AREA = VIEWS_BASE_PATH + "searchArea.fxml";
     public static final String PINGER_LIST = VIEWS_BASE_PATH + "pingListGroup.fxml";
     public static final String PINGER_ROW_VIEW = VIEWS_BASE_PATH + "pingRowItem.fxml";
