@@ -83,7 +83,6 @@ public class Main extends Application {
         this.rootLayout.setOnMouseDragged(event -> {
             primaryStage.setX(event.getScreenX() - x);
             primaryStage.setY(event.getScreenY() - y);
-
         });
     }
 
