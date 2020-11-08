@@ -5,6 +5,7 @@ import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
+import com.kerernor.autoconnect.view.LastRemoteDriveListController;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -38,6 +39,8 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
     private Button openRemoteWindowBtn;
     @FXML
     private ProgressBar processLoadingProgressBar;
+    @FXML
+    private LastRemoteDriveListController lastRemoteDriveListController;
 
     private Logger logger = Logger.getLogger(RemoteDriveScreenController.class);
     private static final String DRIVE = "C$";
@@ -53,6 +56,7 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
         processLoadingProgressBar.setVisible(false);
         openRemoteWindowBtn.disableProperty().bind(isProcessRunning);
         cancelOpenRemoteWindowBtn.disableProperty().bind(Bindings.not(isProcessRunning));
+        lastRemoteDriveListController.loadList();
     }
 
     private Pane loadView() {

@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
-public class LastRemoteDriveListController {
+public class LastRemoteDriveListController extends ListView {
 
     @FXML
     private ListView<LastRemoteDriveItem> lastRemoteDriveList;
