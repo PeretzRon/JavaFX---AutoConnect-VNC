@@ -50,12 +50,6 @@ public class LastRemoteDriveListController extends ListView {
         logger.trace("loadList");
         lastRemoteDriveList.setItems(LastRemoteDriveData.getInstance().getLastRemoteDriveItems());
 
-//        computerListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-//            if (newValue != null) {
-//                current = ComputerData.getInstance().getComputerIndexInListByIP(newValue.getIp());
-//            }
-//        });
-
         lastRemoteDriveList.setCellFactory(lastRemoteDriveItemListView -> {
             LastRemoteDriveRowController lastRemoteDriveRowController = new LastRemoteDriveRowController();
 
@@ -63,4 +57,7 @@ public class LastRemoteDriveListController extends ListView {
         });
     }
 
+    public ListView<LastRemoteDriveItem> getLastRemoteDriveList() {
+        return lastRemoteDriveList;
+    }
 }

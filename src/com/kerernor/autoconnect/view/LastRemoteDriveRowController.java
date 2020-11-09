@@ -21,7 +21,7 @@ public class LastRemoteDriveRowController extends ListCell<LastRemoteDriveItem> 
     @FXML
     private BorderPane borderPane;
     @FXML
-    private Label lastIPConnection;
+    private Label lastPathConnection;
     @FXML
     private Button connectBtn;
 
@@ -71,6 +71,6 @@ public class LastRemoteDriveRowController extends ListCell<LastRemoteDriveItem> 
             loader = loadView();
         }
 
-        lastIPConnection.setText(lastRemoteDriveItem.getIp());
+        lastPathConnection.setText(lastRemoteDriveItem.getPath());
     }
 }
