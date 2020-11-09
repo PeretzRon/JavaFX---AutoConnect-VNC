@@ -2,9 +2,18 @@ package com.kerernor.autoconnect.model;
 
 public class LastRemoteDriveItem {
     private String ip;
+    private String path;
 
-    public LastRemoteDriveItem(String ip) {
+    public LastRemoteDriveItem(String ip, String path) {
         this.ip = ip;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getIp() {
@@ -19,6 +28,7 @@ public class LastRemoteDriveItem {
     public String toString() {
         return "LastRemoteDriveItem{" +
                 "ip='" + ip + '\'' +
+                ", path='" + path + '\'' +
                 '}';
     }
 }

@@ -1,6 +1,8 @@
 package com.kerernor.autoconnect.view.screens;
 
 import com.kerernor.autoconnect.Main;
+import com.kerernor.autoconnect.model.LastRemoteDriveData;
+import com.kerernor.autoconnect.model.LastRemoteDriveItem;
 import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.ThreadManger;
@@ -10,9 +12,13 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -41,6 +47,8 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
     private ProgressBar processLoadingProgressBar;
     @FXML
     private LastRemoteDriveListController lastRemoteDriveListController;
+    @FXML
+    private Label noValueInListLabel;
 
     private Logger logger = Logger.getLogger(RemoteDriveScreenController.class);
     private static final String DRIVE = "C$";
@@ -57,6 +65,8 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
         openRemoteWindowBtn.disableProperty().bind(isProcessRunning);
         cancelOpenRemoteWindowBtn.disableProperty().bind(Bindings.not(isProcessRunning));
         lastRemoteDriveListController.loadList();
+        noResultLabelInitAndAddListener();
+
     }
 
     private Pane loadView() {
@@ -79,6 +89,22 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
         ThreadManger.getInstance().getThreadPoolExecutor().execute(this::openRemoteWindowBtnInternal);
     }
 
+    private void noResultLabelInitAndAddListener() {
+        if (LastRemoteDriveData.getInstance().getLastRemoteDriveItems().size() == 0) {
+            noValueInListLabel.toFront();
+        } else {
+            noValueInListLabel.toBack();
+        }
+
+        LastRemoteDriveData.getInstance().getLastRemoteDriveItems().addListener((ListChangeListener<? super LastRemoteDriveItem>) c -> {
+            if (c.getList().size() == 0) {
+                noValueInListLabel.toFront();
+            } else {
+                noValueInListLabel.toBack();
+            }
+        });
+    }
+
     private void openRemoteWindowBtnInternal() {
         isProcessRunning.set(true);
         String ip = ipTextFieldForRemoteWindow.getText();
@@ -89,6 +115,7 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
                 processLoadingProgressBar.setVisible(true);
                 String pathToConnect = String.format("\\\\%s\\%s", ip, DRIVE);
                 logger.info("try connect to path: " + pathToConnect);
+                Platform.runLater(() -> LastRemoteDriveData.getInstance().addItemIfNotExist(new LastRemoteDriveItem(ip, pathToConnect)));
                 windowsProcess = new ProcessBuilder("explorer.exe", pathToConnect).start();
                 Instant startActionTimeInstant = Instant.now();
                 while (windowsProcess.isAlive()) {

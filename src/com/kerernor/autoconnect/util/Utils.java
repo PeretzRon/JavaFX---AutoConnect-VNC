@@ -84,6 +84,7 @@ public class Utils {
     public static final int BLUR_SIZE = 5;
     public static final int BLUR_ITERATIONS = 3;
     public static final int MAX_HISTORY_CONNECT_LIST = 50;
+    public static final int MAX_REMOTE_DRIVE_CONNECT_LIST = 50;
     public static final int TIME_FOR_CLOSE_POPUP = 7000;
     public static final int TIME_FOR_CLOSE_ALERT_MESSAGE = 3500;
     public static final long TIMEOUT_FOR_PROCESS_TO_END_IN_SECONDS = 20;

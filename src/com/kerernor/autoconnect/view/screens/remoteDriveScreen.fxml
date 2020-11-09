@@ -47,7 +47,19 @@
                     </HBox>
                 </children>
             </VBox>
-            <LastRemoteDriveListController fx:id="lastRemoteDriveListController" layoutX="20.0" layoutY="322.0" prefHeight="227.0" prefWidth="729.0" />
+            <StackPane layoutX="17.0" layoutY="319.0">
+                <LastRemoteDriveListController fx:id="lastRemoteDriveListController" layoutX="20.0" layoutY="322.0" prefHeight="227.0" prefWidth="469.0" style="-fx-background-color: #ccc;" />
+            <Label fx:id="noValueInListLabel" text="No Valuse!!" textFill="WHITE">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            </StackPane>
+         <Label layoutX="22.0" layoutY="288.0" prefHeight="27.0" prefWidth="145.0" text="Last Connections" textFill="WHITE">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Label>
         </AnchorPane>
     </children>
 </fx:root>
