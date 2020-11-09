@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.log4j.Logger;
 
+import javax.swing.text.html.ImageView;
 import java.io.IOException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +29,9 @@ public class AlertPopupController {
 
     @FXML
     private Label massageLabel;
+
+    @FXML
+    private HBox closePopupIcon;
 
     Logger logger = Logger.getLogger(AlertPopupController.class);
     private Stage stage;
@@ -87,7 +91,7 @@ public class AlertPopupController {
         autoClosePopUpTimer();
         timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
             Platform.runLater(this::autoClosePopUpTimer);
-        }, 3000, TimeUnit.MILLISECONDS);
+        }, Utils.TIME_FOR_CLOSE_ALERT_MESSAGE, TimeUnit.MILLISECONDS);
         stage.show();
         locateStageDownToParentStage();
     }
@@ -112,5 +116,11 @@ public class AlertPopupController {
 
         stage.setX(centerXPosition - stage.getWidth() / 2d);
         stage.setY(centerYPosition - stage.getHeight());
+    }
+
+    @FXML
+    public void autoClosePopUpTimerHandler() {
+        logger.trace("close alert by click");
+        autoClosePopUpTimer();
     }
 }
