@@ -49,6 +49,8 @@ public class PingerScreenController extends Pane implements IDisplayable {
     public Button checkPing;
     @FXML
     public Button addPingerItem;
+    @FXML
+    private Label selectedPingGroupName;
 
     private Logger logger = Logger.getLogger(PingerScreenController.class);
     FXMLLoader loader = null;
@@ -65,6 +67,7 @@ public class PingerScreenController extends Pane implements IDisplayable {
     public void initialize() {
         checkPing.disableProperty().bind(isRunPingerButtonDisabled);
         totalProgressLabel.setText("");
+        selectedPingGroupName.setText("");
 
         flowPaneGroupPinger.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_ITEM, event -> {
             logger.trace("KorEvents.PingerEvent.UPDATE_PINGER_ITEM");
@@ -180,6 +183,7 @@ public class PingerScreenController extends Pane implements IDisplayable {
 
     public void createPingerGroups(String filterText) {
         flowPaneGroupPinger.getChildren().clear();
+        selectedPingGroupName.setText("");
         PingerData.getInstance().getPingerObservableList()
                 .stream()
                 .filter(pinger -> pinger.getName().toLowerCase().contains(filterText.toLowerCase()))
@@ -187,14 +191,8 @@ public class PingerScreenController extends Pane implements IDisplayable {
                     PingGroupItemController item = new PingGroupItemController(pingerGroup, pnlSetting);
                     pingGroupItemControllerList.add(item);
                     item.getMainPane().setOnMouseClicked(event -> {
-                        isRunPingerButtonDisabled.set(false);
-                        isCheckPingRunning = false;
-                        pingItemsScrollPane.setVvalue(0);
-                        selectItemStyle(item);
-                        passPing.set(0);
-                        totalProgressLabel.setText("");
-                        totalProgress.setProgress(0);
-                        totalProgress.setVisible(false);
+                        logger.trace("selected item: " + item.getName().getText());
+                        clearAndUpdateValues(item);
                         ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(item.getName().getText());
                         pingListGroupController.loadList(pingerList);
                         pingListGroupController.resetProgressBar();
@@ -210,6 +208,18 @@ public class PingerScreenController extends Pane implements IDisplayable {
         item.getMainPane().getStyleClass().add(Utils.PINGER_GROUP_ITEM_SELECTED);
     }
 
+    private void clearAndUpdateValues(PingGroupItemController item) {
+        isRunPingerButtonDisabled.set(false);
+        isCheckPingRunning = false;
+        pingItemsScrollPane.setVvalue(0);
+        selectItemStyle(item);
+        passPing.set(0);
+        totalProgressLabel.setText("");
+        selectedPingGroupName.setText(item.getName().getText());
+        totalProgress.setProgress(0);
+        totalProgress.setVisible(false);
+    }
+
     @Override
     public void showPane() {
         this.setVisible(true);
@@ -217,5 +227,6 @@ public class PingerScreenController extends Pane implements IDisplayable {
         this.toFront();
         logger.trace("showPane");
     }
-
+    //TOOD: fix bug button is allow after create new group
+    //TOOD: group name cut
 }
