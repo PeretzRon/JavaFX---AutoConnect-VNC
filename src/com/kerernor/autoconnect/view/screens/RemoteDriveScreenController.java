@@ -53,7 +53,7 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
     private Logger logger = Logger.getLogger(RemoteDriveScreenController.class);
     private static final String DRIVE = "C$";
     Process windowsProcess = null;
-    private final BooleanProperty isProcessRunning = new SimpleBooleanProperty(false);
+    private static final BooleanProperty isProcessRunning = new SimpleBooleanProperty(false);
 
     public RemoteDriveScreenController() {
         loadView();
@@ -156,5 +156,9 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
         this.setStyle("-fx-background-color : #02050A");
         this.toFront();
         logger.trace("showPane");
+    }
+
+    public static BooleanProperty isProcessRunningProperty() {
+        return isProcessRunning;
     }
 }

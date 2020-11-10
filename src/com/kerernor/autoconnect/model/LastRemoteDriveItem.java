@@ -6,6 +6,7 @@ public class LastRemoteDriveItem {
 
     public LastRemoteDriveItem(String ip, String path) {
         this.ip = ip;
+        this.path = path;
     }
 
     public String getPath() {
