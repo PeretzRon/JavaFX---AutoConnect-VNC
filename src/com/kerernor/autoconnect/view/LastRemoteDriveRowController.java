@@ -2,9 +2,12 @@ package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
+import com.kerernor.autoconnect.model.LastRemoteDriveData;
 import com.kerernor.autoconnect.model.LastRemoteDriveItem;
 import com.kerernor.autoconnect.model.eComputerType;
+import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.Utils;
+import com.kerernor.autoconnect.view.screens.RemoteDriveScreenController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -28,13 +31,14 @@ public class LastRemoteDriveRowController extends ListCell<LastRemoteDriveItem> 
     private FXMLLoader loader;
     private LastRemoteDriveItem lastRemoteDriveItem;
 
+
     public LastRemoteDriveRowController() {
 
     }
 
     @FXML
     public void initialize() {
-
+        connectBtn.disableProperty().bind(RemoteDriveScreenController.isProcessRunningProperty());
     }
 
     public FXMLLoader loadView() {
@@ -73,4 +77,11 @@ public class LastRemoteDriveRowController extends ListCell<LastRemoteDriveItem> 
 
         lastPathConnection.setText(lastRemoteDriveItem.getPath());
     }
+
+    @FXML
+    public void deleteRowHandler() {
+        LastRemoteDriveData.getInstance().deleteItem(lastRemoteDriveItem);
+    }
+
+
 }

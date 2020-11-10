@@ -19,8 +19,10 @@
     -fx-font-size: 18px;
     -fx-border-color: #fff;
     -fx-border-width: 1;
-    -fx-pref-width: 150;
-    -fx-pref-height: 8;
+}
+
+.btn-square-small {
+    -fx-font-size: 14px;
 }
 
 .btn-color-blue {

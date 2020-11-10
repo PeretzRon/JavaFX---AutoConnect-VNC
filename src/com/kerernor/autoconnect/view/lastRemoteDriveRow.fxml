@@ -1,34 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<GridPane fx:id="mainPane" prefHeight="45.0" prefWidth="311.0" styleClass="item" stylesheets="@../style/itemStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <BorderPane fx:id="borderPane" prefHeight="49.0" prefWidth="639.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+<GridPane fx:id="mainPane" prefHeight="45.0" prefWidth="678.0" styleClass="item" stylesheets="@../style/itemStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <BorderPane fx:id="borderPane" prefHeight="45.0" prefWidth="697.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
         <right>
-            <Button fx:id="connectBtn" alignment="CENTER" text="Connect" BorderPane.alignment="CENTER" />
+            <Button fx:id="connectBtn" alignment="CENTER" prefHeight="26.0" prefWidth="89.0" text="Connect" BorderPane.alignment="CENTER">
+                <styleClass>
+                    <String fx:value="btn-square" />
+                    <String fx:value="btn-color-blue" />
+                    <String fx:value="btn-square-small" />
+                </styleClass>
+            </Button>
         </right>
-      <padding>
-         <Insets left="10.0" right="10.0" />
-      </padding>
-      <left>
-         <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-            <children>
-                  <Label fx:id="lastPathConnection" alignment="CENTER" text="XXX.XXX.XXX.XXX" textFill="WHITE" />
-            </children>
-         </VBox>
-      </left>
+        <padding>
+            <Insets left="10.0" right="10.0" />
+        </padding>
+        <left>
+            <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="335.0" BorderPane.alignment="CENTER">
+                <children>
+                    <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="148.0" spacing="7.0">
+                        <children>
+                            <ImageView fitHeight="32.0" fitWidth="23.0" onMouseClicked="#deleteRowHandler" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@../images/remove.png" />
+                                </image>
+                            </ImageView>
+                            <Label fx:id="lastPathConnection" prefHeight="18.0" prefWidth="295.0" text="//10.0.0.10/c$" textFill="WHITE" />
+                        </children>
+                    </HBox>
+                </children>
+            </VBox>
+        </left>
     </BorderPane>
-   <columnConstraints>
-      <ColumnConstraints />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-   </rowConstraints>
+    <columnConstraints>
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+    </rowConstraints>
 </GridPane>

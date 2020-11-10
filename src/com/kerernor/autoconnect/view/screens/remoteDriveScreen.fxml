@@ -20,13 +20,13 @@
                     <HBox alignment="CENTER" prefHeight="52.0" prefWidth="269.0" spacing="10.0">
                         <children>
                             <TextField fx:id="ipTextFieldForRemoteWindow" prefHeight="38.0" prefWidth="296.0" promptText="Enter IP Address..." />
-                            <Button fx:id="openRemoteWindowBtn" onAction="#openRemoteWindowBtnHandler" prefHeight="37.0" prefWidth="94.0" text="Connect">
+                            <Button fx:id="openRemoteWindowBtn" onAction="#openRemoteWindowBtnHandler" prefHeight="40.0" prefWidth="174.0" text="Connect">
                                 <styleClass>
                                     <String fx:value="btn-square" />
                                     <String fx:value="btn-color-blue" />
                                 </styleClass>
                             </Button>
-                            <Button fx:id="cancelOpenRemoteWindowBtn" onAction="#cancelOpenRemoteWindowBtnHandler" prefHeight="60.0" prefWidth="154.0" text="Cancel">
+                            <Button fx:id="cancelOpenRemoteWindowBtn" onAction="#cancelOpenRemoteWindowBtnHandler" prefHeight="40.0" prefWidth="159.0" text="Cancel">
                                 <styleClass>
                                     <String fx:value="btn-square" />
                                     <String fx:value="btn-color-gray" />
@@ -48,7 +48,7 @@
                 </children>
             </VBox>
             <StackPane layoutX="17.0" layoutY="319.0">
-                <LastRemoteDriveListController fx:id="lastRemoteDriveListController" layoutX="20.0" layoutY="322.0" prefHeight="227.0" prefWidth="469.0" style="-fx-background-color: #ccc;" />
+                <LastRemoteDriveListController fx:id="lastRemoteDriveListController" layoutX="20.0" layoutY="322.0" prefHeight="227.0" prefWidth="705.0" style="-fx-background-color: #ccc;" />
             <Label fx:id="noValueInListLabel" text="No Valuse!!" textFill="WHITE">
                <font>
                   <Font size="22.0" />
