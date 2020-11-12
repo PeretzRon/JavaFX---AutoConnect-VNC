@@ -14,9 +14,9 @@ public class LastRemoteDriveData {
     private Logger logger = Logger.getLogger(LastRemoteDriveData.class);
 
     static {
-        LastRemoteDriveData.getInstance().getLastRemoteDriveItems().add(new LastRemoteDriveItem("10.0.0.10", "//10.0.0.10//C$"));
-        LastRemoteDriveData.getInstance().getLastRemoteDriveItems().add(new LastRemoteDriveItem("10.0.0.10", "//10.0.0.9//C$"));
-//        LastRemoteDriveData.getInstance().getLastRemoteDriveItems().add(new LastRemoteDriveItem("10.0.0.8"));
+        LastRemoteDriveData.getInstance().getLastRemoteDriveItems().add(new LastRemoteDriveItem("10.0.0.10", "\\\\10.0.0.10\\c$"));
+        LastRemoteDriveData.getInstance().getLastRemoteDriveItems().add(new LastRemoteDriveItem("10.0.0.9", "\\\\10.0.0.9\\c$"));
+//        LastRemoteDriveData.getInstance().getLastRemoteDriveItems().add(new LastRemoteDriveItem("10.0.0.8"))
 //        LastRemoteDriveData.getInstance().getLastRemoteDriveItems().add(new LastRemoteDriveItem("10.0.0.7"));
 //        LastRemoteDriveData.getInstance().getLastRemoteDriveItems().add(new LastRemoteDriveItem("10.0.0.6"));
 //        LastRemoteDriveData.getInstance().getLastRemoteDriveItems().add(new LastRemoteDriveItem("10.0.0.4"));

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root fx:id="mainPane" prefHeight="576.0" prefWidth="773.0" stylesheets="@../style/style.css" type="Pane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox alignment="CENTER" prefHeight="576.0" prefWidth="773.0">
+        <ProgressBar fx:id="progressBar" prefHeight="18.0" prefWidth="344.0" />
+    </VBox>
+</fx:root>

@@ -83,5 +83,9 @@ public class LastRemoteDriveRowController extends ListCell<LastRemoteDriveItem> 
         LastRemoteDriveData.getInstance().deleteItem(lastRemoteDriveItem);
     }
 
+    @FXML
+    public void connectToPathHandler() {
+        KorCommon.getInstance().getRemoteDriveScreenController().openRemoteWindowBtnInternal(lastRemoteDriveItem.getPath(), lastRemoteDriveItem.getIp());
+    }
 
 }

@@ -51,7 +51,7 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
     private Label noValueInListLabel;
 
     private Logger logger = Logger.getLogger(RemoteDriveScreenController.class);
-    private static final String DRIVE = "C$";
+    private static final String DRIVE = "c$";
     Process windowsProcess = null;
     private static final BooleanProperty isProcessRunning = new SimpleBooleanProperty(false);
 
@@ -73,7 +73,7 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.REMOTE_DRIVE_SCREEN));
         loader.setController(this);
         loader.setRoot(this);
-
+        KorCommon.getInstance().setRemoteDriveScreenController(loader.getController());
         try {
             return loader.load();
         } catch (IOException e) {
@@ -81,12 +81,6 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
         }
 
         return null;
-    }
-
-    @FXML
-    public void openRemoteWindowBtnHandler() {
-        logger.trace("openRemoteWindowBtnHandler");
-        ThreadManger.getInstance().getThreadPoolExecutor().execute(this::openRemoteWindowBtnInternal);
     }
 
     private void noResultLabelInitAndAddListener() {
@@ -105,15 +99,35 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
         });
     }
 
-    private void openRemoteWindowBtnInternal() {
-        isProcessRunning.set(true);
+    @FXML
+    public void openRemoteWindowBtnHandler() {
+        logger.trace("openRemoteWindowBtnHandler");
         String ip = ipTextFieldForRemoteWindow.getText();
+        if (!isIPCorrectToConnect(ip)) return; // ip not valid can't continue with the operation
+        String pathToConnect = createPathFromIP(ip);
+        openRemoteWindowBtnInternal(pathToConnect, ip);
+    }
 
-        try {
-            if (Utils.isValidateIpAddress(ip)) {
-                logger.trace("openRemoteWindowBtnInternal - " + ip);
-                processLoadingProgressBar.setVisible(true);
-                String pathToConnect = String.format("\\\\%s\\%s", ip, DRIVE);
+    private String createPathFromIP(String ip) {
+        return String.format("\\\\%s\\%s", ip, DRIVE);
+    }
+
+    private boolean isIPCorrectToConnect(String ip) {
+        if (Utils.isValidateIpAddress(ip)) {
+            return true;
+        } else {
+            KorCommon.getInstance().getAlertPopupController().show(KorTypes.AlertTypes.WARNING, Utils.WRONG_IP_ADDRESS_MASSAGE, pnlOpenWindow);
+            logger.error("can't open remote drive - ip isn't valid");
+            return false;
+        }
+    }
+
+    public void openRemoteWindowBtnInternal(String pathToConnect, String ip) {
+        isProcessRunning.set(true);
+        processLoadingProgressBar.setVisible(true);
+        ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
+            try {
+                logger.trace("openRemoteWindowBtnInternal - " + pathToConnect);
                 logger.info("try connect to path: " + pathToConnect);
                 Platform.runLater(() -> LastRemoteDriveData.getInstance().addItemIfNotExist(new LastRemoteDriveItem(ip, pathToConnect)));
                 windowsProcess = new ProcessBuilder("explorer.exe", pathToConnect).start();
@@ -122,23 +136,18 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
                     if (Duration.between(startActionTimeInstant, Instant.now()).getSeconds() > Utils.TIMEOUT_FOR_PROCESS_TO_END_IN_SECONDS) {
                         logger.error("Abort Operation - timeout of " + Utils.TIMEOUT_FOR_PROCESS_TO_END_IN_SECONDS + " seconds");
                         windowsProcess.destroy();
-                        return;
                     }
                 }
 
                 logger.info("Process exit value: " + windowsProcess.exitValue());
 
-            } else {
-                // alert user
-                logger.error("can't open remote drive - ip isn't valid");
-                Platform.runLater(() -> KorCommon.getInstance().getAlertPopupController().show(KorTypes.AlertTypes.WARNING, Utils.WRONG_IP_ADDRESS_MASSAGE, pnlOpenWindow));
+            } catch (IOException e) {
+                logger.error("unable to open window", e);
+            } finally {
+                Platform.runLater(() -> processLoadingProgressBar.setVisible(false));
+                isProcessRunning.set(false);
             }
-        } catch (IOException e) {
-            logger.error("unable to open window", e);
-        } finally {
-            Platform.runLater(() -> processLoadingProgressBar.setVisible(false));
-            isProcessRunning.set(false);
-        }
+        });
     }
 
     @FXML

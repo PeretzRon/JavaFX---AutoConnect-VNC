@@ -9,7 +9,7 @@
 <GridPane fx:id="mainPane" prefHeight="45.0" prefWidth="678.0" styleClass="item" stylesheets="@../style/itemStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <BorderPane fx:id="borderPane" prefHeight="45.0" prefWidth="697.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
         <right>
-            <Button fx:id="connectBtn" alignment="CENTER" prefHeight="26.0" prefWidth="89.0" text="Connect" BorderPane.alignment="CENTER">
+            <Button fx:id="connectBtn" onAction="#connectToPathHandler" alignment="CENTER" prefHeight="26.0" prefWidth="89.0" text="Connect" BorderPane.alignment="CENTER">
                 <styleClass>
                     <String fx:value="btn-square" />
                     <String fx:value="btn-color-blue" />
