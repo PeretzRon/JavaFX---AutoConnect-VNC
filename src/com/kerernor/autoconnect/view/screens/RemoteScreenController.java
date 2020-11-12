@@ -60,11 +60,20 @@ public class RemoteScreenController extends Pane implements IDisplayable {
     public ImageView openCloseHistoryImage;
 
     private Logger logger = Logger.getLogger(RemoteScreenController.class);
+    private static RemoteScreenController instance = null;
     private final BooleanProperty isHistoryListEmpty = new SimpleBooleanProperty(true);
     private boolean isHistoryListOpen = false;
     private boolean isViewOnly = false;
 
-    public RemoteScreenController() {
+
+    public static RemoteScreenController getInstance() {
+        if (instance == null) {
+            instance = new RemoteScreenController();
+        }
+        return instance;
+    }
+
+    private RemoteScreenController() {
         loadView();
     }
 

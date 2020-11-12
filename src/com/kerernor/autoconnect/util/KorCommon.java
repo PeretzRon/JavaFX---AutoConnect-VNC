@@ -4,13 +4,16 @@ import com.kerernor.autoconnect.view.popups.AlertPopupController;
 import com.kerernor.autoconnect.view.screens.AboutScreenController;
 import com.kerernor.autoconnect.view.MainController;
 import com.kerernor.autoconnect.view.screens.PingerScreenController;
+import com.kerernor.autoconnect.view.screens.RemoteScreenController;
 
 public class KorCommon {
 
     private static KorCommon instance = null;
     private MainController mainController = null;
-    private final AboutScreenController aboutScreenController = null;
-    private final PingerScreenController pingerScreenController = null;
+    private final RemoteScreenController remoteScreenController = RemoteScreenController.getInstance();
+    private final PingerScreenController pingerScreenController = PingerScreenController.getInstance();
+    private final AboutScreenController aboutScreenController = AboutScreenController.getInstance();
+
     private final AlertPopupController alertPopupController = AlertPopupController.getInstance();
 
     public static KorCommon getInstance() {
@@ -29,12 +32,16 @@ public class KorCommon {
         this.mainController = mainController;
     }
 
-    public AboutScreenController getAboutScreenController() {
-        return aboutScreenController;
+    public RemoteScreenController getRemoteScreenController() {
+        return remoteScreenController;
     }
 
     public PingerScreenController getPingerScreenController() {
         return pingerScreenController;
+    }
+
+    public AboutScreenController getAboutScreenController() {
+        return aboutScreenController;
     }
 
     public AlertPopupController getAlertPopupController() {
