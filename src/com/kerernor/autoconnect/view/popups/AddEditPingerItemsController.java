@@ -7,6 +7,8 @@ import com.kerernor.autoconnect.model.PingerItem;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.components.JTextFieldController;
+import com.sun.javafx.scene.control.skin.TextAreaSkin;
+import com.sun.javafx.scene.control.skin.TextFieldSkin;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,11 +21,13 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -59,31 +63,19 @@ public class AddEditPingerItemsController extends GridPane {
     private Stage stage;
     private Parent paneBehind;
 
+    private Logger logger = Logger.getLogger(AddEditPingerItemsController.class);
     private ObservableList<String> pingerItemsAddedObservableList;
     private List<PingerItem> pingerItemList;
 
     private Pinger pingerItem;
     private boolean isEditItem;
 
-    private static AddEditPingerItemsController instance = null;
-
-    private AddEditPingerItemsController() {
-    }
-
-    public static AddEditPingerItemsController getInstance() {
-        if (instance == null) {
-            instance = new AddEditPingerItemsController();
-        }
-
-        return instance;
-    }
-
-    public void setConfiguration(Parent paneBehind, Pinger pingerItem, boolean isEditItem) {
+    public AddEditPingerItemsController(Parent paneBehind, Pinger pingerItem, boolean isEditItem) {
+        logger.trace("AddEditPingerItemsController");
         this.paneBehind = paneBehind;
         this.pingerItem = pingerItem;
         this.isEditItem = isEditItem;
     }
-
 
     public GridPane loadView() {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.ADD_EDIT_PINGER_ITEMS));
@@ -129,7 +121,6 @@ public class AddEditPingerItemsController extends GridPane {
             };
             return cell;
         });
-
     }
 
     private void initTextFields() {

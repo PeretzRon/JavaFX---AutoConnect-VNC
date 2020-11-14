@@ -75,6 +75,7 @@ public class AddEditComputerPopup extends BorderPane {
 
     @FXML
     public void initialize() {
+        mainPane.setOnMousePressed(e -> mainPane.requestFocus());
         if (isEdit) {
             isValidLocationTextField = new SimpleBooleanProperty(false);
             isValidNameTextField = new SimpleBooleanProperty(false);

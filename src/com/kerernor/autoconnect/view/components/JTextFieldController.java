@@ -40,12 +40,12 @@ public class JTextFieldController extends StackPane {
     private final ObjectProperty<Font> textFieldFont = new SimpleObjectProperty<>(Font.font(15));
     private final StringProperty textFieldColor = new SimpleStringProperty("#000");
     private final DoubleProperty underLineWidth = new SimpleDoubleProperty(0);
-    private final ObjectProperty<Color> placeHolderColor = new SimpleObjectProperty<>(Color.BLUE);
+    private final ObjectProperty<Color> placeHolderColor = new SimpleObjectProperty<>(Color.GRAY);
     private final ObjectProperty<Font> placeHolderFont = new SimpleObjectProperty<>(Font.font(15));
     private final ObjectProperty<Font> placeHolderFontActive = new SimpleObjectProperty<>(Font.font(12));
     private final ObjectProperty<Color> lineEffectColor = new SimpleObjectProperty<>(Color.rgb(87, 134, 245));
     private Color colorPlaceHolderFocusNotActive = Color.GRAY;
-    private Color colorPlaceHolderFocusActive = Color.BLUE;
+    private Color colorPlaceHolderFocusActive = Color.rgb(87, 134, 245);
     private double fontPlaceHolderNotActive = 15;
     private double fontPlaceHolderActive = 12;
     private final double TIME_FOR_TRANSLATE_LABEL = 150;
@@ -117,9 +117,8 @@ public class JTextFieldController extends StackPane {
             }
         });
 
-        textField.textProperty().isEmpty().addListener((observable, oldValue, isEmpty) -> {
-            if (!isEmpty && !isPlaceHolderUp) {
-                logger.trace("textField.textProperty().isEmpty().addListener");
+        textField.textProperty().addListener((observable, oldValue, isEmpty) -> {
+            if (!textField.getText().isEmpty() && !isPlaceHolderUp) {
                 onFocusActive(false);
             }
         });
