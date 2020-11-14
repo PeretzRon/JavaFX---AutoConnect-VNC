@@ -90,5 +90,10 @@
                 <Image url="@../../images/down-chevron.png" />
             </image>
         </ImageView>
+      <Label fx:id="resultLabel" layoutX="324.0" layoutY="295.0" text="No Results" textFill="WHITE">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
     </children>
 </fx:root>

@@ -34,28 +34,32 @@ import java.io.IOException;
 import java.util.Collections;
 
 public class RemoteScreenController extends Pane implements IDisplayable {
+
     @FXML
-    public Pane mainPane;
+    private Pane mainPane;
     @FXML
-    public Label totalComputers;
+    private Label totalComputers;
     @FXML
-    public Label stationCounter;
+    private Label stationCounter;
     @FXML
-    public Label rcgwCounter;
+    private Label rcgwCounter;
     @FXML
-    public JTextFieldController searchAreaController;
+    private JTextFieldController searchAreaController;
     @FXML
-    public CheckBox viewOnlyCheckBox;
+    private CheckBox viewOnlyCheckBox;
     @FXML
-    public ComputerListController computerListController;
+    private ComputerListController computerListController;
     @FXML
-    public TextField quickConnectTextField;
+    private TextField quickConnectTextField;
     @FXML
-    public Button quickConnectBtn;
+    private Button quickConnectBtn;
     @FXML
-    public LastConnectionsPopupController lastConnectionsPopupController;
+    private LastConnectionsPopupController lastConnectionsPopupController;
     @FXML
-    public ImageView openCloseHistoryImage;
+    private ImageView openCloseHistoryImage;
+    @FXML
+    private Label resultLabel;
+
 
     private Logger logger = Logger.getLogger(RemoteScreenController.class);
     private static RemoteScreenController instance = null;
@@ -181,6 +185,24 @@ public class RemoteScreenController extends Pane implements IDisplayable {
         mainPane.setOnMousePressed(e -> mainPane.requestFocus());
 
         Platform.runLater(() -> quickConnectTextField.requestFocus());
+
+        noResultLabelInitAndAddListener();
+    }
+
+    private void noResultLabelInitAndAddListener() {
+        if (  ComputerData.getInstance().getComputersList().size() == 0) {
+            resultLabel.toFront();
+        } else {
+            resultLabel.toBack();
+        }
+
+        computerListController.getComputerListView().getItems().addListener((ListChangeListener<? super Computer>) c -> {
+            if (c.getList().size() == 0) {
+                resultLabel.toFront();
+            } else {
+                resultLabel.toBack();
+            }
+        });
     }
 
     private void openLastConnectionPopupController() {
