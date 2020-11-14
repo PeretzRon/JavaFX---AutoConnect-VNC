@@ -31,6 +31,7 @@ public class Utils {
     public static final String BASE_PATH = "com/kerernor/autoconnect/";
     public static final String VIEWS_BASE_PATH = "view/";
     public static final String IMAGES_BASE_PATH = BASE_PATH + "images/";
+    public static final String VIEWS_COMPONENTS_BASE_PATH = VIEWS_BASE_PATH + "components/";
     public static final String VIEWS_POPUPS_BASE_PATH = VIEWS_BASE_PATH + "popups/";
     public static final String VIEWS_SCREENS_BASE_PATH = VIEWS_BASE_PATH + "screens/";
     public static final String CONFIG_BASE_PATH = BASE_PATH + "config/";
@@ -53,6 +54,7 @@ public class Utils {
     public static final String ADD_EDIT_COMPUTER_POPUP = VIEWS_POPUPS_BASE_PATH + "addEditComputerPopup.fxml";
     public static final String ADD_EDIT_PINGER_ITEMS = VIEWS_POPUPS_BASE_PATH + "addEditPingerItems.fxml";
     public static final String PING_GROUP_ITEM = VIEWS_BASE_PATH + "pingGroupItem.fxml";
+    public static final String J_TEXT_FIELD = VIEWS_COMPONENTS_BASE_PATH + "jTextField.fxml";
 
 
     // Images file paths

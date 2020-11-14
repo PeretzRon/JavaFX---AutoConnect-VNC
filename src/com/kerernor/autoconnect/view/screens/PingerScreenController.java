@@ -121,8 +121,7 @@ public class PingerScreenController extends Pane implements IDisplayable {
     public void addPingerItemHandler() {
         logger.trace("addPingerItemHandler");
 
-        AddEditPingerItemsController addEditPingerItemsController = AddEditPingerItemsController.getInstance();
-        addEditPingerItemsController.setConfiguration(pnlSetting, null, false);
+        AddEditPingerItemsController addEditPingerItemsController = new AddEditPingerItemsController(pnlSetting, null, false);
         addEditPingerItemsController.show();
     }
 
