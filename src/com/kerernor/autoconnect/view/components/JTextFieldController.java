@@ -5,10 +5,7 @@ import com.kerernor.autoconnect.util.Utils;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -42,6 +39,7 @@ public class JTextFieldController extends StackPane {
     private final ObjectProperty<Color> colorLineUnderTextField = new SimpleObjectProperty<>(Color.rgb(40, 20, 190));
     private final ObjectProperty<Font> textFieldFont = new SimpleObjectProperty<>(Font.font(15));
     private final StringProperty textFieldColor = new SimpleStringProperty("#000");
+    private final DoubleProperty underLineWidth = new SimpleDoubleProperty(0);
     private final ObjectProperty<Color> placeHolderColor = new SimpleObjectProperty<>(Color.BLUE);
     private final ObjectProperty<Font> placeHolderFont = new SimpleObjectProperty<>(Font.font(15));
     private final ObjectProperty<Font> placeHolderFontActive = new SimpleObjectProperty<>(Font.font(12));
@@ -68,9 +66,11 @@ public class JTextFieldController extends StackPane {
     private void initialize() {
         logger.trace("initialize");
         textField.setFocusTraversable(false);
+        lineUnderTextField.widthProperty().bind(underLineWidth);
         initControllers();
         addTextFieldListeners();
         addTimeLineListeners();
+        lineDraw.setVisible(false);
         Platform.runLater(this::afterInitialize);
     }
 
@@ -95,7 +95,7 @@ public class JTextFieldController extends StackPane {
 
     private void addTimeLineListeners() {
         timelineOnEndFocus.setOnFinished(event -> {
-            Platform.runLater(() ->  lineDraw.setVisible(false));
+            lineDraw.setVisible(false);
         });
     }
 
@@ -119,6 +119,7 @@ public class JTextFieldController extends StackPane {
 
         textField.textProperty().isEmpty().addListener((observable, oldValue, isEmpty) -> {
             if (!isEmpty && !isPlaceHolderUp) {
+                logger.trace("textField.textProperty().isEmpty().addListener");
                 onFocusActive(false);
             }
         });
@@ -126,8 +127,6 @@ public class JTextFieldController extends StackPane {
 
     private void afterInitialize() {
         logger.trace("afterInitialize");
-        double width = mainPane.getPrefWidth();
-        lineUnderTextField.setWidth(width);
         final KeyValue kvStart = new KeyValue(lineDraw.endXProperty(), lineUnderTextField.getWidth());
         final KeyFrame kfStart = new KeyFrame(Duration.millis(TIME_FOR_EFFECT_LINE_ON_UNDER_LINE_WHEN_FOCUS), kvStart);
         timelineOnFocus.getKeyFrames().add(kfStart);
@@ -150,15 +149,13 @@ public class JTextFieldController extends StackPane {
         translateTransitionForPlaceHolder.setByY(-23);
 
         if (isWithAnimation) {
-            translateTransitionForPlaceHolder.setDuration(new Duration(TIME_FOR_TRANSLATE_LABEL));
+            translateTransitionForPlaceHolder.setDuration(Duration.millis(TIME_FOR_TRANSLATE_LABEL));
+            lineDraw.setVisible(true);
+            timelineOnFocus.play();
         } else {
-            translateTransitionForPlaceHolder.setDuration(new Duration(TIME_FOR_TRANSLATE_LABEL / 2));
+            translateTransitionForPlaceHolder.setDuration(Duration.millis(TIME_FOR_TRANSLATE_LABEL / 2));
         }
 
-        lineDraw.setVisible(true);
-        timelineOnFocus.play();
-
-        lineUnderTextField.fillProperty().unbind();
         parallelTransition.play();
     }
 
@@ -177,17 +174,19 @@ public class JTextFieldController extends StackPane {
         parallelTransition.play();
     }
 
-    public void setInitData(String placeHolderText, double fontSize, Color colorPlaceHolderFocusActive, Color colorLineFocusNotActive, String textFieldColor) {
+    public void setInitData(String placeHolderText, double fontSize, Color colorPlaceHolderFocusActive, Color colorLineFocusNotActive, String textFieldColor, double underLineWidth) {
         placeHolder.setText(placeHolderText);
         textFieldFont.setValue(new Font(fontSize));
         setColorPlaceHolderFocusActive(colorPlaceHolderFocusActive);
         setColorPlaceHolderFocusNotActive(colorLineFocusNotActive);
         setTextFieldColor(textFieldColor);
+        setUnderLineWidth(underLineWidth);
     }
 
-    public void setInitData(String placeHolderText, double fontSize) {
+    public void setInitData(String placeHolderText, double fontSize, double underLineWidth) {
         placeHolder.setText(placeHolderText);
         textFieldFont.setValue(new Font(fontSize));
+        setUnderLineWidth(underLineWidth);
     }
 
     public StackPane loadView() {
@@ -296,5 +295,13 @@ public class JTextFieldController extends StackPane {
 
     public void setLineEffectColor(Color lineEffectColor) {
         this.lineEffectColor.set(lineEffectColor);
+    }
+
+    public double getUnderLineWidth() {
+        return underLineWidth.get();
+    }
+
+    public void setUnderLineWidth(double underLineWidth) {
+        this.underLineWidth.set(underLineWidth);
     }
 }

@@ -94,11 +94,15 @@ public class AddEditComputerPopup extends BorderPane {
             isValidNameTextField.setValue(Utils.isNullOrEmptyString(computerName.getTextField().getText()));
         });
 
-        computerIPAddress.setInitData("IP Address", 14);
+        initTextFields();
+    }
+
+    private void initTextFields() {
+        computerIPAddress.setInitData("IP Address", 14, computerIPAddress.getPrefWidth());
         computerIPAddress.setTextFieldColor("#fff");
-        computerName.setInitData("Computer Name", 14);
+        computerName.setInitData("Computer Name", 14, computerName.getPrefWidth());
         computerName.setTextFieldColor("#fff");
-        computerLocation.setInitData("Computer Location", 14);
+        computerLocation.setInitData("Computer Location", 14, computerName.getPrefWidth());
         computerLocation.setTextFieldColor("#fff");
     }
 

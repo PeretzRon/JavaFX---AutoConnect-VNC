@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import com.kerernor.autoconnect.view.components.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <GridPane fx:id="mainPane" alignment="TOP_CENTER" prefHeight="474.0" prefWidth="459.0" styleClass="add-edit-pinger-popup" stylesheets="@../../style/popupStyle.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
@@ -41,17 +33,18 @@
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label styleClass="sub-title" text="Group name:">
-                     <padding>
-                        <Insets right="20.0" top="20.0" />
-                     </padding>
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
+                  <!--                  <Label styleClass="sub-title" text="Group name:">-->
+                  <!--                     <padding>-->
+                  <!--                        <Insets right="20.0" top="20.0" />-->
+                  <!--                     </padding>-->
+                  <!--                     <font>-->
+                  <!--                        <Font size="16.0" />-->
+                  <!--                     </font>-->
+                  <!--                  </Label>-->
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="groupNameTextField" promptText="Enter Group Name" styleClass="text-field-add-edit-popup" />
+                        <!--                        <TextField fx:id="groupNameTextField" promptText="Enter Group Name" styleClass="text-field-add-edit-popup" />-->
+                        <JTextFieldController fx:id="groupNameTextField" prefHeight="54.0" prefWidth="137.0" />
                      </children>
                   </HBox>
                </children>
@@ -61,18 +54,12 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label styleClass="sub-title" text="Enter details:">
-                     <padding>
-                        <Insets left="20.0" right="20.0" />
-                     </padding>
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
                   <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="600.0" spacing="10.0">
                      <children>
-                        <TextField fx:id="nameItemTextField" promptText="Enter Name..." styleClass="text-field-add-edit-popup" />
-                        <TextField fx:id="IPTextField" promptText="Enter Ip Address" styleClass="text-field-add-edit-popup" />
+                        <!--                        <TextField fx:id="nameItemTextField" promptText="Enter Name..." styleClass="text-field-add-edit-popup" />-->
+                        <JTextFieldController fx:id="nameItemTextField" prefHeight="54.0" prefWidth="139.0" />
+                        <JTextFieldController fx:id="IPTextField" prefHeight="54.0" prefWidth="139.0" />
+                        <!--                        <TextField fx:id="IPTextField" promptText="Enter Ip Address" styleClass="text-field-add-edit-popup" />-->
                         <StackPane fx:id="addPingItemToListHandler" prefHeight="0.0" prefWidth="45.0">
                            <children>
                               <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#addPingItemToListHandler" pickOnBounds="true" preserveRatio="true">
