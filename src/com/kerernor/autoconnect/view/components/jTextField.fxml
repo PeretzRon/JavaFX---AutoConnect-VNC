@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<fx:root fx:id="mainPane" alignment="CENTER_LEFT" type="StackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <Label fx:id="placeHolder" prefHeight="18.0" prefWidth="98.0" text="userName">
+        <padding>
+            <Insets left="7.0" />
+        </padding>
+    </Label>
+    <TextField fx:id="textField" prefHeight="28.0" prefWidth="206.0" style="-fx-background-color: transparent; -fx-border-color: transparent transparent transparent transparent;">
+        <StackPane.margin>
+            <Insets bottom="-3.0" top="4.0" />
+        </StackPane.margin>
+        <font>
+            <Font size="13.0" />
+        </font></TextField>
+    <Rectangle fx:id="lineUnderTextField" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="2.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-border-color: transparent transparent transparent transparent;" width="200.0" StackPane.alignment="BOTTOM_LEFT">
+        <StackPane.margin>
+            <Insets left="7.0" />
+        </StackPane.margin>
+    </Rectangle>
+    <Line fx:id="lineDraw" stroke="#2600f0" strokeWidth="2.0" StackPane.alignment="BOTTOM_CENTER" />
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+</fx:root>
