@@ -33,8 +33,7 @@ public class Main extends Application {
 
         this.primaryStage = primaryStage;
         initRootLayout();
-//        makeStageDraggable();
-        Utils.loadAppSettings();
+        makeStageDraggable();
         Scene scene = primaryStage.getScene();
 //        ScenicView.show(scene);
     }
@@ -89,6 +88,7 @@ public class Main extends Application {
     @Override
     public void init() throws Exception {
         Utils.loadAndSetLoggerSetting();
+        Utils.loadAppSettings();
         Utils.loadImages();
         ComputerData.getInstance().loadData();
         PingerData.getInstance().loadData();

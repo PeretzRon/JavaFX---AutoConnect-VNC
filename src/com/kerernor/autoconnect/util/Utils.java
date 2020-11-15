@@ -82,7 +82,7 @@ public class Utils {
     // Parameters
     public static String VNC_PROGRAM_PATH = "C:\\Program Files (x86)\\uvnc bvba\\UltraVNC";
     public static String VNC_SCRIPT_PATH = "C:\\Programs\\ControlKO\\vnc\\";
-    public static boolean IS_REMOTE_DRIVE_SCREEN_ACTIVE = false;
+    public static boolean IS_REMOTE_DRIVE_SCREEN_ACTIVE = true;
 
     // App setting properties
     public static final String CONFIG_ULTRA_VNC_PROGRAM_PATH = "UltraVncProgramPath";

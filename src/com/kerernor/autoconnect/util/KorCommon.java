@@ -16,8 +16,6 @@ public class KorCommon {
     private final AboutScreenController aboutScreenController = AboutScreenController.getInstance();
     private final RemoteDriveScreenController remoteDriveScreenController = RemoteDriveScreenController.getInstance();
 
-    private final AlertPopupController alertPopupController = AlertPopupController.getInstance();
-
     public static KorCommon getInstance() {
         if (instance == null) {
             instance = new KorCommon();
@@ -48,9 +46,5 @@ public class KorCommon {
 
     public RemoteDriveScreenController getRemoteDriveScreenController() {
         return remoteDriveScreenController;
-    }
-
-    public AlertPopupController getAlertPopupController() {
-        return alertPopupController;
     }
 }

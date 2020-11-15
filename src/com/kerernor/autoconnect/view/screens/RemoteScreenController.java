@@ -14,6 +14,7 @@ import com.kerernor.autoconnect.view.ComputerListController;
 import com.kerernor.autoconnect.view.LastConnectionsPopupController;
 import com.kerernor.autoconnect.view.components.JTextFieldController;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
+import com.kerernor.autoconnect.view.popups.AlertPopupController;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -228,7 +229,8 @@ public class RemoteScreenController extends Pane implements IDisplayable {
     private void connectToVNC(String ip) {
         if (!Utils.isValidateIpAddress(ip)) {
             logger.info("Wrong ip address: " + ip + " Can't to connect to client");
-            KorCommon.getInstance().getAlertPopupController().show(KorTypes.AlertTypes.WARNING, Utils.WRONG_IP_ADDRESS_MASSAGE, mainPane);
+            AlertPopupController alertPopupController = new AlertPopupController();
+            alertPopupController.show(KorTypes.AlertTypes.WARNING, Utils.WRONG_IP_ADDRESS_MASSAGE, mainPane);
             quickConnectTextField.requestFocus();
             return;
         }

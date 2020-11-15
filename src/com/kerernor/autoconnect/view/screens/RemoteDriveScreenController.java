@@ -8,6 +8,7 @@ import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.LastRemoteDriveListController;
+import com.kerernor.autoconnect.view.popups.AlertPopupController;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -124,7 +125,8 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
         if (Utils.isValidateIpAddress(ip)) {
             return true;
         } else {
-            KorCommon.getInstance().getAlertPopupController().show(KorTypes.AlertTypes.WARNING, Utils.WRONG_IP_ADDRESS_MASSAGE, pnlOpenWindow);
+            AlertPopupController alertPopupController = new AlertPopupController();
+            alertPopupController.show(KorTypes.AlertTypes.WARNING, Utils.WRONG_IP_ADDRESS_MASSAGE, pnlOpenWindow);
             logger.error("can't open remote drive - ip isn't valid");
             return false;
         }

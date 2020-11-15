@@ -4,6 +4,8 @@ import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
+import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import org.apache.log4j.Logger;
 
 import javax.swing.text.html.ImageView;
@@ -41,18 +44,18 @@ public class AlertPopupController {
     Scene scene;
     ScheduledFuture<?> timer;
 
-    private AlertPopupController() {
+    public AlertPopupController() {
         borderPane = loadView();
         scene = new Scene(borderPane);
     }
 
-    public static AlertPopupController getInstance() {
-        if (instance == null) {
-            instance = new AlertPopupController();
-
-        }
-        return instance;
-    }
+//    public static AlertPopupController getInstance() {
+//        if (instance == null) {
+//            instance = new AlertPopupController();
+//
+//        }
+//        return instance;
+//    }
 
     public void initialize() {
 
@@ -75,10 +78,10 @@ public class AlertPopupController {
         this.paneBehind = paneBehind;
         massageLabel.setText(msg);
 
-//        FadeTransition ft = new FadeTransition(Duration.millis(1000), hBox);
-//        ft.setFromValue(0.5);
-//        ft.setToValue(1.0);
-//        ft.play();
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), mainPane);
+        ft.setFromValue(0.5);
+        ft.setToValue(1.0);
+        ft.play();
 
         stage = new Stage();
         stage.setScene(scene);
@@ -101,9 +104,9 @@ public class AlertPopupController {
             logger.trace("Close stage");
             timer.cancel(true);
             stage.hide();
-//            PauseTransition delay = new PauseTransition(Duration.seconds(3));
-//            delay.setOnFinished(event -> stage.close());
-//            delay.play();
+            PauseTransition delay = new PauseTransition(Duration.seconds(3));
+            delay.setOnFinished(event -> stage.close());
+            delay.play();
             timer = null;
         }
 

@@ -75,10 +75,10 @@ public class MainController extends AnchorPane {
 
     private void createAndAddMenuButtons() {
         btnRemoteScreen = createButton("btnRemoteScreen", "Remote", Utils.REMOTE_ICON);
-        btnPingerScreen = createButton("btnPingerScreen", "Pinger", Utils.REMOTE_ICON);
-        btnOpenWindowScreen = createButton("btnOpenWindowScreen", "Remote Drive", Utils.REMOTE_ICON);
-        btnAbout = createButton("btnAbout", "About", Utils.REMOTE_ICON);
-        btnExitApp = createButton("btnExitApp", "Exit", Utils.REMOTE_ICON);
+        btnPingerScreen = createButton("btnPingerScreen", "Pinger", Utils.PINGER_ICON);
+        btnOpenWindowScreen = createButton("btnOpenWindowScreen", "Remote Drive", Utils.REMOTE_DRIVE_ICON);
+        btnAbout = createButton("btnAbout", "About", Utils.ABOUT_ICON);
+        btnExitApp = createButton("btnExitApp", "Exit", Utils.EXIT_ICON);
 
         addButtonsToVBox();
     }
