@@ -44,7 +44,7 @@ public class Utils {
     public static final String PINGER_SCREEN = VIEWS_SCREENS_BASE_PATH + "pingerScreen.fxml";
     public static final String REMOTE_DRIVE_SCREEN = VIEWS_SCREENS_BASE_PATH + "remoteDriveScreen.fxml";
     public static final String ABOUT_SCREEN = VIEWS_SCREENS_BASE_PATH + "AboutScreen.fxml";
-    public static final String GUARD_SCREEN =  VIEWS_BASE_PATH + "guard.fxml";
+    public static final String GUARD_SCREEN = VIEWS_BASE_PATH + "guard.fxml";
     public static final String COMPUTER_ROW_VIEW = VIEWS_BASE_PATH + "computerRow.fxml";
     public static final String LAST_REMOTE_DRIVE_ROW_VIEW = VIEWS_BASE_PATH + "lastRemoteDriveRow.fxml";
     public static final String SEARCH_AREA = VIEWS_BASE_PATH + "searchArea.fxml";
@@ -60,11 +60,15 @@ public class Utils {
     public static final String PING_GROUP_ITEM = VIEWS_BASE_PATH + "pingGroupItem.fxml";
     public static final String J_TEXT_FIELD = VIEWS_COMPONENTS_BASE_PATH + "jTextField.fxml";
 
-
     // Images file paths
     public static final String RCGW_ICON = IMAGES_BASE_PATH + "antenna.png";
     public static final String STATION_ICON = IMAGES_BASE_PATH + "stationKO.png";
     public static final String APP_ICON = IMAGES_BASE_PATH + "ko.png";
+    public static final String REMOTE_ICON = IMAGES_BASE_PATH + "remote-btn-icon.png";
+    public static final String PINGER_ICON = IMAGES_BASE_PATH + "pinger-btn-icon.png";
+    public static final String REMOTE_DRIVE_ICON = IMAGES_BASE_PATH + "remote-drive-btn-icon.png";
+    public static final String ABOUT_ICON = IMAGES_BASE_PATH + "about-btn-icon.png";
+    public static final String EXIT_ICON = IMAGES_BASE_PATH + "exit-btn-icon.png";
 
     // Data paths
     public static final String COMPUTER_DATA = "data/data.json";
@@ -75,16 +79,19 @@ public class Utils {
     public static final String LOG_4_J_CONFIG = "config/log4j.properties";
     public static final String APP_SETTINGS = "config/settings.properties";
 
-    // VNC Script paths
+    // Parameters
     public static String VNC_PROGRAM_PATH = "C:\\Program Files (x86)\\uvnc bvba\\UltraVNC";
     public static String VNC_SCRIPT_PATH = "C:\\Programs\\ControlKO\\vnc\\";
+    public static boolean IS_REMOTE_DRIVE_SCREEN_ACTIVE = false;
 
     // App setting properties
-    public static final String ULTRA_VNC_PROGRAM_PATH = "UltraVncProgramPath";
-    public static final String ULTRA_VNC_SCRIPT_FOR_CONNECTION = "UltraVncScriptForConnection";
-    public static final String IS_POPUP_CLOSE_IF_LOSE_FOCUS = "isPopupCloseIfLoseFocus";
-    public static final String VERSION_NUMBER_PROPERTIES = "versionNumber";
-    public static boolean IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING = true;
+    public static final String CONFIG_ULTRA_VNC_PROGRAM_PATH = "UltraVncProgramPath";
+    public static final String CONFIG_ULTRA_VNC_SCRIPT_FOR_CONNECTION = "UltraVncScriptForConnection";
+    public static final String CONFIG_IS_POPUP_CLOSE_IF_LOSE_FOCUS = "isPopupCloseIfLoseFocus";
+    public static final String CONFIG_VERSION_NUMBER_PROPERTIES = "versionNumber";
+    public static boolean CONFIG_IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING = true;
+    public static String CONFIG_IS_REMOTE_DRIVE_SCREEN_ACTIVE = "isRemoteDriveScreenActive";
+
 
     // Sizes and amounts
     public static final int BLUR_SIZE = 5;
@@ -175,10 +182,11 @@ public class Utils {
 
             try (InputStream inputStream = new FileInputStream(APP_SETTINGS)) {
                 properties.load(inputStream);
-                Utils.VNC_PROGRAM_PATH = properties.getProperty(ULTRA_VNC_PROGRAM_PATH);
-                Utils.VNC_SCRIPT_PATH = properties.getProperty(ULTRA_VNC_SCRIPT_FOR_CONNECTION);
-                Utils.IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING = Boolean.parseBoolean(properties.getProperty(IS_POPUP_CLOSE_IF_LOSE_FOCUS));
-                Platform.runLater(() -> Utils.VERSION_NUMBER.set(properties.getProperty(Utils.VERSION_NUMBER_PROPERTIES)));
+                Utils.VNC_PROGRAM_PATH = properties.getProperty(CONFIG_ULTRA_VNC_PROGRAM_PATH);
+                Utils.VNC_SCRIPT_PATH = properties.getProperty(CONFIG_ULTRA_VNC_SCRIPT_FOR_CONNECTION);
+                Utils.CONFIG_IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING = Boolean.parseBoolean(properties.getProperty(CONFIG_IS_POPUP_CLOSE_IF_LOSE_FOCUS));
+                Utils.IS_REMOTE_DRIVE_SCREEN_ACTIVE = Boolean.parseBoolean(properties.getProperty(CONFIG_IS_REMOTE_DRIVE_SCREEN_ACTIVE));
+                Platform.runLater(() -> Utils.VERSION_NUMBER.set(properties.getProperty(Utils.CONFIG_VERSION_NUMBER_PROPERTIES)));
             } catch (IOException e) {
                 logger.error("failed to load app settings");
             }
@@ -200,5 +208,10 @@ public class Utils {
     public static void loadImages() {
         appImages.put(Utils.RCGW_ICON, new Image(Utils.RCGW_ICON));
         appImages.put(Utils.STATION_ICON, new Image(Utils.STATION_ICON));
+        appImages.put(Utils.REMOTE_ICON, new Image(Utils.REMOTE_ICON));
+        appImages.put(Utils.PINGER_ICON, new Image(Utils.PINGER_ICON));
+        appImages.put(Utils.REMOTE_DRIVE_ICON, new Image(Utils.REMOTE_DRIVE_ICON));
+        appImages.put(Utils.ABOUT_ICON, new Image(Utils.ABOUT_ICON));
+        appImages.put(Utils.EXIT_ICON, new Image(Utils.EXIT_ICON));
     }
 }

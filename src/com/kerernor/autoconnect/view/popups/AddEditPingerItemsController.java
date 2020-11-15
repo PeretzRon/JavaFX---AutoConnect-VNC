@@ -7,9 +7,6 @@ import com.kerernor.autoconnect.model.PingerItem;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.components.JTextFieldController;
-import com.sun.javafx.scene.control.skin.TextAreaSkin;
-import com.sun.javafx.scene.control.skin.TextFieldSkin;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,18 +16,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -201,7 +194,7 @@ public class AddEditPingerItemsController extends GridPane {
             addEditPingItemTitle.setText(Utils.TEXT_ADD_NEW_GROUP_PINGER_POPUP_TITTLE);
         }
 
-        if (Utils.IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING) {
+        if (Utils.CONFIG_IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING) {
             // Set out of focus closing ability
             stage.focusedProperty().addListener((observableValue, wasFocused, isNowFocused) -> {
                 if (!isNowFocused) {

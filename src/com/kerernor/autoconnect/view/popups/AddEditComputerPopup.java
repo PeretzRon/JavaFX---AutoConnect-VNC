@@ -4,10 +4,8 @@ import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
 import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.model.eComputerType;
-import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.components.JTextFieldController;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -18,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -142,7 +139,7 @@ public class AddEditComputerPopup extends BorderPane {
             addEditComputerLabel.setText(Utils.TEXT_ADD_NEW_COMPUTER_POPUP);
         }
 
-        if (Utils.IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING) {
+        if (Utils.CONFIG_IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING) {
             // Set out of focus closing ability
             stage.focusedProperty().addListener((observableValue, wasFocused, isNowFocused) -> {
                 if (!isNowFocused) {

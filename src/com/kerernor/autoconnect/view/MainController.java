@@ -2,13 +2,19 @@ package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.ThreadManger;
+import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.screens.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
@@ -31,24 +37,22 @@ public class MainController extends AnchorPane {
     @FXML
     private AnchorPane mainPane;
     @FXML
-    private Button btnRemoteScreen;
-    @FXML
-    private Button btnExitApp;
-    @FXML
-    private Button btnPingerScreen;
-    @FXML
-    private Button btnOpenWindowScreen;
-    @FXML
-    private Button btnAbout;
-    @FXML
     private StackPane exitAppStackPane;
     @FXML
     private StackPane minimizeAppStackPane;
+    @FXML
+    private VBox buttonScreens;
 
     private static MainController instance = null;
     private final Logger logger = Logger.getLogger(MainController.class);
     private Button currentSelectedMenuButton;
     private List<Button> screenButtonsList;
+
+    private Button btnRemoteScreen;
+    private Button btnPingerScreen;
+    private Button btnOpenWindowScreen;
+    private Button btnAbout;
+    private Button btnExitApp;
 
     public static MainController getInstance() {
         if (instance == null) {
@@ -62,11 +66,34 @@ public class MainController extends AnchorPane {
         logger.trace("MainController.initialize");
         loadScreenInstances();
         currentSelectedMenuButton = btnRemoteScreen;
-        screenButtonsList = new ArrayList<>(Arrays.asList(btnRemoteScreen, btnPingerScreen, btnAbout, btnOpenWindowScreen, btnExitApp));
         pingerScreenController.setVisible(false);
         aboutScreenController.setVisible(false);
+        createAndAddMenuButtons();
         btnRemoteScreen.getStyleClass().add("selected-menu-item");
         remoteScreenController.showPane();
+    }
+
+    private void createAndAddMenuButtons() {
+        btnRemoteScreen = createButton("btnRemoteScreen", "Remote", Utils.REMOTE_ICON);
+        btnPingerScreen = createButton("btnPingerScreen", "Pinger", Utils.REMOTE_ICON);
+        btnOpenWindowScreen = createButton("btnOpenWindowScreen", "Remote Drive", Utils.REMOTE_ICON);
+        btnAbout = createButton("btnAbout", "About", Utils.REMOTE_ICON);
+        btnExitApp = createButton("btnExitApp", "Exit", Utils.REMOTE_ICON);
+
+        addButtonsToVBox();
+    }
+
+    private void addButtonsToVBox() {
+        screenButtonsList = new ArrayList<>();
+        screenButtonsList.add(btnRemoteScreen);
+        screenButtonsList.add(btnPingerScreen);
+        if (Utils.IS_REMOTE_DRIVE_SCREEN_ACTIVE) {
+            screenButtonsList.add(btnOpenWindowScreen);
+        }
+
+        screenButtonsList.add(btnAbout);
+        screenButtonsList.add(btnExitApp);
+        buttonScreens.getChildren().addAll(screenButtonsList);
     }
 
     private void loadScreenInstances() {
@@ -90,8 +117,7 @@ public class MainController extends AnchorPane {
         } else if (actionEvent.getSource() == btnOpenWindowScreen && currentSelectedMenuButton != btnOpenWindowScreen) {
             changeScreenHandler(btnOpenWindowScreen, remoteDriveScreenController);
         } else if (actionEvent.getSource() == btnExitApp) {
-            ThreadManger.getInstance().shutDown();
-            Platform.exit();
+            exitApp();
         }
     }
 
@@ -119,6 +145,27 @@ public class MainController extends AnchorPane {
         Stage stage = (Stage) minimizeAppStackPane.getScene().getWindow();
         // is stage minimizable into task bar. (true | false)
         stage.setIconified(true);
+    }
+
+    private Button createButton(String id, String text, String iconBtn) {
+        Button button = new Button();
+        button.setId(id);
+        button.setAlignment(Pos.BASELINE_LEFT);
+        button.setGraphicTextGap(22.0);
+        button.setMnemonicParsing(false);
+        button.setOnAction(this::handleClicks);
+        button.setPrefHeight(42.0);
+        button.setPrefWidth(259);
+        button.setText(text);
+        button.setTextFill(Color.valueOf("#e7e5e5"));
+        button.setPadding(new Insets(0, 0, 0, 50));
+        ImageView imageIcon = new ImageView(Utils.appImages.get(iconBtn));
+        imageIcon.setFitHeight(23);
+        imageIcon.setFitWidth(27);
+        imageIcon.setPickOnBounds(true);
+        imageIcon.setPreserveRatio(true);
+        button.setGraphic(imageIcon);
+        return button;
     }
 
     private void exitApp() {
