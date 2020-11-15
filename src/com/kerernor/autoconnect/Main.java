@@ -33,7 +33,7 @@ public class Main extends Application {
 
         this.primaryStage = primaryStage;
         initRootLayout();
-        makeStageDraggable();
+//        makeStageDraggable();
         Utils.loadAppSettings();
         Scene scene = primaryStage.getScene();
 //        ScenicView.show(scene);

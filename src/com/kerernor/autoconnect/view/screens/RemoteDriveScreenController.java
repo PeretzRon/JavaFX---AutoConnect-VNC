@@ -51,11 +51,19 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
     private Label noValueInListLabel;
 
     private Logger logger = Logger.getLogger(RemoteDriveScreenController.class);
+    private static RemoteDriveScreenController instance = null;
     private static final String DRIVE = "c$";
     Process windowsProcess = null;
     private static final BooleanProperty isProcessRunning = new SimpleBooleanProperty(false);
 
-    public RemoteDriveScreenController() {
+    public static RemoteDriveScreenController getInstance() {
+        if (instance == null) {
+            instance = new RemoteDriveScreenController();
+        }
+        return instance;
+    }
+
+    private RemoteDriveScreenController() {
         loadView();
     }
 
@@ -73,7 +81,7 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.REMOTE_DRIVE_SCREEN));
         loader.setController(this);
         loader.setRoot(this);
-        KorCommon.getInstance().setRemoteDriveScreenController(loader.getController());
+
         try {
             return loader.load();
         } catch (IOException e) {

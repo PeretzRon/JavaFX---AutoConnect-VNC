@@ -8,6 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -26,24 +28,22 @@ public class MainController extends AnchorPane {
     private AboutScreenController aboutScreenController;
     @FXML
     private RemoteDriveScreenController remoteDriveScreenController;
-
     @FXML
     private AnchorPane mainPane;
-
     @FXML
     private Button btnRemoteScreen;
-
     @FXML
     private Button btnExitApp;
-
     @FXML
     private Button btnPingerScreen;
-
     @FXML
-    public Button btnOpenWindowScreen;
-
+    private Button btnOpenWindowScreen;
     @FXML
     private Button btnAbout;
+    @FXML
+    private StackPane exitAppStackPane;
+    @FXML
+    private StackPane minimizeAppStackPane;
 
     private static MainController instance = null;
     private final Logger logger = Logger.getLogger(MainController.class);
@@ -74,7 +74,8 @@ public class MainController extends AnchorPane {
         remoteScreenController = korCommon.getRemoteScreenController();
         pingerScreenController = korCommon.getPingerScreenController();
         aboutScreenController = korCommon.getAboutScreenController();
-        stackPaneAllScreens.getChildren().addAll(remoteScreenController, pingerScreenController, aboutScreenController);
+        remoteDriveScreenController = korCommon.getRemoteDriveScreenController();
+        stackPaneAllScreens.getChildren().addAll(remoteScreenController, pingerScreenController, aboutScreenController, remoteDriveScreenController);
     }
 
     public void handleClicks(ActionEvent actionEvent) {
@@ -105,6 +106,25 @@ public class MainController extends AnchorPane {
         }
 
         selectedMenuPane.showPane();
+    }
+
+    @FXML
+    public void exitAppHandler() {
+        exitApp();
+    }
+
+    @FXML
+    public void minimizeAppHandler() {
+        logger.trace("minimizeAppHandler");
+        Stage stage = (Stage) minimizeAppStackPane.getScene().getWindow();
+        // is stage minimizable into task bar. (true | false)
+        stage.setIconified(true);
+    }
+
+    private void exitApp() {
+        logger.trace("exitApp");
+        ThreadManger.getInstance().shutDown();
+        Platform.exit();
     }
 
     public RemoteScreenController getRemoteScreenController() {
