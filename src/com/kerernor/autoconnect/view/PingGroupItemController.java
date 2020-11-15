@@ -76,24 +76,23 @@ public class PingGroupItemController extends HBox {
 
     @FXML
     public void editPingGroupHandler() {
-        AddEditPingerItemsController addEditPingerItemsController = AddEditPingerItemsController.getInstance();
-        addEditPingerItemsController.setConfiguration(behindPane, pingerItem, true);
+        AddEditPingerItemsController addEditPingerItemsController = new  AddEditPingerItemsController(behindPane, pingerItem, true);
 
         infoEditPingerItems = event -> {
             event.consume();
             fireEvent(event);
-            removeEventsHandler();
+//            removeEventsHandler();
         };
 
         infoEditPingerGroupName = event -> {
             event.consume();
             fireEvent(event);
-            removeEventsHandler();
+//            removeEventsHandler();
         };
 
         infoEditPingerExit = event -> {
             event.consume();
-            removeEventsHandler();
+//            removeEventsHandler();
         };
 
         addEditPingerItemsController.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_NAME, infoEditPingerGroupName);
@@ -103,13 +102,13 @@ public class PingGroupItemController extends HBox {
         addEditPingerItemsController.show();
     }
 
-    private void removeEventsHandler() {
-        AddEditPingerItemsController addEditPingerItemsController = AddEditPingerItemsController.getInstance();
-        addEditPingerItemsController.removeEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_NAME, infoEditPingerGroupName);
-        addEditPingerItemsController.removeEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_ITEM, infoEditPingerItems);
-        addEditPingerItemsController.removeEventHandler(KorEvents.PingerEvent.EXIT, infoEditPingerExit);
-        infoEditPingerGroupName = infoEditPingerExit = infoEditPingerItems = null;
-    }
+//    private void removeEventsHandler() {
+//        AddEditPingerItemsController addEditPingerItemsController = new  AddEditPingerItemsController();
+//        addEditPingerItemsController.removeEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_NAME, infoEditPingerGroupName);
+//        addEditPingerItemsController.removeEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_ITEM, infoEditPingerItems);
+//        addEditPingerItemsController.removeEventHandler(KorEvents.PingerEvent.EXIT, infoEditPingerExit);
+//        infoEditPingerGroupName = infoEditPingerExit = infoEditPingerItems = null;
+//    }
 
     private HBox loadView() {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.PING_GROUP_ITEM));

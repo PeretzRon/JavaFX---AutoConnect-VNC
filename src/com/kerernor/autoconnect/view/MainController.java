@@ -1,5 +1,6 @@
 package com.kerernor.autoconnect.view;
 
+import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.view.screens.*;
 import javafx.application.Platform;
@@ -15,6 +16,8 @@ import java.util.List;
 
 public class MainController extends AnchorPane {
 
+    @FXML
+    private StackPane stackPaneAllScreens;
     @FXML
     private RemoteScreenController remoteScreenController;
     @FXML
@@ -42,23 +45,36 @@ public class MainController extends AnchorPane {
     @FXML
     private Button btnAbout;
 
-    private static MainController instance = new MainController();
+    private static MainController instance = null;
     private final Logger logger = Logger.getLogger(MainController.class);
     private Button currentSelectedMenuButton;
     private List<Button> screenButtonsList;
 
     public static MainController getInstance() {
+        if (instance == null) {
+            instance = new MainController();
+        }
         return instance;
     }
 
-    public void initialize() {
+    @FXML
+    private void initialize() {
         logger.trace("MainController.initialize");
+        loadScreenInstances();
         currentSelectedMenuButton = btnRemoteScreen;
         screenButtonsList = new ArrayList<>(Arrays.asList(btnRemoteScreen, btnPingerScreen, btnAbout, btnOpenWindowScreen, btnExitApp));
         pingerScreenController.setVisible(false);
         aboutScreenController.setVisible(false);
         btnRemoteScreen.getStyleClass().add("selected-menu-item");
         remoteScreenController.showPane();
+    }
+
+    private void loadScreenInstances() {
+        KorCommon korCommon = KorCommon.getInstance();
+        remoteScreenController = korCommon.getRemoteScreenController();
+        pingerScreenController = korCommon.getPingerScreenController();
+        aboutScreenController = korCommon.getAboutScreenController();
+        stackPaneAllScreens.getChildren().addAll(remoteScreenController, pingerScreenController, aboutScreenController);
     }
 
     public void handleClicks(ActionEvent actionEvent) {

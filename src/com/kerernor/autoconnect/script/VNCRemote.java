@@ -29,7 +29,6 @@ public class VNCRemote {
                     "cmd /c run.bat", null, new File(mPathScript));
             logger.info("connected to: " + ip + " ViewOnly: " + isViewOnlySelected);
         } catch (Exception e1) {
-            e1.printStackTrace();
             logger.error(e1);
         }
     }

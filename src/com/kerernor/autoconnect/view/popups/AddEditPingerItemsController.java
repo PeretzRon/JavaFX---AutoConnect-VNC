@@ -6,6 +6,9 @@ import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.model.PingerItem;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
+import com.kerernor.autoconnect.view.components.JTextFieldController;
+import com.sun.javafx.scene.control.skin.TextAreaSkin;
+import com.sun.javafx.scene.control.skin.TextFieldSkin;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,11 +21,13 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -35,13 +40,13 @@ public class AddEditPingerItemsController extends GridPane {
     private GridPane mainPane;
 
     @FXML
-    private TextField groupNameTextField;
+    private JTextFieldController groupNameTextField;
 
     @FXML
-    private TextField IPTextField;
+    private JTextFieldController IPTextField;
 
     @FXML
-    private TextField nameItemTextField;
+    private JTextFieldController nameItemTextField;
 
     @FXML
     private ImageView addIPImageView;
@@ -58,31 +63,19 @@ public class AddEditPingerItemsController extends GridPane {
     private Stage stage;
     private Parent paneBehind;
 
+    private Logger logger = Logger.getLogger(AddEditPingerItemsController.class);
     private ObservableList<String> pingerItemsAddedObservableList;
     private List<PingerItem> pingerItemList;
 
     private Pinger pingerItem;
     private boolean isEditItem;
 
-    private static AddEditPingerItemsController instance = null;
-
-    private AddEditPingerItemsController() {
-    }
-
-    public static AddEditPingerItemsController getInstance() {
-        if (instance == null) {
-            instance = new AddEditPingerItemsController();
-        }
-
-        return instance;
-    }
-
-    public void setConfiguration(Parent paneBehind, Pinger pingerItem, boolean isEditItem) {
+    public AddEditPingerItemsController(Parent paneBehind, Pinger pingerItem, boolean isEditItem) {
+        logger.trace("AddEditPingerItemsController");
         this.paneBehind = paneBehind;
         this.pingerItem = pingerItem;
         this.isEditItem = isEditItem;
     }
-
 
     public GridPane loadView() {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.ADD_EDIT_PINGER_ITEMS));
@@ -102,13 +95,16 @@ public class AddEditPingerItemsController extends GridPane {
         pingerItemsAddedObservableList = FXCollections.observableArrayList();
         pingerItemList = new ArrayList<>();
         addedItemsList.setItems(pingerItemsAddedObservableList);
+        mainPane.setOnMousePressed(e -> mainPane.requestFocus());
+        initTextFields();
+
         addedItemsList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 String[] item = newValue.split("-");
                 String name = item[0];
                 String ip = item[1];
-                IPTextField.setText(ip);
-                nameItemTextField.setText(name);
+                IPTextField.getTextField().setText(ip);
+                nameItemTextField.getTextField().setText(name);
             }
         });
         addedItemsList.setCellFactory(param -> {
@@ -125,14 +121,21 @@ public class AddEditPingerItemsController extends GridPane {
             };
             return cell;
         });
+    }
 
-        Platform.runLater(() -> mainPane.requestFocus());
+    private void initTextFields() {
+        groupNameTextField.setInitData("Group Name", 14, groupNameTextField.getPrefWidth());
+        groupNameTextField.setTextFieldColor("#fff");
+        IPTextField.setInitData("IP Address", 14, IPTextField.getPrefWidth());
+        IPTextField.setTextFieldColor("#fff");
+        nameItemTextField.setInitData("Name", 14, nameItemTextField.getPrefWidth());
+        nameItemTextField.setTextFieldColor("#fff");
     }
 
     @FXML
     public void addPingItemToListHandler() {
-        String ip = IPTextField.getText();
-        String name = nameItemTextField.getText();
+        String ip = IPTextField.getTextField().getText();
+        String name = nameItemTextField.getTextField().getText();
         pingerItemList.add(new PingerItem(ip, name));
         pingerItemsAddedObservableList.add(displayItemNameInList(name, ip));
     }
@@ -159,7 +162,7 @@ public class AddEditPingerItemsController extends GridPane {
 
     @FXML
     public void saveClickAction() {
-        String groupName = groupNameTextField.getText();
+        String groupName = groupNameTextField.getTextField().getText();
 
         if (pingerItem == null) {
             pingerItem = new Pinger(groupName, pingerItemList);
@@ -189,7 +192,7 @@ public class AddEditPingerItemsController extends GridPane {
 
         if (isEditItem) {
             addEditPingItemTitle.setText(Utils.TEXT_EDIT_COMPUTER_POPUP + pingerItem.getName());
-            groupNameTextField.setText(pingerItem.getName());
+            groupNameTextField.getTextField().setText(pingerItem.getName());
             pingerItemList.addAll(pingerItem.getData());
             pingerItemList.forEach(item -> {
                 pingerItemsAddedObservableList.add(displayItemNameInList(item.getName(), item.getIpAddress()));

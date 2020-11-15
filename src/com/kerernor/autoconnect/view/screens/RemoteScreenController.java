@@ -12,11 +12,9 @@ import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.ComputerListController;
 import com.kerernor.autoconnect.view.LastConnectionsPopupController;
-import com.kerernor.autoconnect.view.SearchAreaController;
+import com.kerernor.autoconnect.view.components.JTextFieldController;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
-import com.kerernor.autoconnect.view.popups.AlertPopupController;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
@@ -36,35 +34,48 @@ import java.io.IOException;
 import java.util.Collections;
 
 public class RemoteScreenController extends Pane implements IDisplayable {
+
     @FXML
-    public Pane pnlOverview;
+    private Pane mainPane;
     @FXML
-    public Label totalComputers;
+    private Label totalComputers;
     @FXML
-    public Label stationCounter;
+    private Label stationCounter;
     @FXML
-    public Label rcgwCounter;
+    private Label rcgwCounter;
     @FXML
-    public SearchAreaController searchAreaController;
+    private JTextFieldController searchAreaController;
     @FXML
-    public CheckBox viewOnlyCheckBox;
+    private CheckBox viewOnlyCheckBox;
     @FXML
-    public ComputerListController computerListController;
+    private ComputerListController computerListController;
     @FXML
-    public TextField quickConnectTextField;
+    private TextField quickConnectTextField;
     @FXML
-    public Button quickConnectBtn;
+    private Button quickConnectBtn;
     @FXML
-    public LastConnectionsPopupController lastConnectionsPopupController;
+    private LastConnectionsPopupController lastConnectionsPopupController;
     @FXML
-    public ImageView openCloseHistoryImage;
+    private ImageView openCloseHistoryImage;
+    @FXML
+    private Label resultLabel;
+
 
     private Logger logger = Logger.getLogger(RemoteScreenController.class);
+    private static RemoteScreenController instance = null;
     private final BooleanProperty isHistoryListEmpty = new SimpleBooleanProperty(true);
     private boolean isHistoryListOpen = false;
     private boolean isViewOnly = false;
 
-    public RemoteScreenController() {
+
+    public static RemoteScreenController getInstance() {
+        if (instance == null) {
+            instance = new RemoteScreenController();
+        }
+        return instance;
+    }
+
+    private RemoteScreenController() {
         loadView();
     }
 
@@ -86,7 +97,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
     public void initialize() {
         FilteredList<Computer> computerFilteredList = new FilteredList<>(ComputerData.getInstance().getComputersList(), computer -> true);
         FilteredList<LastConnectionItem> historySearchFilteredList = new FilteredList<>(LastConnectionData.getInstance().getLastConnectionItems(), pingItemsScrollPane -> true);
-        computerListController.setPaneBehind(this.pnlOverview);
+        computerListController.setPaneBehind(this.mainPane);
         computerListController.loadList(computerFilteredList);
         lastConnectionsPopupController.setList(historySearchFilteredList);
         isHistoryListEmpty.set(historySearchFilteredList.size() == 0);
@@ -128,20 +139,19 @@ public class RemoteScreenController extends Pane implements IDisplayable {
             connectToVNC(quickConnectTextField.getText());
         });
 
-        searchAreaController.getSearch().setOnKeyReleased(keyEvent -> {
-            String input = searchAreaController.getSearch().getText();
+        searchAreaController.getTextField().setOnKeyReleased(keyEvent -> {
+            String input = searchAreaController.getTextField().getText().toLowerCase();
 
             computerFilteredList.setPredicate(input.isEmpty() ? computer -> true :
                     computer -> computer.getIp().contains(input) ||
-                            computer.getName().contains(input) ||
-                            computer.getItemLocation().contains(input));
+                            computer.getName().toLowerCase().contains(input) ||
+                            computer.getItemLocation().toLowerCase().contains(input));
             computerListController.scrollTo(0);
         });
 
-        // TODO: delete
-        computerListController.addEventHandler(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, event -> {
-            event.consume();
-        });
+//        computerListController.addEventHandler(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, event -> {
+//            event.consume();
+//        });
 
         computerListController.addEventHandler(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, event -> {
             connectToVNC(event.getIpAddress());
@@ -169,7 +179,30 @@ public class RemoteScreenController extends Pane implements IDisplayable {
             quickConnectTextField.selectEnd();
         });
 
+        searchAreaController.setInitData("Filter list", 18, searchAreaController.getPrefWidth());
+        searchAreaController.setTextFieldColor("#fff");
+
+        mainPane.setOnMousePressed(e -> mainPane.requestFocus());
+
         Platform.runLater(() -> quickConnectTextField.requestFocus());
+
+        noResultLabelInitAndAddListener();
+    }
+
+    private void noResultLabelInitAndAddListener() {
+        if (  ComputerData.getInstance().getComputersList().size() == 0) {
+            resultLabel.toFront();
+        } else {
+            resultLabel.toBack();
+        }
+
+        computerListController.getComputerListView().getItems().addListener((ListChangeListener<? super Computer>) c -> {
+            if (c.getList().size() == 0) {
+                resultLabel.toFront();
+            } else {
+                resultLabel.toBack();
+            }
+        });
     }
 
     private void openLastConnectionPopupController() {
@@ -182,7 +215,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
 
     @FXML
     public void addNewComputer() {
-        AddEditComputerPopup addEditComputerPopup = new AddEditComputerPopup(pnlOverview, false);
+        AddEditComputerPopup addEditComputerPopup = new AddEditComputerPopup(mainPane, false);
         addEditComputerPopup.openPopup(null);
     }
 
@@ -195,7 +228,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
     private void connectToVNC(String ip) {
         if (!Utils.isValidateIpAddress(ip)) {
             logger.info("Wrong ip address: " + ip + " Can't to connect to client");
-            KorCommon.getInstance().getAlertPopupController().show(KorTypes.AlertTypes.WARNING, Utils.WRONG_IP_ADDRESS_MASSAGE, pnlOverview);
+            KorCommon.getInstance().getAlertPopupController().show(KorTypes.AlertTypes.WARNING, Utils.WRONG_IP_ADDRESS_MASSAGE, mainPane);
             quickConnectTextField.requestFocus();
             return;
         }

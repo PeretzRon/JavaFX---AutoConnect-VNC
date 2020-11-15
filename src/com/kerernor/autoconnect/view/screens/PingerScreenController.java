@@ -53,13 +53,21 @@ public class PingerScreenController extends Pane implements IDisplayable {
     private Label selectedPingGroupName;
 
     private Logger logger = Logger.getLogger(PingerScreenController.class);
+    private static PingerScreenController instance = null;
     FXMLLoader loader = null;
     private final BooleanProperty isRunPingerButtonDisabled = new SimpleBooleanProperty(true);
     private final AtomicInteger passPing = new AtomicInteger(0);
     private boolean isCheckPingRunning = false;
     private final List<PingGroupItemController> pingGroupItemControllerList = new ArrayList<>();
 
-    public PingerScreenController() {
+    public static PingerScreenController getInstance() {
+        if (instance == null) {
+            instance = new PingerScreenController();
+        }
+        return instance;
+    }
+
+    private PingerScreenController() {
         loadView();
     }
 
@@ -113,8 +121,7 @@ public class PingerScreenController extends Pane implements IDisplayable {
     public void addPingerItemHandler() {
         logger.trace("addPingerItemHandler");
 
-        AddEditPingerItemsController addEditPingerItemsController = AddEditPingerItemsController.getInstance();
-        addEditPingerItemsController.setConfiguration(pnlSetting, null, false);
+        AddEditPingerItemsController addEditPingerItemsController = new AddEditPingerItemsController(pnlSetting, null, false);
         addEditPingerItemsController.show();
     }
 

@@ -22,6 +22,7 @@ public class AboutScreenController extends Pane implements IDisplayable {
 
     private Logger logger = Logger.getLogger(AboutScreenController.class);
     FXMLLoader loader = null;
+    private static AboutScreenController instance = null;
 
     @FXML
     public void initialize() {
@@ -29,7 +30,14 @@ public class AboutScreenController extends Pane implements IDisplayable {
         aboutSecondLine.textProperty().bind(Bindings.concat(Utils.VERSION, Utils.VERSION_NUMBER));
     }
 
-    public AboutScreenController() {
+    public static AboutScreenController getInstance() {
+        if (instance == null) {
+            instance = new AboutScreenController();
+        }
+        return instance;
+    }
+
+    private AboutScreenController() {
         loadView();
     }
 
@@ -53,5 +61,13 @@ public class AboutScreenController extends Pane implements IDisplayable {
         this.setStyle("-fx-background-color : #02050A");
         this.toFront();
         logger.trace("showPane");
+    }
+
+    public Label getAboutSecondLine() {
+        return aboutSecondLine;
+    }
+
+    public Label getAboutFirstLine() {
+        return aboutFirstLine;
     }
 }

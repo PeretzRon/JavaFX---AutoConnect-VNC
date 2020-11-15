@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<fx:root fx:id="pnlSetting" prefHeight="576.0" prefWidth="773.0" stylesheets="@../../style/style.css" type="Pane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="pnlSetting" prefHeight="576.0" prefWidth="773.0" stylesheets="@../../style/style.css" type="Pane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <AnchorPane prefHeight="576.0" prefWidth="793.0">
             <children>
@@ -56,7 +56,10 @@
                         <Font size="24.0" />
                     </font>
                 </Label>
-            <Label fx:id="selectedPingGroupName" layoutX="22.0" layoutY="311.0" prefHeight="18.0" prefWidth="204.0" text="name" textFill="WHITE" />
+            <Label fx:id="selectedPingGroupName" alignment="CENTER" layoutX="290.0" layoutY="311.0" prefHeight="18.0" prefWidth="204.0" text="name" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
             </children>
         </AnchorPane>
     </children>

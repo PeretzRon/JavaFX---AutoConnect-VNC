@@ -1,19 +1,20 @@
 package com.kerernor.autoconnect.util;
 
-import com.kerernor.autoconnect.view.MainController;
 import com.kerernor.autoconnect.view.popups.AlertPopupController;
 import com.kerernor.autoconnect.view.screens.AboutScreenController;
+import com.kerernor.autoconnect.view.MainController;
 import com.kerernor.autoconnect.view.screens.PingerScreenController;
-import com.kerernor.autoconnect.view.screens.RemoteDriveScreenController;
+import com.kerernor.autoconnect.view.screens.RemoteScreenController;
 
 public class KorCommon {
 
     private static KorCommon instance = null;
     private MainController mainController = null;
-    private AboutScreenController aboutScreenController = null;
-    private PingerScreenController pingerScreenController = null;
-    private RemoteDriveScreenController remoteDriveScreenController = null;
-    private AlertPopupController alertPopupController = AlertPopupController.getInstance();
+    private final RemoteScreenController remoteScreenController = RemoteScreenController.getInstance();
+    private final PingerScreenController pingerScreenController = PingerScreenController.getInstance();
+    private final AboutScreenController aboutScreenController = AboutScreenController.getInstance();
+
+    private final AlertPopupController alertPopupController = AlertPopupController.getInstance();
 
     public static KorCommon getInstance() {
         if (instance == null) {
@@ -31,36 +32,19 @@ public class KorCommon {
         this.mainController = mainController;
     }
 
-    public AboutScreenController getAboutScreenController() {
-        return aboutScreenController;
-    }
-
-    public void setAboutScreenController(AboutScreenController aboutScreenController) {
-        this.aboutScreenController = aboutScreenController;
+    public RemoteScreenController getRemoteScreenController() {
+        return remoteScreenController;
     }
 
     public PingerScreenController getPingerScreenController() {
         return pingerScreenController;
     }
 
-    public void setPingerScreenController(PingerScreenController pingerScreenController) {
-        this.pingerScreenController = pingerScreenController;
-    }
-
-    public RemoteDriveScreenController getRemoteDriveScreenController() {
-        return remoteDriveScreenController;
-    }
-
-    public void setRemoteDriveScreenController(RemoteDriveScreenController remoteDriveScreenController) {
-        this.remoteDriveScreenController = remoteDriveScreenController;
+    public AboutScreenController getAboutScreenController() {
+        return aboutScreenController;
     }
 
     public AlertPopupController getAlertPopupController() {
         return alertPopupController;
     }
-
-    public void setAlertPopupController(AlertPopupController alertPopupController) {
-        this.alertPopupController = alertPopupController;
-    }
-
 }
