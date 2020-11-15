@@ -4,6 +4,7 @@ import com.kerernor.autoconnect.view.popups.AlertPopupController;
 import com.kerernor.autoconnect.view.screens.AboutScreenController;
 import com.kerernor.autoconnect.view.MainController;
 import com.kerernor.autoconnect.view.screens.PingerScreenController;
+import com.kerernor.autoconnect.view.screens.RemoteDriveScreenController;
 import com.kerernor.autoconnect.view.screens.RemoteScreenController;
 
 public class KorCommon {
@@ -13,6 +14,7 @@ public class KorCommon {
     private final RemoteScreenController remoteScreenController = RemoteScreenController.getInstance();
     private final PingerScreenController pingerScreenController = PingerScreenController.getInstance();
     private final AboutScreenController aboutScreenController = AboutScreenController.getInstance();
+    private final RemoteDriveScreenController remoteDriveScreenController = RemoteDriveScreenController.getInstance();
 
     private final AlertPopupController alertPopupController = AlertPopupController.getInstance();
 
@@ -42,6 +44,10 @@ public class KorCommon {
 
     public AboutScreenController getAboutScreenController() {
         return aboutScreenController;
+    }
+
+    public RemoteDriveScreenController getRemoteDriveScreenController() {
+        return remoteDriveScreenController;
     }
 
     public AlertPopupController getAlertPopupController() {

@@ -2,15 +2,11 @@ package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.ThreadManger;
-import com.kerernor.autoconnect.view.screens.AboutScreenController;
-import com.kerernor.autoconnect.view.screens.IDisplayable;
-import com.kerernor.autoconnect.view.screens.PingerScreenController;
-import com.kerernor.autoconnect.view.screens.RemoteScreenController;
+import com.kerernor.autoconnect.view.screens.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -31,6 +27,8 @@ public class MainController extends AnchorPane {
     @FXML
     private AboutScreenController aboutScreenController;
     @FXML
+    private RemoteDriveScreenController remoteDriveScreenController;
+    @FXML
     private AnchorPane mainPane;
     @FXML
     private Button btnRemoteScreen;
@@ -38,6 +36,8 @@ public class MainController extends AnchorPane {
     private Button btnExitApp;
     @FXML
     private Button btnPingerScreen;
+    @FXML
+    private Button btnOpenWindowScreen;
     @FXML
     private Button btnAbout;
     @FXML
@@ -62,7 +62,7 @@ public class MainController extends AnchorPane {
         logger.trace("MainController.initialize");
         loadScreenInstances();
         currentSelectedMenuButton = btnRemoteScreen;
-        screenButtonsList = new ArrayList<>(Arrays.asList(btnRemoteScreen, btnPingerScreen, btnAbout, btnExitApp));
+        screenButtonsList = new ArrayList<>(Arrays.asList(btnRemoteScreen, btnPingerScreen, btnAbout, btnOpenWindowScreen, btnExitApp));
         pingerScreenController.setVisible(false);
         aboutScreenController.setVisible(false);
         btnRemoteScreen.getStyleClass().add("selected-menu-item");
@@ -74,7 +74,8 @@ public class MainController extends AnchorPane {
         remoteScreenController = korCommon.getRemoteScreenController();
         pingerScreenController = korCommon.getPingerScreenController();
         aboutScreenController = korCommon.getAboutScreenController();
-        stackPaneAllScreens.getChildren().addAll(remoteScreenController, pingerScreenController, aboutScreenController);
+        remoteDriveScreenController = korCommon.getRemoteDriveScreenController();
+        stackPaneAllScreens.getChildren().addAll(remoteScreenController, pingerScreenController, aboutScreenController, remoteDriveScreenController);
     }
 
     public void handleClicks(ActionEvent actionEvent) {
@@ -86,8 +87,11 @@ public class MainController extends AnchorPane {
             changeScreenHandler(btnPingerScreen, pingerScreenController);
         } else if (actionEvent.getSource() == btnAbout && currentSelectedMenuButton != btnAbout) {
             changeScreenHandler(btnAbout, aboutScreenController);
+        } else if (actionEvent.getSource() == btnOpenWindowScreen && currentSelectedMenuButton != btnOpenWindowScreen) {
+            changeScreenHandler(btnOpenWindowScreen, remoteDriveScreenController);
         } else if (actionEvent.getSource() == btnExitApp) {
-            exitApp();
+            ThreadManger.getInstance().shutDown();
+            Platform.exit();
         }
     }
 
@@ -133,5 +137,9 @@ public class MainController extends AnchorPane {
 
     public AboutScreenController getAboutScreenController() {
         return aboutScreenController;
+    }
+
+    public RemoteDriveScreenController getRemoteDriveScreenController() {
+        return remoteDriveScreenController;
     }
 }
