@@ -71,14 +71,16 @@ public class ComputerData {
         }
     }
 
-    public void loadData() throws IOException {
+    public void loadData() {
         logger.trace("ComputerData.loadData");
         computersList = FXCollections.observableArrayList(); // FXCollection is for better performance
         computerListSize = Bindings.size(computersList);
-        Computer[] computers;
+        Computer[] computers = {};
         try (Reader reader = new InputStreamReader(new FileInputStream(Utils.COMPUTER_DATA), StandardCharsets.UTF_8)) {
             Gson gson = new Gson();
             computers = gson.fromJson(reader, Computer[].class);
+        } catch (IOException e) {
+            logger.error("file not found - when the app closed, new file will created");
         }
 
         for (Computer computer : computers) {

@@ -53,13 +53,16 @@ public class LastConnectionData {
         }
     }
 
-    public void loadData() throws IOException {
+    public void loadData() {
         logger.trace("LastConnectionData.loadData");
         lastConnectionItems = FXCollections.observableArrayList(); // FXCollection is for better performance
-        LastConnectionItem[] lastConnectionItemsList;
+        LastConnectionItem[] lastConnectionItemsList = {};
         try (Reader reader = new InputStreamReader(new FileInputStream(Utils.LAST_CONNECTIONS_HISTORY_DATA), StandardCharsets.UTF_8)) {
             Gson gson = new Gson();
             lastConnectionItemsList = gson.fromJson(reader, LastConnectionItem[].class);
+
+        } catch (IOException e) {
+            logger.error("file not found - when the app closed, new file will created");
         }
 
         int count = 0;

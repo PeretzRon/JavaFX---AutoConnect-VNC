@@ -1,9 +1,7 @@
 package com.kerernor.autoconnect.view.screens;
 
 import com.kerernor.autoconnect.Main;
-import com.kerernor.autoconnect.model.Pinger;
-import com.kerernor.autoconnect.model.PingerData;
-import com.kerernor.autoconnect.model.PingerItem;
+import com.kerernor.autoconnect.model.*;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
@@ -17,6 +15,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -32,25 +31,27 @@ import java.util.concurrent.atomic.AtomicReference;
 public class PingerScreenController extends Pane implements IDisplayable {
 
     @FXML
-    public Pane pnlSetting;
+    private Pane pnlSetting;
     @FXML
-    public FlowPane flowPaneGroupPinger;
+    private FlowPane flowPaneGroupPinger;
     @FXML
-    public ScrollPane pingItemsScrollPane;
+    private ScrollPane pingItemsScrollPane;
     @FXML
-    public PingListGroupController pingListGroupController;
+    private PingListGroupController pingListGroupController;
     @FXML
-    public ProgressBar totalProgress;
+    private ProgressBar totalProgress;
     @FXML
-    public Label totalProgressLabel;
+    private Label totalProgressLabel;
     @FXML
-    public TextField filterPingerGroup;
+    private TextField filterPingerGroup;
     @FXML
-    public Button checkPing;
+    private Button checkPing;
     @FXML
-    public Button addPingerItem;
+    private Button addPingerItem;
     @FXML
     private Label selectedPingGroupName;
+    @FXML
+    private Label noResultLabel;
 
     private Logger logger = Logger.getLogger(PingerScreenController.class);
     private static PingerScreenController instance = null;
@@ -101,6 +102,8 @@ public class PingerScreenController extends Pane implements IDisplayable {
         });
 
         createPingerGroups("");
+        noResultLabel.toBack();
+        noResultLabelInitAndAddListener();
     }
 
     private Pane loadView() {
@@ -115,6 +118,22 @@ public class PingerScreenController extends Pane implements IDisplayable {
         }
 
         return null;
+    }
+
+    private void noResultLabelInitAndAddListener() {
+        if (  PingerData.getInstance().getPingerObservableList().size() == 0) {
+            noResultLabel.toFront();
+        } else {
+            noResultLabel.toBack();
+        }
+
+        flowPaneGroupPinger.getChildren().addListener((ListChangeListener<? super Node>) c ->  {
+            if (c.getList().size() == 0) {
+                noResultLabel.toFront();
+            } else {
+                noResultLabel.toBack();
+            }
+        });
     }
 
     @FXML

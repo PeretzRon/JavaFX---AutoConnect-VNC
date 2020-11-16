@@ -89,6 +89,10 @@
     -fx-background-color: #10165F;
 }
 
+.list-cell:empty:hover {
+    -fx-background-color: black;
+}
+
 .scroll-bar:horizontal .track,
 .scroll-bar:vertical .track {
     -fx-background-color: transparent;

@@ -28,7 +28,7 @@ public class PingerData {
         return pingerObservableList;
     }
 
-    public void loadData() throws IOException {
+    public void loadData() {
         logger.trace("PingerData.loadData");
         pingerObservableList = FXCollections.observableArrayList(); // FXCollection is for better performance
         Pinger[] pingers;
@@ -36,6 +36,8 @@ public class PingerData {
             Gson gson = new Gson();
             pingers = gson.fromJson(reader, Pinger[].class);
             pingerObservableList.addAll(Arrays.asList(pingers));
+        } catch (IOException e) {
+            logger.error("file not found - when the app closed, new file will created");
         }
     }
 
