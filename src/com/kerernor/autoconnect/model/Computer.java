@@ -2,6 +2,7 @@ package com.kerernor.autoconnect.model;
 
 import com.kerernor.autoconnect.util.KorTypes;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Computer {
