@@ -89,9 +89,9 @@ public class ComputerRowController extends ListCell<Computer> {
         computerLocation.setText(computer.getItemLocation());
         computerIP.setText(computer.getIp());
         if (computer.getComputerType() == KorTypes.ComputerType.RCGW) {
-            computerType.setImage(Utils.appImages.get(Utils.RCGW_ICON));
+            computerType.setImage(Utils.getImageByName(Utils.RCGW_ICON));
         } else {
-            computerType.setImage(Utils.appImages.get(Utils.STATION_ICON));
+            computerType.setImage(Utils.getImageByName(Utils.STATION_ICON));
         }
     }
 
