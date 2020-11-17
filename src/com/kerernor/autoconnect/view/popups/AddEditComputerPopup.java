@@ -3,10 +3,9 @@ package com.kerernor.autoconnect.view.popups;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
 import com.kerernor.autoconnect.model.ComputerData;
-import com.kerernor.autoconnect.model.eComputerType;
-import com.kerernor.autoconnect.util.KorEvents;
+import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
-import javafx.application.Platform;
+import com.kerernor.autoconnect.view.components.JTextFieldController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -17,28 +16,27 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
-public class AddEditComputerPopup extends Popup {
+public class AddEditComputerPopup extends BorderPane {
 
     @FXML
-    BorderPane mainPane;
+    private BorderPane mainPane;
 
     @FXML
     private Label addEditComputerLabel;
 
     @FXML
-    private TextField computerIPAddress;
+    private JTextFieldController computerIPAddress;
 
     @FXML
-    private TextField computerName;
+    private JTextFieldController computerName;
 
     @FXML
-    private TextField computerLocation;
+    private JTextFieldController computerLocation;
 
     @FXML
     private ToggleGroup computerType;
@@ -51,6 +49,9 @@ public class AddEditComputerPopup extends Popup {
 
     @FXML
     private Button saveButton;
+
+    @FXML
+    private Button cancelButton;
 
 
     private Parent paneBehind;
@@ -71,7 +72,7 @@ public class AddEditComputerPopup extends Popup {
 
     @FXML
     public void initialize() {
-        Platform.runLater(() -> mainPane.requestFocus());
+        mainPane.setOnMousePressed(e -> mainPane.requestFocus());
         if (isEdit) {
             isValidLocationTextField = new SimpleBooleanProperty(false);
             isValidNameTextField = new SimpleBooleanProperty(false);
@@ -80,16 +81,27 @@ public class AddEditComputerPopup extends Popup {
 
         saveButton.disableProperty().bind(Bindings.or(isValidIPAddress, isValidLocationTextField).or(isValidNameTextField));
         computerIPAddress.setOnKeyReleased(event -> {
-            isValidIPAddress.setValue(!Utils.isValidateIpAddress(computerIPAddress.getText()));
+            isValidIPAddress.setValue(!Utils.isValidateIpAddress(computerIPAddress.getTextField().getText()));
         });
 
         computerLocation.setOnKeyReleased(event -> {
-            isValidLocationTextField.setValue(Utils.isNullOrEmptyString(computerLocation.getText()));
+            isValidLocationTextField.setValue(Utils.isNullOrEmptyString(computerLocation.getTextField().getText()));
         });
 
         computerName.setOnKeyReleased(event -> {
-            isValidNameTextField.setValue(Utils.isNullOrEmptyString(computerName.getText()));
+            isValidNameTextField.setValue(Utils.isNullOrEmptyString(computerName.getTextField().getText()));
         });
+
+        initTextFields();
+    }
+
+    private void initTextFields() {
+        computerIPAddress.setInitData("IP Address", 14, computerIPAddress.getPrefWidth());
+        computerIPAddress.setTextFieldColor("#fff");
+        computerName.setInitData("Computer Name", 14, computerName.getPrefWidth());
+        computerName.setTextFieldColor("#fff");
+        computerLocation.setInitData("Computer Location", 14, computerName.getPrefWidth());
+        computerLocation.setTextFieldColor("#fff");
     }
 
     public BorderPane loadView() {
@@ -107,8 +119,8 @@ public class AddEditComputerPopup extends Popup {
 
 
     public void openPopup(Computer computer) {
-        // TODO: - Delete
-        fireEvent(new KorEvents.SearchComputerEvent(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, "Event"));
+        // not require
+        // fireEvent(new KorEvents.SearchComputerEvent(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, "Event"));
 
         this.computer = computer;
         Scene scene = new Scene(this.loadView());
@@ -118,7 +130,6 @@ public class AddEditComputerPopup extends Popup {
         stage.setResizable(false);
         stage.initStyle(StageStyle.UNDECORATED);
 
-        // select radio button
         if (isEdit) {
             setValues(computer);
             addEditComputerLabel.setText(Utils.TEXT_EDIT_COMPUTER_POPUP + computer.getName());
@@ -128,7 +139,7 @@ public class AddEditComputerPopup extends Popup {
             addEditComputerLabel.setText(Utils.TEXT_ADD_NEW_COMPUTER_POPUP);
         }
 
-        if (Utils.IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING) {
+        if (Utils.CONFIG_IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING) {
             // Set out of focus closing ability
             stage.focusedProperty().addListener((observableValue, wasFocused, isNowFocused) -> {
                 if (!isNowFocused) {
@@ -152,9 +163,10 @@ public class AddEditComputerPopup extends Popup {
     }
 
     private void setValues(Computer computer) {
-        computerIPAddress.setText(computer.getIp());
-        computerLocation.setText(computer.getItemLocation());
-        computerName.setText(computer.getName());
+        computerIPAddress.getTextField().setText(computer.getIp());
+        computerLocation.getTextField().setText(computer.getItemLocation());
+        computerName.getTextField().setText(computer.getName());
+//        Platform.runLater(() -> computerIPAddress.getTextField().end());
         selectRadioButton(computer);
     }
 
@@ -172,18 +184,16 @@ public class AddEditComputerPopup extends Popup {
     public void closeClickAction() {
         // Revert the blur effect from the pane behind
         paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
-
-
         stage.close();
     }
 
     // save new computer / edit computer to list
     public void saveClickAction() {
-        String cmpIP = computerIPAddress.getText();
-        String cmpName = computerName.getText();
-        String cmpLocation = computerLocation.getText();
+        String cmpIP = computerIPAddress.getTextField().getText();
+        String cmpName = computerName.getTextField().getText();
+        String cmpLocation = computerLocation.getTextField().getText();
         RadioButton selectedRadioButton = (RadioButton) computerType.getSelectedToggle();
-        eComputerType cmpType = Enum.valueOf(eComputerType.class, selectedRadioButton.getText());
+        KorTypes.ComputerType cmpType = Enum.valueOf(KorTypes.ComputerType.class, selectedRadioButton.getText());
 
         if (computer == null) {
             // create new computer
@@ -200,4 +210,6 @@ public class AddEditComputerPopup extends Popup {
 
         closeClickAction();
     }
+
+
 }

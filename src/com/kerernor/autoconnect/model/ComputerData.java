@@ -1,6 +1,7 @@
 package com.kerernor.autoconnect.model;
 
 import com.google.gson.Gson;
+import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
@@ -17,7 +18,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class ComputerData {
 
@@ -71,14 +71,16 @@ public class ComputerData {
         }
     }
 
-    public void loadData() throws IOException {
+    public void loadData() {
         logger.trace("ComputerData.loadData");
         computersList = FXCollections.observableArrayList(); // FXCollection is for better performance
         computerListSize = Bindings.size(computersList);
-        Computer[] computers;
+        Computer[] computers = {};
         try (Reader reader = new InputStreamReader(new FileInputStream(Utils.COMPUTER_DATA), StandardCharsets.UTF_8)) {
             Gson gson = new Gson();
             computers = gson.fromJson(reader, Computer[].class);
+        } catch (IOException e) {
+            logger.error("file not found - when the app closed, new file will created");
         }
 
         for (Computer computer : computers) {
@@ -100,7 +102,7 @@ public class ComputerData {
 
     private void updateCounters(Computer computer, int value) {
         logger.trace("updateCounters");
-        if (computer.getComputerType() == eComputerType.RCGW) {
+        if (computer.getComputerType() == KorTypes.ComputerType.RCGW) {
             int oldValue = rcgwCounterItems.get();
             rcgwCounterItems.set(oldValue + value);
             logger.info("update RCGW: oldValue: " + oldValue + " NewValue: " + rcgwCounterItems.get());
@@ -116,7 +118,7 @@ public class ComputerData {
         stationCounterItems.setValue(0);
         rcgwCounterItems.setValue(0);
         computersList.forEach(computer -> {
-            if (computer.getComputerType() == eComputerType.RCGW) {
+            if (computer.getComputerType() == KorTypes.ComputerType.RCGW) {
                 rcgwCounterItems.set(rcgwCounterItems.get() + 1);
             } else {
                 stationCounterItems.set(stationCounterItems.get() + 1);

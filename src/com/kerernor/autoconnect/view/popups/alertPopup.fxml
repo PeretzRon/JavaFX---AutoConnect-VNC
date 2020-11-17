@@ -2,14 +2,44 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-
-<HBox alignment="CENTER_LEFT" prefHeight="55.0" prefWidth="1050.0" styleClass="alert-popup" stylesheets="@../../style/popupStyle.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <Label fx:id="massageLabel" alignment="CENTER" text="Popup massage to user" />
-   </children>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
-</HBox>
+<BorderPane fx:id="mainPane" onMouseClicked="#autoClosePopUpTimerHandler" prefHeight="55.0" prefWidth="1050.0" styleClass="alert-popup" stylesheets="@../../style/popupStyle.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <left>
+        <HBox  prefHeight="62.0" prefWidth="596.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fx:id="alertIcon" fitHeight="44.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/warning.png" />
+                    </image>
+                </ImageView>
+                <Separator opacity="0.41" orientation="VERTICAL" prefHeight="200.0" styleClass="kor-separator" />
+                <Label fx:id="massageLabel" prefHeight="35.0" prefWidth="427.0" text="Popup massage to user">
+               <padding>
+                  <Insets top="2.0" />
+               </padding></Label>
+            </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+        </HBox>
+    </left>
+    <right>
+        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+            <children>
+                <ImageView fitHeight="78.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/close-icon.png" />
+                    </image>
+                </ImageView>
+            </children>
+         <padding>
+            <Insets right="15.0" />
+         </padding>
+        </HBox>
+    </right>
+</BorderPane>

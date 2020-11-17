@@ -6,7 +6,8 @@ import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.model.PingerItem;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
-import javafx.application.Platform;
+import com.kerernor.autoconnect.view.components.JTextFieldController;
+import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,16 +17,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +35,13 @@ public class AddEditPingerItemsController extends GridPane {
     private GridPane mainPane;
 
     @FXML
-    private TextField groupNameTextField;
+    private JTextFieldController groupNameTextField;
 
     @FXML
-    private TextField IPTextField;
+    private JTextFieldController IPTextField;
 
     @FXML
-    private TextField nameItemTextField;
+    private JTextFieldController nameItemTextField;
 
     @FXML
     private ImageView addIPImageView;
@@ -58,18 +58,24 @@ public class AddEditPingerItemsController extends GridPane {
     private Stage stage;
     private Parent paneBehind;
 
+    private Logger logger = Logger.getLogger(AddEditPingerItemsController.class);
     private ObservableList<String> pingerItemsAddedObservableList;
     private List<PingerItem> pingerItemList;
 
     private Pinger pingerItem;
     private boolean isEditItem;
 
+    private ScaleTransition scale1 = new ScaleTransition();
+    private ScaleTransition scale2 = new ScaleTransition();
+    private FadeTransition f1 = new FadeTransition();
+    private SequentialTransition anim = new SequentialTransition(scale1, scale2);
+
     public AddEditPingerItemsController(Parent paneBehind, Pinger pingerItem, boolean isEditItem) {
+        logger.trace("AddEditPingerItemsController");
         this.paneBehind = paneBehind;
         this.pingerItem = pingerItem;
         this.isEditItem = isEditItem;
     }
-
 
     public GridPane loadView() {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.ADD_EDIT_PINGER_ITEMS));
@@ -89,6 +95,18 @@ public class AddEditPingerItemsController extends GridPane {
         pingerItemsAddedObservableList = FXCollections.observableArrayList();
         pingerItemList = new ArrayList<>();
         addedItemsList.setItems(pingerItemsAddedObservableList);
+        mainPane.setOnMousePressed(e -> mainPane.requestFocus());
+        initTextFields();
+
+        addedItemsList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                String[] item = newValue.split("-");
+                String name = item[0];
+                String ip = item[1];
+                IPTextField.getTextField().setText(ip);
+                nameItemTextField.getTextField().setText(name);
+            }
+        });
         addedItemsList.setCellFactory(param -> {
             ListCell<String> cell = new ListCell<String>() {
                 @Override
@@ -103,14 +121,21 @@ public class AddEditPingerItemsController extends GridPane {
             };
             return cell;
         });
+    }
 
-        Platform.runLater(() -> mainPane.requestFocus());
+    private void initTextFields() {
+        groupNameTextField.setInitData("Group Name", 14, groupNameTextField.getPrefWidth());
+        groupNameTextField.setTextFieldColor("#fff");
+        IPTextField.setInitData("IP Address", 14, IPTextField.getPrefWidth());
+        IPTextField.setTextFieldColor("#fff");
+        nameItemTextField.setInitData("Name", 14, nameItemTextField.getPrefWidth());
+        nameItemTextField.setTextFieldColor("#fff");
     }
 
     @FXML
     public void addPingItemToListHandler() {
-        String ip = IPTextField.getText();
-        String name = nameItemTextField.getText();
+        String ip = IPTextField.getTextField().getText();
+        String name = nameItemTextField.getTextField().getText();
         pingerItemList.add(new PingerItem(ip, name));
         pingerItemsAddedObservableList.add(displayItemNameInList(name, ip));
     }
@@ -137,7 +162,7 @@ public class AddEditPingerItemsController extends GridPane {
 
     @FXML
     public void saveClickAction() {
-        String groupName = groupNameTextField.getText();
+        String groupName = groupNameTextField.getTextField().getText();
 
         if (pingerItem == null) {
             pingerItem = new Pinger(groupName, pingerItemList);
@@ -158,8 +183,9 @@ public class AddEditPingerItemsController extends GridPane {
     }
 
     public void show() {
-        Scene scene = new Scene(this.loadView());
-
+        GridPane root = this.loadView();
+        Scene scene = new Scene(root);
+        root.setStyle("-fx-background-color: #05071F;");
         stage = new Stage();
         stage.setScene(scene);
         stage.setResizable(false);
@@ -167,7 +193,7 @@ public class AddEditPingerItemsController extends GridPane {
 
         if (isEditItem) {
             addEditPingItemTitle.setText(Utils.TEXT_EDIT_COMPUTER_POPUP + pingerItem.getName());
-            groupNameTextField.setText(pingerItem.getName());
+            groupNameTextField.getTextField().setText(pingerItem.getName());
             pingerItemList.addAll(pingerItem.getData());
             pingerItemList.forEach(item -> {
                 pingerItemsAddedObservableList.add(displayItemNameInList(item.getName(), item.getIpAddress()));
@@ -176,7 +202,7 @@ public class AddEditPingerItemsController extends GridPane {
             addEditPingItemTitle.setText(Utils.TEXT_ADD_NEW_GROUP_PINGER_POPUP_TITTLE);
         }
 
-        if (Utils.IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING) {
+        if (Utils.CONFIG_IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING) {
             // Set out of focus closing ability
             stage.focusedProperty().addListener((observableValue, wasFocused, isNowFocused) -> {
                 if (!isNowFocused) {
@@ -190,8 +216,36 @@ public class AddEditPingerItemsController extends GridPane {
         stage.initOwner(paneBehind.getScene().getWindow());
         stage.show();
 
+//        f1.setFromValue(0.5);
+//        f1.setToValue(1);
+//        f1.setDuration(Duration.seconds(0.3));
+//        f1.setNode(root);
+//        f1.play();
+//        scale1.setFromX(0.01);
+//        scale1.setFromY(0.01);
+//        scale1.setToY(1.5);
+//        scale1.setDuration(Duration.seconds(0.33));
+//        scale1.setNode(root);
+//
+//        scale1.play();
+//
+//        Timeline second = new Timeline(
+//                new KeyFrame(Duration.ZERO, new KeyValue(root.prefWidthProperty(), root.getWidth())),
+//                new KeyFrame(Duration.seconds(3), new KeyValue(root.prefWidthProperty(), 3 * root.getWidth())));
+//        second.play();
+//
+//        scale2.setFromX(0.01);
+//        scale2.setToX(1);
+//        scale2.setDuration(Duration.seconds(0.33));
+//        scale2.setNode(root);
+//        anim.play();
+//        this.setVisible(false);
+//        anim.setOnFinished(event -> {
+//            this.setVisible(true);
+//        });
+
         // center stage
-        Utils.centerNewStageToBehindStage(paneBehind, stage);
+//        Utils.centerNewStageToBehindStage(paneBehind, stage);
 
         // Blur the pane behind
         paneBehind.effectProperty().setValue(Utils.getBlurEffect());
@@ -200,7 +254,7 @@ public class AddEditPingerItemsController extends GridPane {
     public void closeClickAction() {
         // Revert the blur effect from the pane behind
         paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
-
+        fireEvent(new KorEvents.PingerEvent(KorEvents.PingerEvent.EXIT));
         stage.close();
     }
 

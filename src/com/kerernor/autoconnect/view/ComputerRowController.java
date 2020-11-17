@@ -2,8 +2,9 @@ package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
-import com.kerernor.autoconnect.model.eComputerType;
+import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.util.KorEvents;
+import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.ConfirmPopupController;
@@ -16,7 +17,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -135,10 +135,10 @@ public class ComputerRowController extends ListCell<Computer> {
         computerName.setText(computer.getName());
         computerLocation.setText(computer.getItemLocation());
         computerIP.setText(computer.getIp());
-        if (computer.getComputerType() == eComputerType.RCGW) {
-            computerType.setImage(Utils.getImageByName(Utils.RCGW_ICON));
+        if (computer.getComputerType() == KorTypes.ComputerType.RCGW) {
+            computerType.setImage(Utils.appImages.get(Utils.RCGW_ICON));
         } else {
-            computerType.setImage(Utils.getImageByName(Utils.STATION_ICON));
+            computerType.setImage(Utils.appImages.get(Utils.STATION_ICON));
         }
     }
 
@@ -150,9 +150,17 @@ public class ComputerRowController extends ListCell<Computer> {
 
     @FXML
     public void removeComputer() {
-        ConfirmPopupController confirmPopupController = new ConfirmPopupController(paneBehind, computer, null);
-        confirmPopupController.openPopup();
-
+        ConfirmPopupController confirmPopupController = ConfirmPopupController.getInstance();
+        confirmPopupController.setConfiguration(paneBehind, computer);
+        KorTypes.ConfirmPopUpControllerTypes callback = confirmPopupController.openPopup();
+        switch (callback) {
+            case CONFIRM:
+                ComputerData.getInstance().remove(computer);
+                break;
+            case EXIT:
+            default:
+                break;
+        }
     }
 
     public void editComputer() {
