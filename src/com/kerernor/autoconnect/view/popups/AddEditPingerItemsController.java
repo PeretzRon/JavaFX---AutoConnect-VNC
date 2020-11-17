@@ -7,6 +7,7 @@ import com.kerernor.autoconnect.model.PingerItem;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.components.JTextFieldController;
+import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,6 +22,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -62,6 +64,11 @@ public class AddEditPingerItemsController extends GridPane {
 
     private Pinger pingerItem;
     private boolean isEditItem;
+
+    private ScaleTransition scale1 = new ScaleTransition();
+    private ScaleTransition scale2 = new ScaleTransition();
+    private FadeTransition f1 = new FadeTransition();
+    private SequentialTransition anim = new SequentialTransition(scale1, scale2);
 
     public AddEditPingerItemsController(Parent paneBehind, Pinger pingerItem, boolean isEditItem) {
         logger.trace("AddEditPingerItemsController");
@@ -176,8 +183,9 @@ public class AddEditPingerItemsController extends GridPane {
     }
 
     public void show() {
-        Scene scene = new Scene(this.loadView());
-
+        GridPane root = this.loadView();
+        Scene scene = new Scene(root);
+        root.setStyle("-fx-background-color: #05071F;");
         stage = new Stage();
         stage.setScene(scene);
         stage.setResizable(false);
@@ -208,8 +216,36 @@ public class AddEditPingerItemsController extends GridPane {
         stage.initOwner(paneBehind.getScene().getWindow());
         stage.show();
 
+//        f1.setFromValue(0.5);
+//        f1.setToValue(1);
+//        f1.setDuration(Duration.seconds(0.3));
+//        f1.setNode(root);
+//        f1.play();
+//        scale1.setFromX(0.01);
+//        scale1.setFromY(0.01);
+//        scale1.setToY(1.5);
+//        scale1.setDuration(Duration.seconds(0.33));
+//        scale1.setNode(root);
+//
+//        scale1.play();
+//
+//        Timeline second = new Timeline(
+//                new KeyFrame(Duration.ZERO, new KeyValue(root.prefWidthProperty(), root.getWidth())),
+//                new KeyFrame(Duration.seconds(3), new KeyValue(root.prefWidthProperty(), 3 * root.getWidth())));
+//        second.play();
+//
+//        scale2.setFromX(0.01);
+//        scale2.setToX(1);
+//        scale2.setDuration(Duration.seconds(0.33));
+//        scale2.setNode(root);
+//        anim.play();
+//        this.setVisible(false);
+//        anim.setOnFinished(event -> {
+//            this.setVisible(true);
+//        });
+
         // center stage
-        Utils.centerNewStageToBehindStage(paneBehind, stage);
+//        Utils.centerNewStageToBehindStage(paneBehind, stage);
 
         // Blur the pane behind
         paneBehind.effectProperty().setValue(Utils.getBlurEffect());

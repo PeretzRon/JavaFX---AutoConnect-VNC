@@ -3,7 +3,6 @@ package com.kerernor.autoconnect.view.screens;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.LastRemoteDriveData;
 import com.kerernor.autoconnect.model.LastRemoteDriveItem;
-import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
@@ -13,8 +12,6 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,13 +23,8 @@ import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class RemoteDriveScreenController extends Pane implements IDisplayable {
 
@@ -126,7 +118,7 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
             return true;
         } else {
             AlertPopupController alertPopupController = new AlertPopupController();
-            alertPopupController.show(KorTypes.AlertTypes.WARNING, Utils.WRONG_IP_ADDRESS_MASSAGE, pnlOpenWindow);
+            alertPopupController.showAlert(KorTypes.AlertTypes.WARNING, Utils.WRONG_IP_ADDRESS_MASSAGE, pnlOpenWindow);
             logger.error("can't open remote drive - ip isn't valid");
             return false;
         }

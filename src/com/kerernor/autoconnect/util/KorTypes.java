@@ -11,4 +11,10 @@ public class KorTypes {
         WARNING,
         ERROR
     }
+
+    public enum ComputerType {
+        Station,
+        RCGW
+    }
+
 }

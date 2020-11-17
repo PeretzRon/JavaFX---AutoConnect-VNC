@@ -6,7 +6,6 @@ import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.model.LastConnectionData;
 import com.kerernor.autoconnect.model.LastConnectionItem;
 import com.kerernor.autoconnect.script.VNCRemote;
-import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
@@ -230,7 +229,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
         if (!Utils.isValidateIpAddress(ip)) {
             logger.info("Wrong ip address: " + ip + " Can't to connect to client");
             AlertPopupController alertPopupController = new AlertPopupController();
-            alertPopupController.show(KorTypes.AlertTypes.WARNING, Utils.WRONG_IP_ADDRESS_MASSAGE, mainPane);
+            alertPopupController.showAlert(KorTypes.AlertTypes.WARNING, Utils.WRONG_IP_ADDRESS_MASSAGE, mainPane);
             quickConnectTextField.requestFocus();
             return;
         }

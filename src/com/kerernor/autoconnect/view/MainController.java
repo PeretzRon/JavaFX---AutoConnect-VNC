@@ -189,4 +189,8 @@ public class MainController extends AnchorPane {
     public RemoteDriveScreenController getRemoteDriveScreenController() {
         return remoteDriveScreenController;
     }
+
+    public AnchorPane getMainPane() {
+        return mainPane;
+    }
 }

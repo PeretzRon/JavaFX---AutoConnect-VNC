@@ -3,7 +3,7 @@ package com.kerernor.autoconnect.view.popups;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
 import com.kerernor.autoconnect.model.ComputerData;
-import com.kerernor.autoconnect.model.eComputerType;
+import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.components.JTextFieldController;
 import javafx.beans.binding.Bindings;
@@ -193,7 +193,7 @@ public class AddEditComputerPopup extends BorderPane {
         String cmpName = computerName.getTextField().getText();
         String cmpLocation = computerLocation.getTextField().getText();
         RadioButton selectedRadioButton = (RadioButton) computerType.getSelectedToggle();
-        eComputerType cmpType = Enum.valueOf(eComputerType.class, selectedRadioButton.getText());
+        KorTypes.ComputerType cmpType = Enum.valueOf(KorTypes.ComputerType.class, selectedRadioButton.getText());
 
         if (computer == null) {
             // create new computer

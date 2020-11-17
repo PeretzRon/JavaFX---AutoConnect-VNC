@@ -12,15 +12,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.apache.log4j.Logger;
 
-import javax.swing.text.html.ImageView;
 import java.io.IOException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -28,13 +30,13 @@ import java.util.concurrent.TimeUnit;
 public class AlertPopupController {
 
     @FXML
-    private HBox mainPane;
-
+    private BorderPane mainPane;
     @FXML
     private Label massageLabel;
-
     @FXML
     private HBox closePopupIcon;
+    @FXML
+    private ImageView alertIcon;
 
     Logger logger = Logger.getLogger(AlertPopupController.class);
     private Stage stage;
@@ -42,6 +44,7 @@ public class AlertPopupController {
     BorderPane borderPane;
     Parent paneBehind;
     Scene scene;
+    private long TIME_TO_CLOSE_ALERT;
     ScheduledFuture<?> timer;
 
     public AlertPopupController() {
@@ -74,10 +77,10 @@ public class AlertPopupController {
         return null;
     }
 
-    public void show(KorTypes.AlertTypes alertType, String msg, Parent paneBehind) {
+    public void showAlert(KorTypes.AlertTypes alertType, String msg, Parent paneBehind) {
         this.paneBehind = paneBehind;
         massageLabel.setText(msg);
-
+        configAlertColorAndImage(alertType);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), mainPane);
         ft.setFromValue(0.5);
         ft.setToValue(1.0);
@@ -94,7 +97,7 @@ public class AlertPopupController {
         autoClosePopUpTimer();
         timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
             Platform.runLater(this::autoClosePopUpTimer);
-        }, Utils.TIME_FOR_CLOSE_ALERT_MESSAGE, TimeUnit.MILLISECONDS);
+        }, TIME_TO_CLOSE_ALERT, TimeUnit.MILLISECONDS);
         stage.show();
         locateStageDownToParentStage();
     }
@@ -126,4 +129,22 @@ public class AlertPopupController {
         logger.trace("close alert by click");
         autoClosePopUpTimer();
     }
+
+    private void configAlertColorAndImage(KorTypes.AlertTypes alertType) {
+        massageLabel.setTextFill(Color.BLACK);
+        switch (alertType) {
+            case WARNING:
+                borderPane.setStyle("-fx-background-color: #ff9800");
+                TIME_TO_CLOSE_ALERT = Utils.TIME_FOR_CLOSE_ALERT_MESSAGE_WARNING;
+                alertIcon.setImage(Utils.appImages.get(Utils.ALERT_WARNING_ICON));
+                break;
+            case ERROR:
+                borderPane.setStyle("-fx-background-color: #85112a");
+                TIME_TO_CLOSE_ALERT = Utils.TIME_FOR_CLOSE_ALERT_MESSAGE_ERROR;
+                alertIcon.setImage(Utils.appImages.get(Utils.ALERT_ERROR_ICON));
+                break;
+            default:
+        }
+    }
+
 }

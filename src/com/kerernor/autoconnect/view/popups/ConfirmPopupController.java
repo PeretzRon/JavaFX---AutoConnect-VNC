@@ -6,6 +6,8 @@ import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -40,7 +43,6 @@ public class ConfirmPopupController extends GridPane {
     ScheduledFuture<?> timer;
 
     private static ConfirmPopupController instance = null;
-
     private KorTypes.ConfirmPopUpControllerTypes callback;
 
     private ConfirmPopupController() {
@@ -117,6 +119,7 @@ public class ConfirmPopupController extends GridPane {
         timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
             Platform.runLater(this::closeClickAction);
         }, Utils.TIME_FOR_CLOSE_POPUP, TimeUnit.MILLISECONDS);
+
 
         Utils.showStageOnTopAndWait(stage);
         Utils.centerNewStageToBehindStage(paneBehind, stage);

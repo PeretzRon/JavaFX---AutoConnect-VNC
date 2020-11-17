@@ -1,16 +1,12 @@
 package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.Main;
-import com.kerernor.autoconnect.model.Computer;
 import com.kerernor.autoconnect.model.PingerItem;
-import com.kerernor.autoconnect.model.eComputerType;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;

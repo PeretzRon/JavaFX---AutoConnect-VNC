@@ -3,8 +3,6 @@ package com.kerernor.autoconnect.view;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
 import com.kerernor.autoconnect.model.ComputerData;
-import com.kerernor.autoconnect.model.PingerData;
-import com.kerernor.autoconnect.model.eComputerType;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
@@ -15,7 +13,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -91,7 +88,7 @@ public class ComputerRowController extends ListCell<Computer> {
         computerName.setText(computer.getName());
         computerLocation.setText(computer.getItemLocation());
         computerIP.setText(computer.getIp());
-        if (computer.getComputerType() == eComputerType.RCGW) {
+        if (computer.getComputerType() == KorTypes.ComputerType.RCGW) {
             computerType.setImage(Utils.appImages.get(Utils.RCGW_ICON));
         } else {
             computerType.setImage(Utils.appImages.get(Utils.STATION_ICON));

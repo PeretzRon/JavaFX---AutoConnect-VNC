@@ -31,8 +31,8 @@
 }
 
 .alert-popup {
-    -fx-background-color: #ff9800;
     -fx-font-size: 24;
+    -fx-text-fill: black;
 }
 
 .add-ping-list {
@@ -87,6 +87,6 @@
 
 .kor-separator,
 .kor-separator:vertical .line {
-    -fx-background-color: "#4C535D";
+    -fx-background-color: black;
     -fx-border-width: 0;
 }

@@ -1,5 +1,7 @@
 package com.kerernor.autoconnect.model;
 
+import com.kerernor.autoconnect.util.KorTypes;
+
 import java.util.UUID;
 
 public class Computer {
@@ -8,9 +10,9 @@ public class Computer {
     private String ip;
     private String name;
     private String itemLocation;
-    private eComputerType computerType;
+    private KorTypes.ComputerType computerType;
 
-    public Computer(String ip, String name, String itemLocation, eComputerType type) {
+    public Computer(String ip, String name, String itemLocation, KorTypes.ComputerType type) {
         this.ip = ip;
         this.name = name;
         this.itemLocation = itemLocation;
@@ -18,7 +20,7 @@ public class Computer {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Computer(String ip, String name, String itemLocation, eComputerType type, String id) {
+    public Computer(String ip, String name, String itemLocation, KorTypes.ComputerType type, String id) {
         this.ip = ip;
         this.name = name;
         this.itemLocation = itemLocation;
@@ -30,11 +32,11 @@ public class Computer {
         return id;
     }
 
-    public void setComputerType(eComputerType computerType) {
+    public void setComputerType(KorTypes.ComputerType computerType) {
         this.computerType = computerType;
     }
 
-    public eComputerType getComputerType() {
+    public KorTypes.ComputerType getComputerType() {
         return computerType;
     }
 

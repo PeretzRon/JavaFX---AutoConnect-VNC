@@ -1,8 +1,9 @@
 package com.kerernor.autoconnect.script;
 
+import com.kerernor.autoconnect.util.KorCommon;
+import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.popups.AlertPopupController;
-import javafx.scene.Parent;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -30,6 +31,9 @@ public class VNCRemote {
             logger.info("connected to: " + ip + " ViewOnly: " + isViewOnlySelected);
         } catch (Exception e1) {
             logger.error(e1);
+            AlertPopupController alertPopupController = new AlertPopupController();
+            alertPopupController.showAlert(KorTypes.AlertTypes.ERROR,Utils.VNC_PATH_ERROR, KorCommon.getInstance().getMainController().getMainPane());
+
         }
     }
 }

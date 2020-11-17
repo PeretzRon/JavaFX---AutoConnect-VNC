@@ -69,6 +69,8 @@ public class Utils {
     public static final String REMOTE_DRIVE_ICON = IMAGES_BASE_PATH + "remote-drive-btn-icon.png";
     public static final String ABOUT_ICON = IMAGES_BASE_PATH + "about-btn-icon.png";
     public static final String EXIT_ICON = IMAGES_BASE_PATH + "exit-btn-icon.png";
+    public static final String ALERT_WARNING_ICON = IMAGES_BASE_PATH + "warning.png";
+    public static final String ALERT_ERROR_ICON = IMAGES_BASE_PATH + "close-icon.png";
 
     // Data paths
     public static final String COMPUTER_DATA = "data/data.json";
@@ -99,7 +101,8 @@ public class Utils {
     public static final int MAX_HISTORY_CONNECT_LIST = 50;
     public static final int MAX_REMOTE_DRIVE_CONNECT_LIST = 50;
     public static final int TIME_FOR_CLOSE_POPUP = 7000;
-    public static final int TIME_FOR_CLOSE_ALERT_MESSAGE = 3500;
+    public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_WARNING = 3500;
+    public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_ERROR = 6000;
     public static final long TIMEOUT_FOR_PROCESS_TO_END_IN_SECONDS = 20;
 
     // Text display
@@ -107,12 +110,15 @@ public class Utils {
     public static final String TExT_CONFIRM_DELETE_COMPUTER_MESSAGE = "Are you sure to delete: ";
     public static final String TEXT_ADD_NEW_COMPUTER_POPUP = "Add new computer";
     public static final String TEXT_EDIT_COMPUTER_POPUP = "Edit ";
-    public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong ip address, try again";
-    public static final String TEXT_ADD_NEW_GROUP_PINGER_POPUP_TITTLE = "ADD new group Pinger";
+    public static final String TEXT_ADD_NEW_GROUP_PINGER_POPUP_TITTLE = "add new group Pinger";
     public static final String APP_NAME = "ControlKO";
     public static final String COPYRIGHT = "Copyright " + "\u00a9" + " Ron Peretz (2020)";
     public static String VERSION = "Version ";
     public static StringProperty VERSION_NUMBER = new SimpleStringProperty("1.0.1");
+
+    // Alert Messages
+    public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong ip address, try again";
+    public static final String VNC_PATH_ERROR = "Ultra VNC not installed or path not valid";
 
 
     // Style
@@ -213,5 +219,7 @@ public class Utils {
         appImages.put(Utils.REMOTE_DRIVE_ICON, new Image(Utils.REMOTE_DRIVE_ICON));
         appImages.put(Utils.ABOUT_ICON, new Image(Utils.ABOUT_ICON));
         appImages.put(Utils.EXIT_ICON, new Image(Utils.EXIT_ICON));
+        appImages.put(Utils.ALERT_ERROR_ICON, new Image(Utils.ALERT_ERROR_ICON));
+        appImages.put(Utils.ALERT_WARNING_ICON, new Image(Utils.ALERT_WARNING_ICON));
     }
 }

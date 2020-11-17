@@ -3,12 +3,8 @@ package com.kerernor.autoconnect.view;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
 import com.kerernor.autoconnect.model.ComputerData;
-import com.kerernor.autoconnect.model.eComputerType;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
-import com.kerernor.autoconnect.view.ComputerRowController;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
@@ -17,7 +13,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
-import java.util.Collections;
 
 public class ComputerListController extends ListView {
 
