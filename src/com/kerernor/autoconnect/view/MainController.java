@@ -159,7 +159,7 @@ public class MainController extends AnchorPane {
         button.setText(text);
         button.setTextFill(Color.valueOf("#e7e5e5"));
         button.setPadding(new Insets(0, 0, 0, 50));
-        ImageView imageIcon = new ImageView(Utils.appImages.get(iconBtn));
+        ImageView imageIcon = new ImageView(Utils.getImageByName(iconBtn));
         imageIcon.setFitHeight(23);
         imageIcon.setFitWidth(27);
         imageIcon.setPickOnBounds(true);

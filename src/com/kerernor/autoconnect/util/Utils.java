@@ -212,16 +212,8 @@ public class Utils {
                 true, true, true, true, true, true, null));
     }
 
-    public static void loadImages() {
-        appImages.put(Utils.RCGW_ICON, new Image(Utils.RCGW_ICON));
-        appImages.put(Utils.STATION_ICON, new Image(Utils.STATION_ICON));
-        appImages.put(Utils.REMOTE_ICON, new Image(Utils.REMOTE_ICON));
-        appImages.put(Utils.PINGER_ICON, new Image(Utils.PINGER_ICON));
-        appImages.put(Utils.REMOTE_DRIVE_ICON, new Image(Utils.REMOTE_DRIVE_ICON));
-        appImages.put(Utils.ABOUT_ICON, new Image(Utils.ABOUT_ICON));
-        appImages.put(Utils.EXIT_ICON, new Image(Utils.EXIT_ICON));
-        appImages.put(Utils.ALERT_ERROR_ICON, new Image(Utils.ALERT_ERROR_ICON));
-        appImages.put(Utils.ALERT_WARNING_ICON, new Image(Utils.ALERT_WARNING_ICON));
+    public static Image getImageByName(String name) {
+        return appImages.computeIfAbsent(name, s -> new Image(name));
     }
 
 

@@ -1,0 +1,19 @@
+
+Version 1.2.1:
+ - Fixes bugs
+ - create new component of textField
+ - add logo of ControlKO
+
+Version 1.2.0:
+ - add new screen - remote share drive by IP
+
+Version 1.1.0:
+ - add new scree - Pinger
+
+Version 1.0.1:
+ - Fix bug when VNC not install
+ - fix more bugs
+
+Version 1.0.0:
+ - remote screen
+ - about screen

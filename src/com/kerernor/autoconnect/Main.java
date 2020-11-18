@@ -89,7 +89,6 @@ public class Main extends Application {
     public void init() throws Exception {
         Utils.loadAndSetLoggerSetting();
         Utils.loadAppSettings();
-        Utils.loadImages();
         ComputerData.getInstance().loadData();
         PingerData.getInstance().loadData();
         LastConnectionData.getInstance().loadData();
