@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
@@ -17,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
@@ -74,22 +76,8 @@ public class MainController extends AnchorPane {
         btnRemoteScreen.getStyleClass().add("selected-menu-item");
         remoteScreenController.showPane();
 
-        Tooltip tooltip = new Tooltip();
-        minimizeAppStackPane.setOnMouseEntered(event -> {
-
-            tooltip.setText("Minimize");
-            Bounds boundsInScene = minimizeAppStackPane.localToScene(minimizeAppStackPane.getBoundsInLocal());
-            double Y = minimizeAppStackPane.getScene().getWindow().getY() + minimizeAppStackPane.getLayoutY();
-            double X = minimizeAppStackPane.getScene().getWindow().getX() + minimizeAppStackPane.getLayoutX();
-            tooltip.setX(X);
-            tooltip.setY(Y + 20);
-            tooltip.show(minimizeAppStackPane.getScene().getWindow());
-
-        });
-
-        minimizeAppStackPane.setOnMouseExited(event -> {
-            tooltip.hide();
-        });
+        Utils.createTooltipListener(minimizeAppStackPane, Utils.MINIMIZE);
+        Utils.createTooltipListener(exitAppStackPane, Utils.EXIT);
     }
 
     private void createAndAddMenuButtons() {

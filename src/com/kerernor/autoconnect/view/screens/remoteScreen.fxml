@@ -57,7 +57,7 @@
             <children>
 <!--                <SearchAreaController fx:id="searchAreaController" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 2em; -fx-text-fill: #fff;" />-->
                 <JTextFieldController fx:id="searchAreaController" prefHeight="55.0" prefWidth="150.0" />
-                <ImageView fitHeight="26.0" fitWidth="26.0" onMouseClicked="#addNewComputer" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="addNewComputerImage" fitHeight="26.0" fitWidth="26.0" onMouseClicked="#addNewComputer" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../images/add.png" />
                     </image>
@@ -83,7 +83,7 @@
         </HBox>
         <ComputerListController fx:id="computerListController" layoutX="14.0" layoutY="241.0" prefHeight="321.0" prefWidth="751.0" />
         <TextField fx:id="quickConnectTextField" layoutX="499.0" layoutY="28.0" prefHeight="27.0" prefWidth="183.0" promptText="Enter ip address" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 2em; -fx-text-fill: #fff;" />
-        <Button id="button-connect" fx:id="quickConnectBtn" layoutX="689.0" layoutY="29.0" stylesheets="@../../style/style.css" text="Connect" />
+        <Button  id="button-connect" fx:id="quickConnectBtn" layoutX="689.0" layoutY="29.0" stylesheets="@../../style/style.css" text="Connect" />
         <LastConnectionsPopupController fx:id="lastConnectionsPopupController" layoutX="500.0" layoutY="59.0" prefHeight="159.0" prefWidth="206.0" />
         <ImageView fx:id="openCloseHistoryImage" fitHeight="18.0" fitWidth="26.0" layoutX="653.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
             <image>

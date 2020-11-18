@@ -6,11 +6,13 @@ import javafx.beans.property.StringProperty;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -115,6 +117,9 @@ public class Utils {
     public static final String COPYRIGHT = "Copyright " + "\u00a9" + " Ron Peretz (2020)";
     public static String VERSION = "Version ";
     public static StringProperty VERSION_NUMBER = new SimpleStringProperty("1.0.1");
+    public static final String EXIT = "Exit";
+    public static final String MINIMIZE = "Minimize";
+    public static final String NEW_ITEM = "New item";
 
     // Alert Messages
     public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong ip address, try again";
@@ -213,5 +218,24 @@ public class Utils {
 
     public static Image getImageByName(String name) {
         return appImages.computeIfAbsent(name, s -> new Image(name));
+    }
+
+    public static void createTooltipListener(Node node, String msg) {
+        Tooltip tooltip = new Tooltip();
+        node.setOnMouseEntered(event -> {
+
+            tooltip.setText(msg);
+            double Y = node.getScene().getWindow().getY() + node.getLayoutY();
+            double X = node.getScene().getWindow().getX() + node.getLayoutX();
+            tooltip.setFont(Font.font(12));
+            tooltip.setX(X);
+            tooltip.setY(Y + 20);
+            tooltip.show(node.getScene().getWindow());
+
+        });
+
+        node.setOnMouseExited(event -> {
+            tooltip.hide();
+        });
     }
 }

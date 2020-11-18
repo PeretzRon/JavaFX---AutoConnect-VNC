@@ -59,6 +59,8 @@ public class RemoteScreenController extends Pane implements IDisplayable {
     private ImageView openCloseHistoryImage;
     @FXML
     private Label resultLabel;
+    @FXML
+    private ImageView addNewComputerImage;
 
 
     private Logger logger = Logger.getLogger(RemoteScreenController.class);
@@ -187,10 +189,11 @@ public class RemoteScreenController extends Pane implements IDisplayable {
         Platform.runLater(() -> quickConnectTextField.requestFocus());
 
         noResultLabelInitAndAddListener();
+        Utils.createTooltipListener(quickConnectBtn, Utils.NEW_ITEM);
     }
 
     private void noResultLabelInitAndAddListener() {
-        if (  ComputerData.getInstance().getComputersList().size() == 0) {
+        if (ComputerData.getInstance().getComputersList().size() == 0) {
             resultLabel.toFront();
         } else {
             resultLabel.toBack();
