@@ -19,6 +19,8 @@ public class AboutScreenController extends Pane implements IDisplayable {
     private Label aboutSecondLine;
     @FXML
     private Label aboutFirstLine;
+    @FXML
+    private Label appNameLabel;
 
     private Logger logger = Logger.getLogger(AboutScreenController.class);
     FXMLLoader loader = null;
@@ -28,6 +30,7 @@ public class AboutScreenController extends Pane implements IDisplayable {
     public void initialize() {
         aboutFirstLine.setText(Utils.COPYRIGHT);
         aboutSecondLine.textProperty().bind(Bindings.concat(Utils.VERSION, Utils.VERSION_NUMBER));
+        appNameLabel.setText(Utils.APP_NAME);
     }
 
     public static AboutScreenController getInstance() {
