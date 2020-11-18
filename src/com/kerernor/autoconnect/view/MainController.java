@@ -7,9 +7,11 @@ import com.kerernor.autoconnect.view.screens.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -71,6 +73,23 @@ public class MainController extends AnchorPane {
         createAndAddMenuButtons();
         btnRemoteScreen.getStyleClass().add("selected-menu-item");
         remoteScreenController.showPane();
+
+        Tooltip tooltip = new Tooltip();
+        minimizeAppStackPane.setOnMouseEntered(event -> {
+
+            tooltip.setText("Minimize");
+            Bounds boundsInScene = minimizeAppStackPane.localToScene(minimizeAppStackPane.getBoundsInLocal());
+            double Y = minimizeAppStackPane.getScene().getWindow().getY() + minimizeAppStackPane.getLayoutY();
+            double X = minimizeAppStackPane.getScene().getWindow().getX() + minimizeAppStackPane.getLayoutX();
+            tooltip.setX(X);
+            tooltip.setY(Y + 20);
+            tooltip.show(minimizeAppStackPane.getScene().getWindow());
+
+        });
+
+        minimizeAppStackPane.setOnMouseExited(event -> {
+            tooltip.hide();
+        });
     }
 
     private void createAndAddMenuButtons() {
