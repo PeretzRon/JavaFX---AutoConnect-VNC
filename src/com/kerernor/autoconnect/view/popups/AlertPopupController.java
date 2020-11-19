@@ -139,7 +139,7 @@ public class AlertPopupController {
                 alertIcon.setImage(Utils.getImageByName(Utils.ALERT_WARNING_ICON));
                 break;
             case ERROR:
-                borderPane.setStyle("-fx-background-color: #85112a");
+                borderPane.setStyle("-fx-background-color: #ff112a");
                 TIME_TO_CLOSE_ALERT = Utils.TIME_FOR_CLOSE_ALERT_MESSAGE_ERROR;
                 alertIcon.setImage(Utils.getImageByName(Utils.ALERT_ERROR_ICON));
                 break;

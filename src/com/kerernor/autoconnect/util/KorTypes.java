@@ -7,7 +7,7 @@ public class KorTypes {
         EXIT
     }
 
-    public enum AlertTypes{
+    public enum AlertTypes {
         WARNING,
         ERROR
     }
@@ -15,6 +15,11 @@ public class KorTypes {
     public enum ComputerType {
         Station,
         RCGW
+    }
+
+    public enum ShowNodeFrom {
+        RIGHT,
+        LEFT
     }
 
 }

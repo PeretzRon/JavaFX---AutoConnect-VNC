@@ -12,6 +12,7 @@ import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
@@ -23,11 +24,15 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class Utils {
 
     private static Logger logger = Logger.getLogger(Utils.class);
     public static Map<String, Image> appImages = new HashMap<>();
+    private static ScheduledFuture timer;
 
     // Base paths
     public static final String BASE_PATH = "com/kerernor/autoconnect/";
@@ -220,22 +225,29 @@ public class Utils {
         return appImages.computeIfAbsent(name, s -> new Image(name));
     }
 
-    public static void createTooltipListener(Node node, String msg) {
+    public static void createTooltipListener(Node node, String msg, KorTypes.ShowNodeFrom direction) {
         Tooltip tooltip = new Tooltip();
+        final double deltaX = direction == KorTypes.ShowNodeFrom.LEFT ? -2 : 2;
         node.setOnMouseEntered(event -> {
-
-            tooltip.setText(msg);
-            double Y = node.getScene().getWindow().getY() + node.getLayoutY();
-            double X = node.getScene().getWindow().getX() + node.getLayoutX();
-            tooltip.setFont(Font.font(12));
-            tooltip.setX(X);
-            tooltip.setY(Y + 20);
-            tooltip.show(node.getScene().getWindow());
-
+            timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
+                Platform.runLater(() -> {
+                    tooltip.setText(msg);
+                    tooltip.setFont(Font.font(12));
+                    tooltip.show(node.getScene().getWindow(), event.getScreenX() + deltaX, event.getScreenY() + 8);
+                });
+            }, 500, TimeUnit.MILLISECONDS);
         });
 
         node.setOnMouseExited(event -> {
+            cancelTimer();
             tooltip.hide();
         });
+    }
+
+    private static void cancelTimer() {
+        if (timer != null) {
+            timer.cancel(true);
+            timer = null;
+        }
     }
 }

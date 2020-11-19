@@ -21,10 +21,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
@@ -189,7 +186,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
         Platform.runLater(() -> quickConnectTextField.requestFocus());
 
         noResultLabelInitAndAddListener();
-        Utils.createTooltipListener(quickConnectBtn, Utils.NEW_ITEM);
+        Utils.createTooltipListener(addNewComputerImage, Utils.NEW_ITEM, KorTypes.ShowNodeFrom.LEFT);
     }
 
     private void noResultLabelInitAndAddListener() {

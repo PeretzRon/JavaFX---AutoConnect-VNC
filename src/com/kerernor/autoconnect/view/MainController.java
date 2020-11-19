@@ -1,6 +1,7 @@
 package com.kerernor.autoconnect.view;
 
 import com.kerernor.autoconnect.util.KorCommon;
+import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.screens.*;
@@ -76,8 +77,8 @@ public class MainController extends AnchorPane {
         btnRemoteScreen.getStyleClass().add("selected-menu-item");
         remoteScreenController.showPane();
 
-        Utils.createTooltipListener(minimizeAppStackPane, Utils.MINIMIZE);
-        Utils.createTooltipListener(exitAppStackPane, Utils.EXIT);
+        Utils.createTooltipListener(minimizeAppStackPane, Utils.MINIMIZE, KorTypes.ShowNodeFrom.RIGHT);
+        Utils.createTooltipListener(exitAppStackPane, Utils.EXIT, KorTypes.ShowNodeFrom.RIGHT);
     }
 
     private void createAndAddMenuButtons() {

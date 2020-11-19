@@ -101,4 +101,8 @@ public class Main extends Application {
         PingerData.getInstance().storeData();
         LastConnectionData.getInstance().storeData();
     }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
 }
