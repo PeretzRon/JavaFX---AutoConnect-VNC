@@ -66,11 +66,13 @@ public class Utils {
     public static final String ADD_EDIT_PINGER_ITEMS = VIEWS_POPUPS_BASE_PATH + "addEditPingerItems.fxml";
     public static final String PING_GROUP_ITEM = VIEWS_BASE_PATH + "pingGroupItem.fxml";
     public static final String J_TEXT_FIELD = VIEWS_COMPONENTS_BASE_PATH + "jTextField.fxml";
+    public static final String SEARCHEABLE = VIEWS_COMPONENTS_BASE_PATH + "searchableTextFlow.fxml";
 
     // Images file paths
     public static final String RCGW_ICON = IMAGES_BASE_PATH + "antenna.png";
     public static final String STATION_ICON = IMAGES_BASE_PATH + "stationKO.png";
-    public static final String APP_ICON = IMAGES_BASE_PATH + "ko.png";
+    public static final String KEREN_OR_ICON = IMAGES_BASE_PATH + "ko.png";
+    public static final String APP_ICON = IMAGES_BASE_PATH + "app-icon.png";
     public static final String REMOTE_ICON = IMAGES_BASE_PATH + "remote-btn-icon.png";
     public static final String PINGER_ICON = IMAGES_BASE_PATH + "pinger-btn-icon.png";
     public static final String REMOTE_DRIVE_ICON = IMAGES_BASE_PATH + "remote-drive-btn-icon.png";
