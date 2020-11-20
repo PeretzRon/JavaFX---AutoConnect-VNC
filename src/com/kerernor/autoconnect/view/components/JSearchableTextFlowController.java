@@ -12,13 +12,14 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
-public class JSearchableTextFlowController extends TextFlow{
+public class JSearchableTextFlowController extends TextFlow {
 
     @FXML
     private TextFlow textFlow;
+
+    private String originalText;
 
     // default values, can be change by setter
     private Font font = Font.font(16);
@@ -46,13 +47,13 @@ public class JSearchableTextFlowController extends TextFlow{
     }
 
     public void setOriginalText() {
-        String input = getTextFromTextFlow();
         textFlow.getChildren().clear();
-        createTextAndAddToTextFlow(input, false, false);
+        createTextAndAddToTextFlow(originalText, false, false);
     }
 
     public void initText(String text) {
         activeSearchableTextFlowMap.add(this);
+        originalText = text;
         textFlow.getChildren().clear();
         createTextAndAddToTextFlow(text, false, false);
     }
@@ -78,15 +79,13 @@ public class JSearchableTextFlowController extends TextFlow{
      * @param textFromSearchInput - the text from the textField that filter that text
      */
     public void updatedText(String textFromSearchInput) {
-        String currentText = getTextFromTextFlow();
-
-        if (currentText.equalsIgnoreCase(textFromSearchInput)) {
+        if (originalText.equalsIgnoreCase(textFromSearchInput)) {
             this.textFlow.getChildren().clear();
-            createTextAndAddToTextFlow(textFromSearchInput, false, true);
+            createTextAndAddToTextFlow(originalText, false, true);
             return;
         }
 
-        updateTextInternal(currentText, textFromSearchInput);
+        updateTextInternal(originalText, textFromSearchInput);
     }
 
     private void updateTextInternal(String currentText, String textFromSearchInput) {
@@ -148,7 +147,20 @@ public class JSearchableTextFlowController extends TextFlow{
         return colorFoundText;
     }
 
+    public Color getColorOfText() {
+        return colorOfText;
+    }
+
+    public void setColorOfText(Color colorOfText) {
+        this.colorOfText = colorOfText;
+    }
+
     public static Set<JSearchableTextFlowController> getActiveSearchableTextFlowMap() {
         return activeSearchableTextFlowMap;
+    }
+
+    @Override
+    public String toString() {
+        return originalText;
     }
 }

@@ -11,11 +11,13 @@ import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.ComputerListController;
+import com.kerernor.autoconnect.view.ComputerRowController;
 import com.kerernor.autoconnect.view.LastConnectionsPopupController;
 import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.components.JTextFieldController;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.AlertPopupController;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -27,10 +29,12 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class RemoteScreenController extends Pane implements IDisplayable {
@@ -68,6 +72,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
     private final BooleanProperty isHistoryListEmpty = new SimpleBooleanProperty(true);
     private boolean isHistoryListOpen = false;
     private boolean isViewOnly = false;
+    private ScheduledFuture timer;
 
 
     public static RemoteScreenController getInstance() {
@@ -143,6 +148,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
 
         searchAreaController.getTextField().setOnKeyReleased(keyEvent -> {
             String input = searchAreaController.getTextField().getText().toLowerCase();
+            String inputWithoutLowerCase = searchAreaController.getTextField().getText();
 
             computerFilteredList.setPredicate(input.isEmpty() ? computer -> true :
                     computer -> computer.getIp().contains(input) ||
@@ -150,16 +156,21 @@ public class RemoteScreenController extends Pane implements IDisplayable {
                             computer.getItemLocation().toLowerCase().contains(input));
             computerListController.scrollTo(0);
 
+            stopTimer();
 
+            timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
+                System.out.println(JSearchableTextFlowController.getActiveSearchableTextFlowMap().size());
+                System.out.println(JSearchableTextFlowController.getActiveSearchableTextFlowMap());
                 Platform.runLater(() -> {
                     for (JSearchableTextFlowController searchableTextFlowController : JSearchableTextFlowController.getActiveSearchableTextFlowMap()) {
                         if (input.isEmpty()) {
                             searchableTextFlowController.setOriginalText();
                         } else {
-                            searchableTextFlowController.updatedText(input);
+                            searchableTextFlowController.updatedText(inputWithoutLowerCase);
                         }
                     }
                 });
+            }, 100, TimeUnit.MILLISECONDS);
 
         });
 
@@ -202,6 +213,13 @@ public class RemoteScreenController extends Pane implements IDisplayable {
 
         noResultLabelInitAndAddListener();
         Utils.createTooltipListener(addNewComputerImage, Utils.NEW_ITEM, KorTypes.ShowNodeFrom.LEFT);
+    }
+
+    private void stopTimer() {
+        if (timer != null) {
+            timer.cancel(true);
+            timer = null;
+        }
     }
 
     private void noResultLabelInitAndAddListener() {

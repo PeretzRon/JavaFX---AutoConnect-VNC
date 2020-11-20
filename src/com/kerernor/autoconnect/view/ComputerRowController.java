@@ -28,10 +28,10 @@ public class ComputerRowController extends ListCell<Computer> {
     private BorderPane mainPane;
 
     @FXML
-    private Label computerLocation;
+    private JSearchableTextFlowController computerLocation;
 
     @FXML
-    private Label computerIP;
+    private JSearchableTextFlowController computerIP;
 
     @FXML
     private JSearchableTextFlowController computerName;
@@ -90,8 +90,10 @@ public class ComputerRowController extends ListCell<Computer> {
 
         computerName.initText(computer.getName());
         computerName.setFont(Font.font(25));
-        computerLocation.setText(computer.getItemLocation());
-        computerIP.setText(computer.getIp());
+        computerLocation.initText(computer.getItemLocation());
+        computerLocation.setFont(Font.font(16));
+        computerIP.initText(computer.getIp());
+        computerIP.setFont(Font.font(16));
         if (computer.getComputerType() == KorTypes.ComputerType.RCGW) {
             computerType.setImage(Utils.getImageByName(Utils.RCGW_ICON));
         } else {

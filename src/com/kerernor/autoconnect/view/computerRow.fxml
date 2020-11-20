@@ -15,14 +15,20 @@
    <right>
           <HBox alignment="CENTER_RIGHT" prefHeight="73.0" prefWidth="342.0" spacing="5.0" BorderPane.alignment="CENTER">
               <children>
-                <Label fx:id="computerIP" prefHeight="27.0" prefWidth="206.0" text="179.122.98.4" textFill="#b7c3d7">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-                </Label>
+                  <JSearchableTextFlowController fx:id="computerIP" >
+                      <HBox.margin>
+                          <Insets right="80"/>
+                      </HBox.margin>
+                  </JSearchableTextFlowController>
+
+<!--                <Label fx:id="computerIP" prefHeight="27.0" prefWidth="206.0" text="179.122.98.4" textFill="#b7c3d7">-->
+<!--               <font>-->
+<!--                  <Font size="18.0" />-->
+<!--               </font>-->
+<!--               <HBox.margin>-->
+<!--                  <Insets />-->
+<!--               </HBox.margin>-->
+<!--                </Label>-->
                   <ImageView onMouseClicked="#removeComputer" fx:id="removeBtnID" fitHeight="21.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                       <image>
                           <Image url="@../images/dustbin.png" />
@@ -66,7 +72,8 @@
 <!--                           <Font size="23.0"/>-->
 <!--                       </font>-->
 <!--                   </Label>-->
-                      <Label fx:id="computerLocation" text="Location" textFill="#b7c3d7" />
+                   <JSearchableTextFlowController fx:id="computerLocation"/>
+<!--                      <Label fx:id="computerLocation" text="Location" textFill="#b7c3d7" />-->
                </children>
             </VBox>
             </children>
