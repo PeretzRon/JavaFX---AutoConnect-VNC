@@ -1,3 +1,7 @@
+Version 1.2.2:
+ - Fixes bugs
+ - create new component of SerachableTextFlow - mark search result with color
+ - add tooltip to some buttons and images
 
 Version 1.2.1:
  - Fixes bugs

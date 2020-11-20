@@ -70,9 +70,10 @@ public class AboutScreenController extends Pane implements IDisplayable {
         this.setVisible(true);
         this.setStyle("-fx-background-color : #02050A");
         this.toFront();
-        showAnimations();
+//        showAnimations();
 
     }
+
 
     private void showAnimations() {
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(4000), appImage);
