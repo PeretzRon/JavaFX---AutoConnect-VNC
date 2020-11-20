@@ -66,7 +66,7 @@ public class Utils {
     public static final String ADD_EDIT_PINGER_ITEMS = VIEWS_POPUPS_BASE_PATH + "addEditPingerItems.fxml";
     public static final String PING_GROUP_ITEM = VIEWS_BASE_PATH + "pingGroupItem.fxml";
     public static final String J_TEXT_FIELD = VIEWS_COMPONENTS_BASE_PATH + "jTextField.fxml";
-    public static final String SEARCHEABLE = VIEWS_COMPONENTS_BASE_PATH + "searchableTextFlow.fxml";
+    public static final String J_SEARCHABLE_TEXT_FLOW = VIEWS_COMPONENTS_BASE_PATH + "jSearchableTextFlow.fxml";
 
     // Images file paths
     public static final String RCGW_ICON = IMAGES_BASE_PATH + "antenna.png";

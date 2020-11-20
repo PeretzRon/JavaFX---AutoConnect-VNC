@@ -6,6 +6,7 @@ import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
+import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.ConfirmPopupController;
 import javafx.fxml.FXML;
@@ -16,6 +17,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.io.IOException;
 
@@ -31,7 +34,7 @@ public class ComputerRowController extends ListCell<Computer> {
     private Label computerIP;
 
     @FXML
-    private Label computerName;
+    private JSearchableTextFlowController computerName;
 
     @FXML
     private ImageView computerType;
@@ -44,7 +47,7 @@ public class ComputerRowController extends ListCell<Computer> {
     private Parent paneBehind;
 
     public void initialize() {
-
+        computerName.setColorFoundText(Color.YELLOW);
     }
 
     public FXMLLoader loadView() {
@@ -85,7 +88,8 @@ public class ComputerRowController extends ListCell<Computer> {
             loader = loadView();
         }
 
-        computerName.setText(computer.getName());
+        computerName.initText(computer.getName());
+        computerName.setFont(Font.font(25));
         computerLocation.setText(computer.getItemLocation());
         computerIP.setText(computer.getIp());
         if (computer.getComputerType() == KorTypes.ComputerType.RCGW) {
@@ -125,5 +129,13 @@ public class ComputerRowController extends ListCell<Computer> {
         });
 
         addEditComputerPopup.openPopup(computer);
+    }
+
+    public JSearchableTextFlowController getComputerName() {
+        return computerName;
+    }
+
+    public void setComputerName(JSearchableTextFlowController computerName) {
+        this.computerName = computerName;
     }
 }

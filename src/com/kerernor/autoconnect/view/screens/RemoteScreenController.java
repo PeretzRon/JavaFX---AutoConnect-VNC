@@ -8,9 +8,11 @@ import com.kerernor.autoconnect.model.LastConnectionItem;
 import com.kerernor.autoconnect.script.VNCRemote;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.KorTypes;
+import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.ComputerListController;
 import com.kerernor.autoconnect.view.LastConnectionsPopupController;
+import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.components.JTextFieldController;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.AlertPopupController;
@@ -29,6 +31,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 public class RemoteScreenController extends Pane implements IDisplayable {
 
@@ -146,6 +149,18 @@ public class RemoteScreenController extends Pane implements IDisplayable {
                             computer.getName().toLowerCase().contains(input) ||
                             computer.getItemLocation().toLowerCase().contains(input));
             computerListController.scrollTo(0);
+
+
+                Platform.runLater(() -> {
+                    for (JSearchableTextFlowController searchableTextFlowController : JSearchableTextFlowController.getActiveSearchableTextFlowMap()) {
+                        if (input.isEmpty()) {
+                            searchableTextFlowController.setOriginalText();
+                        } else {
+                            searchableTextFlowController.updatedText(input);
+                        }
+                    }
+                });
+
         });
 
 //        computerListController.addEventHandler(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, event -> {
