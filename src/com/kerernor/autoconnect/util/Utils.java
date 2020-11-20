@@ -94,6 +94,7 @@ public class Utils {
     public static String VNC_PROGRAM_PATH = "C:\\Program Files (x86)\\uvnc bvba\\UltraVNC";
     public static String VNC_SCRIPT_PATH = "C:\\Programs\\ControlKO\\vnc\\";
     public static boolean IS_REMOTE_DRIVE_SCREEN_ACTIVE = true;
+    public static boolean IS_MARK_SEARCH_ACTIVE = false;
 
     // App setting properties
     public static final String CONFIG_ULTRA_VNC_PROGRAM_PATH = "UltraVncProgramPath";
@@ -102,6 +103,7 @@ public class Utils {
     public static final String CONFIG_VERSION_NUMBER_PROPERTIES = "versionNumber";
     public static boolean CONFIG_IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING = true;
     public static String CONFIG_IS_REMOTE_DRIVE_SCREEN_ACTIVE = "isRemoteDriveScreenActive";
+    public static String CONFIG_IS_MARK_SEARCH_ACTIVE = "isMarkSearchTextActive";
 
 
     // Sizes and amounts
@@ -204,6 +206,7 @@ public class Utils {
                 Utils.VNC_SCRIPT_PATH = properties.getProperty(CONFIG_ULTRA_VNC_SCRIPT_FOR_CONNECTION);
                 Utils.CONFIG_IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING = Boolean.parseBoolean(properties.getProperty(CONFIG_IS_POPUP_CLOSE_IF_LOSE_FOCUS));
                 Utils.IS_REMOTE_DRIVE_SCREEN_ACTIVE = Boolean.parseBoolean(properties.getProperty(CONFIG_IS_REMOTE_DRIVE_SCREEN_ACTIVE));
+                Utils.IS_MARK_SEARCH_ACTIVE = Boolean.parseBoolean(properties.getProperty(CONFIG_IS_MARK_SEARCH_ACTIVE));
                 Platform.runLater(() -> Utils.VERSION_NUMBER.set(properties.getProperty(Utils.CONFIG_VERSION_NUMBER_PROPERTIES)));
             } catch (IOException e) {
                 logger.error("failed to load app settings");

@@ -15,9 +15,9 @@
    <right>
           <HBox alignment="CENTER_RIGHT" prefHeight="73.0" prefWidth="342.0" spacing="5.0" BorderPane.alignment="CENTER">
               <children>
-                  <JSearchableTextFlowController fx:id="computerIP" >
+                  <JSearchableTextFlowController fx:id="computerIP" prefHeight="27.0" prefWidth="206.0">
                       <HBox.margin>
-                          <Insets right="80"/>
+                          <Insets/>
                       </HBox.margin>
                   </JSearchableTextFlowController>
 

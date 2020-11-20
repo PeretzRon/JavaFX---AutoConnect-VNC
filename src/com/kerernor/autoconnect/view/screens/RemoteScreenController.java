@@ -156,22 +156,20 @@ public class RemoteScreenController extends Pane implements IDisplayable {
                             computer.getItemLocation().toLowerCase().contains(input));
             computerListController.scrollTo(0);
 
-            stopTimer();
-
-            timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
-                System.out.println(JSearchableTextFlowController.getActiveSearchableTextFlowMap().size());
-                System.out.println(JSearchableTextFlowController.getActiveSearchableTextFlowMap());
-                Platform.runLater(() -> {
-                    for (JSearchableTextFlowController searchableTextFlowController : JSearchableTextFlowController.getActiveSearchableTextFlowMap()) {
-                        if (input.isEmpty()) {
-                            searchableTextFlowController.setOriginalText();
-                        } else {
-                            searchableTextFlowController.updatedText(inputWithoutLowerCase);
+            if (Utils.IS_MARK_SEARCH_ACTIVE) {
+                stopTimer();
+                timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
+                    Platform.runLater(() -> {
+                        for (JSearchableTextFlowController searchableTextFlowController : JSearchableTextFlowController.getActiveSearchableTextFlowMap()) {
+                            if (input.isEmpty()) {
+                                searchableTextFlowController.setOriginalText();
+                            } else {
+                                searchableTextFlowController.updatedText(inputWithoutLowerCase);
+                            }
                         }
-                    }
-                });
-            }, 100, TimeUnit.MILLISECONDS);
-
+                    });
+                }, 100, TimeUnit.MILLISECONDS);
+            }
         });
 
 //        computerListController.addEventHandler(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, event -> {
