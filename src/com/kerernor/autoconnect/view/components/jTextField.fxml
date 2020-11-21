@@ -7,7 +7,7 @@
 <?import javafx.scene.text.*?>
 
 <fx:root fx:id="mainPane" alignment="CENTER_LEFT" type="StackPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
-    <Label fx:id="placeHolder" prefHeight="18.0" prefWidth="154.0" text="userName">
+    <Label fx:id="placeHolder" prefHeight="18.0" prefWidth="160.0" text="userName">
         <padding>
             <Insets left="7.0" />
         </padding>

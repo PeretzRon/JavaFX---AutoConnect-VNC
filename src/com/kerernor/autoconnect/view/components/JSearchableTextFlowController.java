@@ -12,7 +12,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class JSearchableTextFlowController extends TextFlow {
 
@@ -68,6 +69,7 @@ public class JSearchableTextFlowController extends TextFlow {
 
         if (isWithColor) {
             textToAdd.setFill(colorFoundText);
+            textToAdd.setUnderline(true);
         }
 
         textFlow.getChildren().add(textToAdd);

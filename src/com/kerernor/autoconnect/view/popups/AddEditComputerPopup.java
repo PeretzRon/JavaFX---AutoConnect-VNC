@@ -13,7 +13,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -96,12 +99,18 @@ public class AddEditComputerPopup extends BorderPane {
     }
 
     private void initTextFields() {
-        computerIPAddress.setInitData("IP Address", 14, computerIPAddress.getPrefWidth());
+        computerIPAddress.setInitData("IP Address", 20, computerIPAddress.getPrefWidth());
         computerIPAddress.setTextFieldColor("#fff");
-        computerName.setInitData("Computer Name", 14, computerName.getPrefWidth());
+        computerIPAddress.setFontPlaceHolderActive(14);
+        computerIPAddress.setFontPlaceHolderNotActive(18);
+        computerName.setInitData("Computer Name", 20, computerName.getPrefWidth());
         computerName.setTextFieldColor("#fff");
-        computerLocation.setInitData("Computer Location", 14, computerName.getPrefWidth());
+        computerName.setFontPlaceHolderActive(14);
+        computerName.setFontPlaceHolderNotActive(18);
+        computerLocation.setInitData("Computer Location", 20, computerName.getPrefWidth());
         computerLocation.setTextFieldColor("#fff");
+        computerLocation.setFontPlaceHolderActive(14);
+        computerLocation.setFontPlaceHolderNotActive(18);
     }
 
     public BorderPane loadView() {

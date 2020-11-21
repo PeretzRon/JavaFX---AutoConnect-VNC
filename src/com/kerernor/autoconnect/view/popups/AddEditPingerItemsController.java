@@ -7,7 +7,9 @@ import com.kerernor.autoconnect.model.PingerItem;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.components.JTextFieldController;
-import javafx.animation.*;
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,7 +24,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -124,12 +125,18 @@ public class AddEditPingerItemsController extends GridPane {
     }
 
     private void initTextFields() {
-        groupNameTextField.setInitData("Group Name", 14, groupNameTextField.getPrefWidth());
+        groupNameTextField.setInitData("Group Name", 20, groupNameTextField.getPrefWidth());
         groupNameTextField.setTextFieldColor("#fff");
-        IPTextField.setInitData("IP Address", 14, IPTextField.getPrefWidth());
+        groupNameTextField.setFontPlaceHolderActive(14);
+        groupNameTextField.setFontPlaceHolderNotActive(17);
+        IPTextField.setInitData("IP Address", 19, IPTextField.getPrefWidth());
         IPTextField.setTextFieldColor("#fff");
-        nameItemTextField.setInitData("Name", 14, nameItemTextField.getPrefWidth());
+        IPTextField.setFontPlaceHolderActive(14);
+        IPTextField.setFontPlaceHolderNotActive(17);
+        nameItemTextField.setInitData("Name", 19, nameItemTextField.getPrefWidth());
         nameItemTextField.setTextFieldColor("#fff");
+        nameItemTextField.setFontPlaceHolderActive(14);
+        nameItemTextField.setFontPlaceHolderNotActive(17);
     }
 
     @FXML

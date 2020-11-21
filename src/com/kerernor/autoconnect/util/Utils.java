@@ -12,7 +12,6 @@ import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
@@ -24,7 +23,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -37,6 +35,7 @@ public class Utils {
     // Base paths
     public static final String BASE_PATH = "com/kerernor/autoconnect/";
     public static final String VIEWS_BASE_PATH = "view/";
+    public static final String VIEWS_FILE_PATH = "file:\\";
     public static final String IMAGES_BASE_PATH = BASE_PATH + "images/";
     public static final String VIEWS_COMPONENTS_BASE_PATH = VIEWS_BASE_PATH + "components/";
     public static final String VIEWS_POPUPS_BASE_PATH = VIEWS_BASE_PATH + "popups/";
@@ -80,6 +79,8 @@ public class Utils {
     public static final String EXIT_ICON = IMAGES_BASE_PATH + "exit-btn-icon.png";
     public static final String ALERT_WARNING_ICON = IMAGES_BASE_PATH + "warning.png";
     public static final String ALERT_ERROR_ICON = IMAGES_BASE_PATH + "close-icon.png";
+    public static final String APP_LOGO_ANIMATION = VIEWS_FILE_PATH + IMAGES_BASE_PATH + "app-icon-animated.html";
+    public static final String APP_LOGO_ANIMATION2 = IMAGES_BASE_PATH + "app-icon-animated.html";
 
     // Data paths
     public static final String COMPUTER_DATA = "data/data.json";

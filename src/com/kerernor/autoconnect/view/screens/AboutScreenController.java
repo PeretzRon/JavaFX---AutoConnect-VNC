@@ -9,10 +9,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.web.WebView;
 import javafx.util.Duration;
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 
 public class AboutScreenController extends Pane implements IDisplayable {
 
@@ -26,14 +32,18 @@ public class AboutScreenController extends Pane implements IDisplayable {
     private Label appNameLabel;
     @FXML
     private ImageView appImage;
+    @FXML
+    private WebView webView;
 
     private Logger logger = Logger.getLogger(AboutScreenController.class);
     FXMLLoader loader = null;
     private static AboutScreenController instance = null;
+    URL url = this.getClass().getResource("/com/kerernor/autoconnect/images/app-icon-animated.html");
+
 
     @FXML
     public void initialize() {
-
+        webView.getEngine().load(url.toString());
         aboutFirstLine.setText(Utils.COPYRIGHT);
         aboutSecondLine.textProperty().bind(Bindings.concat(Utils.VERSION, Utils.VERSION_NUMBER));
         appNameLabel.setText(Utils.APP_NAME);
@@ -67,22 +77,11 @@ public class AboutScreenController extends Pane implements IDisplayable {
     @Override
     public void showPane() {
         logger.trace("showPane");
+        webView.getEngine().load(url.toString());
         this.setVisible(true);
         this.setStyle("-fx-background-color : #02050A");
         this.toFront();
-//        showAnimations();
 
-    }
-
-
-    private void showAnimations() {
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(4000), appImage);
-        appImage.setTranslateX(-1000);
-        translateTransition.setToX(0);
-        translateTransition.setToY(0);
-        translateTransition.setToZ(0);
-        translateTransition.setRate(1);
-        translateTransition.play();
     }
 
     public Label getAboutSecondLine() {

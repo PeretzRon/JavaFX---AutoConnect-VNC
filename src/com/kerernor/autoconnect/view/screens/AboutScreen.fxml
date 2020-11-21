@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
 
-<fx:root fx:id="pnlAbout" prefHeight="576.0" prefWidth="773.0" stylesheets="@../../style/style.css" type="Pane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="pnlAbout" prefHeight="576.0" prefWidth="773.0" stylesheets="@../../style/style.css" type="Pane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
         <AnchorPane prefHeight="576.0" prefWidth="793.0">
             <children>
          <VBox alignment="CENTER" prefHeight="576.0" prefWidth="773.0" spacing="20.0">
@@ -20,13 +19,9 @@
                      <Font size="50.0" />
                   </font>
                </Label>
-               <StackPane prefHeight="150.0" prefWidth="200.0">
+               <StackPane prefHeight="322.0" prefWidth="773.0">
                   <children>
-                     <ImageView fx:id="appImage" fitHeight="200.0" fitWidth="251.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../../images/app-icon.png" />
-                        </image>
-                     </ImageView>
+                      <WebView fx:id="webView" prefHeight="162.0" prefWidth="773.0" />
                   </children>
                </StackPane>
                       <HBox alignment="CENTER" prefHeight="101.0" prefWidth="793.0">
