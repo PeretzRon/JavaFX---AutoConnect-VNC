@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.WebView?>
 
-<fx:root fx:id="pnlAbout" prefHeight="576.0" prefWidth="773.0" stylesheets="@../../style/style.css" type="Pane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="pnlAbout" prefHeight="576.0" prefWidth="773.0" stylesheets="@../../style/style.css" type="Pane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
         <AnchorPane prefHeight="576.0" prefWidth="793.0">
             <children>
          <VBox alignment="CENTER" prefHeight="576.0" prefWidth="773.0" spacing="20.0">
