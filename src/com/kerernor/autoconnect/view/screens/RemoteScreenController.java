@@ -6,10 +6,7 @@ import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.model.LastConnectionData;
 import com.kerernor.autoconnect.model.LastConnectionItem;
 import com.kerernor.autoconnect.script.VNCRemote;
-import com.kerernor.autoconnect.util.KorEvents;
-import com.kerernor.autoconnect.util.KorTypes;
-import com.kerernor.autoconnect.util.ThreadManger;
-import com.kerernor.autoconnect.util.Utils;
+import com.kerernor.autoconnect.util.*;
 import com.kerernor.autoconnect.view.ComputerListController;
 import com.kerernor.autoconnect.view.ComputerRowController;
 import com.kerernor.autoconnect.view.LastConnectionsPopupController;
@@ -65,6 +62,10 @@ public class RemoteScreenController extends Pane implements IDisplayable {
     private Label resultLabel;
     @FXML
     private ImageView addNewComputerImage;
+    @FXML
+    private ImageView upRowImageView;
+    @FXML
+    private ImageView downRowImageView;
 
 
     private Logger logger = Logger.getLogger(RemoteScreenController.class);
@@ -73,6 +74,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
     private boolean isHistoryListOpen = false;
     private boolean isViewOnly = false;
     private ScheduledFuture timer;
+    private boolean isAllowedToMoveRows = true;
 
 
     public static RemoteScreenController getInstance() {
@@ -111,6 +113,12 @@ public class RemoteScreenController extends Pane implements IDisplayable {
         openCloseHistoryImage.disableProperty().bind(isHistoryListEmpty);
         updateCounters();
 
+        ComputerData.getInstance().getComputersList().addListener((ListChangeListener<? super Computer>) c -> {
+            logger.trace("ComputerData ListChangeListener");
+            final String input = searchAreaController.getTextField().getText();
+            updateStyleOnText(input, input.toLowerCase());
+        });
+
         LastConnectionData.getInstance().getLastConnectionItems().addListener((ListChangeListener<? super LastConnectionItem>) c -> {
             if (c.getList().size() == 0) {
                 lastConnectionsPopupController.hide();
@@ -148,6 +156,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
 
         searchAreaController.getTextField().setOnKeyReleased(keyEvent -> {
             String input = searchAreaController.getTextField().getText().toLowerCase();
+            isAllowedToMoveRows = input.isEmpty(); // allow or disallow to move rows
             String inputWithoutLowerCase = searchAreaController.getTextField().getText();
 
             computerFilteredList.setPredicate(input.isEmpty() ? computer -> true :
@@ -159,15 +168,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
             if (Utils.IS_MARK_SEARCH_ACTIVE) {
                 stopTimer();
                 timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
-                    Platform.runLater(() -> {
-                        for (JSearchableTextFlowController searchableTextFlowController : JSearchableTextFlowController.getActiveSearchableTextFlowMap()) {
-                            if (input.isEmpty()) {
-                                searchableTextFlowController.setOriginalText();
-                            } else {
-                                searchableTextFlowController.updatedText(inputWithoutLowerCase);
-                            }
-                        }
-                    });
+                    updateStyleOnText(input, inputWithoutLowerCase);
                 }, 100, TimeUnit.MILLISECONDS);
             }
         });
@@ -211,6 +212,18 @@ public class RemoteScreenController extends Pane implements IDisplayable {
 
         noResultLabelInitAndAddListener();
         Utils.createTooltipListener(addNewComputerImage, Utils.NEW_ITEM, KorTypes.ShowNodeFrom.LEFT);
+    }
+
+    private void updateStyleOnText(String input, String inputWithoutLowerCase) {
+        Platform.runLater(() -> {
+            for (JSearchableTextFlowController searchableTextFlowController : JSearchableTextFlowController.getActiveSearchableTextFlowMap()) {
+                if (input.isEmpty()) {
+                    searchableTextFlowController.setOriginalText();
+                } else {
+                    searchableTextFlowController.updatedText(inputWithoutLowerCase);
+                }
+            }
+        });
     }
 
     private void stopTimer() {
@@ -274,24 +287,34 @@ public class RemoteScreenController extends Pane implements IDisplayable {
 
     @FXML
     public void DownComputerInList() {
-        int currentIndex = computerListController.getCurrent();
-        if (currentIndex >= 0 && currentIndex < ComputerData.getInstance().getComputersList().size() - 1) {
-            Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex + 1);
-            computerListController.getComputerListView().getSelectionModel().select(currentIndex + 1);
-            computerListController.getComputerListView().scrollTo(currentIndex + 1);
+        if (isAllowedToMoveRows) {
+            int currentIndex = computerListController.getCurrent();
+            if (currentIndex >= 0 && currentIndex < ComputerData.getInstance().getComputersList().size() - 1) {
+                Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex + 1);
+                computerListController.getComputerListView().getSelectionModel().select(currentIndex + 1);
+                computerListController.getComputerListView().scrollTo(currentIndex + 1);
+            }
+        } else {
+            AlertPopupController alertPopupController = new AlertPopupController();
+            alertPopupController.showAlert(KorTypes.AlertTypes.INFO, Utils.CAN_NOT_MOVE_ROW_INFO, this);
         }
-
     }
 
     @FXML
     public void UpComputerInList() {
-        int currentIndex = computerListController.getCurrent();
-        if (currentIndex > 0 && currentIndex <= ComputerData.getInstance().getComputersList().size() - 1) {
-            Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex - 1);
-            computerListController.getComputerListView().getSelectionModel().select(currentIndex - 1);
-            computerListController.getComputerListView().scrollTo(currentIndex - 1);
+        if (isAllowedToMoveRows) {
+            int currentIndex = computerListController.getCurrent();
+            if (currentIndex > 0 && currentIndex <= ComputerData.getInstance().getComputersList().size() - 1) {
+                Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex - 1);
+                computerListController.getComputerListView().getSelectionModel().select(currentIndex - 1);
+                computerListController.getComputerListView().scrollTo(currentIndex - 1);
+            }
+        } else {
+            AlertPopupController alertPopupController = new AlertPopupController();
+            alertPopupController.showAlert(KorTypes.AlertTypes.INFO, Utils.CAN_NOT_MOVE_ROW_INFO, this);
         }
     }
+
 
     @Override
     public void showPane() {

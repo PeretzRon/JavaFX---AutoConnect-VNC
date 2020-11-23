@@ -78,6 +78,7 @@ public class Utils {
     public static final String ABOUT_ICON = IMAGES_BASE_PATH + "about-btn-icon.png";
     public static final String EXIT_ICON = IMAGES_BASE_PATH + "exit-btn-icon.png";
     public static final String ALERT_WARNING_ICON = IMAGES_BASE_PATH + "warning.png";
+    public static final String ALERT_INFO_ICON = IMAGES_BASE_PATH + "information.png";
     public static final String ALERT_ERROR_ICON = IMAGES_BASE_PATH + "close-icon.png";
     public static final String APP_LOGO_ANIMATION = VIEWS_FILE_PATH + IMAGES_BASE_PATH + "app-icon-animated.html";
     public static final String APP_LOGO_ANIMATION2 = IMAGES_BASE_PATH + "app-icon-animated.html";
@@ -113,8 +114,9 @@ public class Utils {
     public static final int MAX_HISTORY_CONNECT_LIST = 50;
     public static final int MAX_REMOTE_DRIVE_CONNECT_LIST = 50;
     public static final int TIME_FOR_CLOSE_POPUP = 7000;
-    public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_WARNING = 3500;
-    public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_ERROR = 6000;
+    public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_WARNING = 4000;
+    public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_INFO = 4000;
+    public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_ERROR = 4000;
     public static final long TIMEOUT_FOR_PROCESS_TO_END_IN_SECONDS = 20;
 
     // Text display
@@ -134,6 +136,7 @@ public class Utils {
     // Alert Messages
     public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong ip address, try again";
     public static final String VNC_PATH_ERROR = "Ultra VNC not installed or path not valid";
+    public static final String CAN_NOT_MOVE_ROW_INFO = "Can't move rows during search";
 
 
     // Style

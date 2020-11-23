@@ -8,6 +8,7 @@ public class KorTypes {
     }
 
     public enum AlertTypes {
+        INFO,
         WARNING,
         ERROR
     }

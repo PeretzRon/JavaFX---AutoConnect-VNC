@@ -133,6 +133,11 @@ public class AlertPopupController {
     private void configAlertColorAndImage(KorTypes.AlertTypes alertType) {
         massageLabel.setTextFill(Color.BLACK);
         switch (alertType) {
+            case INFO:
+                borderPane.setStyle("-fx-background-color: #8ca4f5");
+                TIME_TO_CLOSE_ALERT = Utils.TIME_FOR_CLOSE_ALERT_MESSAGE_INFO;
+                alertIcon.setImage(Utils.getImageByName(Utils.ALERT_INFO_ICON));
+                break;
             case WARNING:
                 borderPane.setStyle("-fx-background-color: #ff9800");
                 TIME_TO_CLOSE_ALERT = Utils.TIME_FOR_CLOSE_ALERT_MESSAGE_WARNING;

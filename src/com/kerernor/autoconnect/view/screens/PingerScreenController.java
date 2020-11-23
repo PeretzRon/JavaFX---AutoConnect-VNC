@@ -79,7 +79,7 @@ public class PingerScreenController extends Pane implements IDisplayable {
         selectedPingGroupName.setText("");
 
         flowPaneGroupPinger.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_ITEM, event -> {
-            logger.trace("KorEvents.PingerEvent.UPDATE_PINGER_ITEM");
+            logger.trace("KorEvents.PingerEvent.UPDATE_PINGER_ITEMS");
             pingListGroupController.getPingerListView().getChildren().clear();
             ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(event.getName());
             pingListGroupController.loadList(pingerList);
@@ -121,13 +121,13 @@ public class PingerScreenController extends Pane implements IDisplayable {
     }
 
     private void noResultLabelInitAndAddListener() {
-        if (  PingerData.getInstance().getPingerObservableList().size() == 0) {
+        if (PingerData.getInstance().getPingerObservableList().size() == 0) {
             noResultLabel.toFront();
         } else {
             noResultLabel.toBack();
         }
 
-        flowPaneGroupPinger.getChildren().addListener((ListChangeListener<? super Node>) c ->  {
+        flowPaneGroupPinger.getChildren().addListener((ListChangeListener<? super Node>) c -> {
             if (c.getList().size() == 0) {
                 noResultLabel.toFront();
             } else {
@@ -161,11 +161,9 @@ public class PingerScreenController extends Pane implements IDisplayable {
 
     private void refreshPingerItemWhenUpdated(int listSize) {
         logger.trace("refreshPingerItemWhenUpdated");
+        selectedPingGroupName.setText("");
         createPingerGroups(filterPingerGroup.getText());
         pingListGroupController.getPingerListView().getChildren().clear();
-        if (listSize == 0) {
-            isRunPingerButtonDisabled.set(true);
-        }
     }
 
     private void resetCounterAndProgressBarForPingerScreen() {
@@ -210,18 +208,20 @@ public class PingerScreenController extends Pane implements IDisplayable {
     public void createPingerGroups(String filterText) {
         flowPaneGroupPinger.getChildren().clear();
         selectedPingGroupName.setText("");
+        isRunPingerButtonDisabled.set(true);
         PingerData.getInstance().getPingerObservableList()
                 .stream()
                 .filter(pinger -> pinger.getName().toLowerCase().contains(filterText.toLowerCase()))
                 .forEach(pingerGroup -> {
                     PingGroupItemController item = new PingGroupItemController(pingerGroup, pnlSetting);
                     pingGroupItemControllerList.add(item);
-                    item.getMainPane().setOnMouseClicked(event -> {
+                    item.getMainPane().setOnMousePressed(event -> {
+                        event.consume();
                         logger.trace("selected item: " + item.getName().getText());
-                        clearAndUpdateValues(item);
                         ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(item.getName().getText());
                         pingListGroupController.loadList(pingerList);
                         pingListGroupController.resetProgressBar();
+                        clearAndUpdateValues(item);
                     });
 
                     flowPaneGroupPinger.getChildren().add(item);

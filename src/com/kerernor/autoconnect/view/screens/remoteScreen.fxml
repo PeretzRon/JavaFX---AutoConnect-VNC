@@ -65,13 +65,13 @@
                 <HBox alignment="CENTER_LEFT" prefHeight="43.0" prefWidth="63.0">
                     <children>
 
-                        <ImageView fx:id="up" fitHeight="26.0" fitWidth="26.0" onMouseClicked="#DownComputerInList" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="upRowImageView" fitHeight="26.0" fitWidth="26.0" onMouseClicked="#DownComputerInList" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../../images/down-arrow.png" />
                             </image>
                         </ImageView>
 
-                        <ImageView fx:id="down" fitHeight="26.0" fitWidth="26.0" onMouseClicked="#UpComputerInList" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="downRowImageView" fitHeight="26.0" fitWidth="26.0" onMouseClicked="#UpComputerInList" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../../images/up-arrow.png" />
                             </image>
