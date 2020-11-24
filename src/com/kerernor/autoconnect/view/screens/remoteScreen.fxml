@@ -79,6 +79,7 @@
                     </children>
                 </HBox>
                 <CheckBox fx:id="viewOnlyCheckBox" prefHeight="18.0" prefWidth="82.0" text="View Only" textFill="WHITE" />
+                <Button fx:id="saveChanges" text="Save"/>
             </children>
         </HBox>
         <ComputerListController fx:id="computerListController" layoutX="14.0" layoutY="241.0" prefHeight="321.0" prefWidth="751.0" />

@@ -16,6 +16,7 @@ import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.AlertPopupController;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
@@ -66,6 +67,8 @@ public class RemoteScreenController extends Pane implements IDisplayable {
     private ImageView upRowImageView;
     @FXML
     private ImageView downRowImageView;
+    @FXML
+    private Button saveChanges;
 
 
     private Logger logger = Logger.getLogger(RemoteScreenController.class);
@@ -111,6 +114,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
         lastConnectionsPopupController.setList(historySearchFilteredList);
         isHistoryListEmpty.set(historySearchFilteredList.size() == 0);
         openCloseHistoryImage.disableProperty().bind(isHistoryListEmpty);
+        saveChanges.disableProperty().bind(Bindings.not(ComputerData.getInstance().isComputerListHasChangedProperty()));
         updateCounters();
 
         ComputerData.getInstance().getComputersList().addListener((ListChangeListener<? super Computer>) c -> {
@@ -290,7 +294,8 @@ public class RemoteScreenController extends Pane implements IDisplayable {
         if (isAllowedToMoveRows) {
             int currentIndex = computerListController.getCurrent();
             if (currentIndex >= 0 && currentIndex < ComputerData.getInstance().getComputersList().size() - 1) {
-                Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex + 1);
+//                Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex + 1);
+                ComputerData.getInstance().swapRows(currentIndex, currentIndex + 1);
                 computerListController.getComputerListView().getSelectionModel().select(currentIndex + 1);
                 computerListController.getComputerListView().scrollTo(currentIndex + 1);
             }
@@ -305,7 +310,8 @@ public class RemoteScreenController extends Pane implements IDisplayable {
         if (isAllowedToMoveRows) {
             int currentIndex = computerListController.getCurrent();
             if (currentIndex > 0 && currentIndex <= ComputerData.getInstance().getComputersList().size() - 1) {
-                Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex - 1);
+                ComputerData.getInstance().swapRows(currentIndex, currentIndex - 1);
+//                Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex - 1);
                 computerListController.getComputerListView().getSelectionModel().select(currentIndex - 1);
                 computerListController.getComputerListView().scrollTo(currentIndex - 1);
             }

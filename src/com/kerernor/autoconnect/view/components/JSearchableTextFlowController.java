@@ -10,10 +10,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Pair;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class JSearchableTextFlowController extends TextFlow {
 
@@ -29,6 +29,7 @@ public class JSearchableTextFlowController extends TextFlow {
 
     Text textToAdd = new Text("");
     private final static Set<JSearchableTextFlowController> activeSearchableTextFlowMap = new HashSet<>();
+    List<Pair<Integer, String>> pairArrayListOfMatches = new ArrayList<>();
 
     @FXML
     public void initialize() {
@@ -91,23 +92,57 @@ public class JSearchableTextFlowController extends TextFlow {
     }
 
     private void updateTextInternal(String currentText, String textFromSearchInput) {
-        String[] arr = currentText.split(textFromSearchInput);
+        List<String> listOfAllPremutationOfPattern = permute(textFromSearchInput);
+        pairArrayListOfMatches.clear();
+        listOfAllPremutationOfPattern.forEach(s -> {
+            KMPSearch(s, originalText);
+        });
 
-        if (arr.length != 0) {
+        Collections.sort(pairArrayListOfMatches, Comparator.comparingInt(Pair::getKey));
+        if (pairArrayListOfMatches.size() > 0) {
             this.textFlow.getChildren().clear();
-        }
+            int indexOfCurrentItemInPairMatchesList = 0;
+            int i;
+            char[] orginialTextInCharsArray = originalText.toCharArray();
+            int indexFromListToCheck = pairArrayListOfMatches.get(0).getKey();
+            for (i = 0; i < orginialTextInCharsArray.length; i++) {
+                if (indexFromListToCheck == i) {
+                    createTextAndAddToTextFlow(originalText.substring(i, i + textFromSearchInput.length()), false, true);
+                    indexOfCurrentItemInPairMatchesList++;
+                    if (indexOfCurrentItemInPairMatchesList >= pairArrayListOfMatches.size()) {
+                        i = i + textFromSearchInput.length();
+                        break;
+                    } else {
+                        i = i + textFromSearchInput.length() - 1;
+                    }
 
-        for (int i = 0; i < arr.length; i++) {
-            createTextAndAddToTextFlow(arr[i], false, false);
-            if (i == arr.length - 1 && currentText.endsWith(textFromSearchInput)) {
-                createTextAndAddToTextFlow(textFromSearchInput, false, true);
-                continue;
-            } else if (i == arr.length - 1) {
-                continue;
+                    indexFromListToCheck = pairArrayListOfMatches.get(indexOfCurrentItemInPairMatchesList).getKey();
+                } else {
+                    createTextAndAddToTextFlow(originalText.substring(i, indexFromListToCheck), false, false);
+                    i = indexFromListToCheck - 1;
+                }
             }
 
-            createTextAndAddToTextFlow(textFromSearchInput, false, true);
+            createTextAndAddToTextFlow(originalText.substring(i, orginialTextInCharsArray.length), false, false);
         }
+
+
+//        String[] arr = currentText.split(textFromSearchInput);
+//        if (arr.length != 0) {
+//            this.textFlow.getChildren().clear();
+//        }
+//
+//        for (int i = 0; i < arr.length; i++) {
+//            createTextAndAddToTextFlow(arr[i], false, false);
+//            if (i == arr.length - 1 && currentText.endsWith(textFromSearchInput)) {
+//                createTextAndAddToTextFlow(textFromSearchInput, false, true);
+//                continue;
+//            } else if (i == arr.length - 1) {
+//                continue;
+//            }
+//
+//            createTextAndAddToTextFlow(textFromSearchInput, false, true);
+//        }
     }
 
     /**
@@ -159,6 +194,100 @@ public class JSearchableTextFlowController extends TextFlow {
 
     public static Set<JSearchableTextFlowController> getActiveSearchableTextFlowMap() {
         return activeSearchableTextFlowMap;
+    }
+
+    private List<String> permute(String input) {
+        List<String> list = new ArrayList<>();
+        int n = input.length();
+
+        // Number of permutations is 2^n
+        int max = 1 << n;
+
+        // Converting string to lower case
+        input = input.toLowerCase();
+
+        // Using all subsequences and permuting them
+        for (int i = 0; i < max; i++) {
+            char combination[] = input.toCharArray();
+
+            // If j-th bit is set, we convert it to upper case
+            for (int j = 0; j < n; j++) {
+                if (((i >> j) & 1) == 1)
+                    combination[j] = (char) (combination[j] - 32);
+            }
+
+            // Printing current combination
+            list.add(new String(combination));
+        }
+
+        return list;
+    }
+
+    private void KMPSearch(String pat, String txt) {
+        int M = pat.length();
+        int N = txt.length();
+
+        // create lps[] that will hold the longest
+        // prefix suffix values for pattern
+        int lps[] = new int[M];
+        int j = 0; // index for pat[]
+
+        // Preprocess the pattern (calculate lps[]
+        // array)
+        computeLPSArray(pat, M, lps);
+
+        int i = 0; // index for txt[]
+        while (i < N) {
+            if (pat.charAt(j) == txt.charAt(i)) {
+                j++;
+                i++;
+            }
+            if (j == M) {
+                pairArrayListOfMatches.add(0, new Pair<>(i - j, pat));
+                j = lps[j - 1];
+            }
+
+            // mismatch after j matches
+            else if (i < N && pat.charAt(j) != txt.charAt(i)) {
+                // Do not match lps[0..lps[j-1]] characters,
+                // they will match anyway
+                if (j != 0)
+                    j = lps[j - 1];
+                else
+                    i = i + 1;
+            }
+        }
+    }
+
+    private void computeLPSArray(String pat, int M, int lps[]) {
+        // length of the previous longest prefix suffix
+        int len = 0;
+        int i = 1;
+        lps[0] = 0; // lps[0] is always 0
+
+        // the loop calculates lps[i] for i = 1 to M-1
+        while (i < M) {
+            if (pat.charAt(i) == pat.charAt(len)) {
+                len++;
+                lps[i] = len;
+                i++;
+            } else // (pat[i] != pat[len])
+            {
+                // This is tricky. Consider the example.
+                // AAACAAAA and i = 7. The idea is similar
+                // to search step.
+                if (len != 0) {
+                    len = lps[len - 1];
+
+                    // Also, note that we do not increment
+                    // i here
+                } else // if (len == 0)
+                {
+                    lps[i] = len;
+                    i++;
+                }
+            }
+        }
     }
 
     @Override
