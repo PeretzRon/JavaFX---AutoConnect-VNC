@@ -126,23 +126,6 @@ public class JSearchableTextFlowController extends TextFlow {
             createTextAndAddToTextFlow(originalText.substring(i, orginialTextInCharsArray.length), false, false);
         }
 
-
-//        String[] arr = currentText.split(textFromSearchInput);
-//        if (arr.length != 0) {
-//            this.textFlow.getChildren().clear();
-//        }
-//
-//        for (int i = 0; i < arr.length; i++) {
-//            createTextAndAddToTextFlow(arr[i], false, false);
-//            if (i == arr.length - 1 && currentText.endsWith(textFromSearchInput)) {
-//                createTextAndAddToTextFlow(textFromSearchInput, false, true);
-//                continue;
-//            } else if (i == arr.length - 1) {
-//                continue;
-//            }
-//
-//            createTextAndAddToTextFlow(textFromSearchInput, false, true);
-//        }
     }
 
     /**

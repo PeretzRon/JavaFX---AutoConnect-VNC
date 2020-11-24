@@ -218,8 +218,9 @@ public class RemoteScreenController extends Pane implements IDisplayable {
         Utils.createTooltipListener(addNewComputerImage, Utils.NEW_ITEM, KorTypes.ShowNodeFrom.LEFT);
     }
 
-    private void updateStyleOnText(String input, String inputWithoutLowerCase) {
+    public void updateStyleOnText(String input, String inputWithoutLowerCase) {
         Platform.runLater(() -> {
+            logger.info("Size: " + JSearchableTextFlowController.getActiveSearchableTextFlowMap().size());
             for (JSearchableTextFlowController searchableTextFlowController : JSearchableTextFlowController.getActiveSearchableTextFlowMap()) {
                 if (input.isEmpty()) {
                     searchableTextFlowController.setOriginalText();
@@ -336,5 +337,9 @@ public class RemoteScreenController extends Pane implements IDisplayable {
 
     public void setHistoryListOpen(boolean historyListOpen) {
         isHistoryListOpen = historyListOpen;
+    }
+
+    public JTextFieldController getSearchAreaController() {
+        return searchAreaController;
     }
 }

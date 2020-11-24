@@ -3,22 +3,25 @@ package com.kerernor.autoconnect.view;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
 import com.kerernor.autoconnect.model.ComputerData;
+import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.ConfirmPopupController;
+import com.kerernor.autoconnect.view.screens.RemoteScreenController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import org.apache.log4j.Logger;
+import sun.rmi.runtime.Log;
 
 import java.io.IOException;
 
@@ -45,6 +48,7 @@ public class ComputerRowController extends ListCell<Computer> {
     private Computer computer;
     private FXMLLoader loader;
     private Parent paneBehind;
+    private Logger logger = Logger.getLogger(ComputerRowController.class);
 
     public void initialize() {
         computerName.setColorFoundText(Color.YELLOW);
@@ -78,6 +82,8 @@ public class ComputerRowController extends ListCell<Computer> {
             loadAndSetValues(computer);
             setText(null);
             setGraphic(mainPane);
+            final RemoteScreenController remoteScreenController = KorCommon.getInstance().getRemoteScreenController();
+            remoteScreenController.updateStyleOnText(remoteScreenController.getSearchAreaController().getTextField().getText(),remoteScreenController.getSearchAreaController().getTextField().getText().toLowerCase());
         }
     }
 
@@ -115,6 +121,9 @@ public class ComputerRowController extends ListCell<Computer> {
         switch (callback) {
             case CONFIRM:
                 ComputerData.getInstance().remove(computer);
+                JSearchableTextFlowController.getActiveSearchableTextFlowMap().remove(computerIP);
+                JSearchableTextFlowController.getActiveSearchableTextFlowMap().remove(computerName);
+                JSearchableTextFlowController.getActiveSearchableTextFlowMap().remove(computerLocation);
                 break;
             case EXIT:
             default:

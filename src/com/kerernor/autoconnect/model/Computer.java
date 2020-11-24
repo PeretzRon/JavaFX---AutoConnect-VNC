@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class Computer {
 
-    private final String id;
+    private String id;
     private String ip;
     private String name;
     private String itemLocation;
@@ -29,6 +29,20 @@ public class Computer {
         this.id = id;
     }
 
+    public Computer() {
+    }
+
+    public Computer clone() {
+        Computer computer = new Computer();
+        computer.setIp(this.ip);
+        computer.setName(this.name);
+        computer.setLocation(this.itemLocation);
+        computer.setComputerType(this.computerType);
+        computer.setId(this.id);
+
+        return computer;
+    }
+
     public String getId() {
         return id;
     }
@@ -39,6 +53,14 @@ public class Computer {
 
     public KorTypes.ComputerType getComputerType() {
         return computerType;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setItemLocation(String itemLocation) {
+        this.itemLocation = itemLocation;
     }
 
     public String getIp() {
@@ -75,11 +97,15 @@ public class Computer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Computer computer = (Computer) o;
-        return Objects.equals(id, computer.id);
+        return Objects.equals(id, computer.id) &&
+                Objects.equals(ip, computer.ip) &&
+                Objects.equals(name, computer.name) &&
+                Objects.equals(itemLocation, computer.itemLocation) &&
+                computerType == computer.computerType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, ip, name, itemLocation, computerType);
     }
 }

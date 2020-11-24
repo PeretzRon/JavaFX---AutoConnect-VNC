@@ -24,7 +24,7 @@ import java.util.List;
 
 public class ComputerData {
 
-    private Logger logger = Logger.getLogger(ComputerData.class);
+    private final Logger logger = Logger.getLogger(ComputerData.class);
     private static final ComputerData instance = new ComputerData();
     private ObservableList<Computer> computersList; // use observable for binding data
     private ObservableList<Computer> computersListBackup; // use observable for binding data
@@ -71,19 +71,20 @@ public class ComputerData {
 
     public void update(Computer updatedComputer) {
         logger.trace("update computer - " + updatedComputer.getName());
-        isComputerListHasChanged();
         for (int i = 0; i < computersList.size(); i++) {
             if (computersList.get(i).getId().equals(updatedComputer.getId())) {
-                computersList.set(i, updatedComputer);
+                computersList.set(i, updatedComputer.clone());
                 calcCounters();
                 break;
             }
         }
+
+        isComputerListHasChanged();
     }
 
     public void swapRows(int currentIndex, int currentIndexMinusPlus) {
         Collections.swap(this.computersList, currentIndex, currentIndexMinusPlus);
-        isComputerListHasChanged.set(true);
+        isComputerListHasChanged();
     }
 
     public void loadData() {
@@ -166,6 +167,7 @@ public class ComputerData {
     }
 
     private void isComputerListHasChanged() {
-        isComputerListHasChanged.set(computersList.equals(computersListBackup));
+        isComputerListHasChanged.set(!computersList.equals(computersListBackup));
+        logger.info("isComputerListHasChanged - " + isComputerListHasChanged.get());
     }
 }
