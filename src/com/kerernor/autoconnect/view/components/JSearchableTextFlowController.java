@@ -32,7 +32,7 @@ public class JSearchableTextFlowController extends TextFlow {
     Text textToAdd = new Text("");
     private Logger logger = Logger.getLogger(JSearchableTextFlowController.class);
     private final static Set<JSearchableTextFlowController> activeSearchableTextFlowMap = new HashSet<>();
-    List<Pair<Integer, String>> pairArrayListOfMatches = new ArrayList<>();
+    List<Integer> listOfIndexThatFoundOnKMP = new ArrayList<>();
 
     @FXML
     public void initialize() {
@@ -40,15 +40,6 @@ public class JSearchableTextFlowController extends TextFlow {
 
     public JSearchableTextFlowController() {
         loadView();
-    }
-
-    public String getTextFromTextFlow() {
-        StringBuilder textString = new StringBuilder();
-        for (Node child : textFlow.getChildren()) {
-            textString.append(((Text) child).getText());
-        }
-
-        return textString.toString();
     }
 
     public void setOriginalText() {
@@ -91,36 +82,34 @@ public class JSearchableTextFlowController extends TextFlow {
         }
 
         if (originalText.toLowerCase().contains(textFromSearchInput.toLowerCase())) {
-            updateTextInternal(originalText, textFromSearchInput);
+            updateTextInternal(textFromSearchInput);
         }
     }
 
-    private void updateTextInternal(String currentText, String textFromSearchInput) {
-        List<String> listOfAllPremutationOfPattern = permute(textFromSearchInput);
-        pairArrayListOfMatches.clear();
-        listOfAllPremutationOfPattern.forEach(s -> {
-            KMPSearch(s, originalText);
-        });
+    private void updateTextInternal(String textFromSearchInput) {
+        String originalTextLowerCase = originalText.toLowerCase();
+        listOfIndexThatFoundOnKMP.clear();
+        KMPSearch(textFromSearchInput.toLowerCase(), originalTextLowerCase);
 
-        Collections.sort(pairArrayListOfMatches, Comparator.comparingInt(Pair::getKey));
-        if (pairArrayListOfMatches.size() > 0) {
+        Collections.sort(listOfIndexThatFoundOnKMP, Comparator.comparingInt(o -> o));
+        if (listOfIndexThatFoundOnKMP.size() > 0) {
             this.textFlow.getChildren().clear();
             int indexOfCurrentItemInPairMatchesList = 0;
             int i;
             char[] orginialTextInCharsArray = originalText.toCharArray();
-            int indexFromListToCheck = pairArrayListOfMatches.get(0).getKey();
+            int indexFromListToCheck = listOfIndexThatFoundOnKMP.get(0);
             for (i = 0; i < orginialTextInCharsArray.length; i++) {
                 if (indexFromListToCheck == i) {
                     createTextAndAddToTextFlow(originalText.substring(i, i + textFromSearchInput.length()), false, true);
                     indexOfCurrentItemInPairMatchesList++;
-                    if (indexOfCurrentItemInPairMatchesList >= pairArrayListOfMatches.size()) {
+                    if (indexOfCurrentItemInPairMatchesList >= listOfIndexThatFoundOnKMP.size()) {
                         i = i + textFromSearchInput.length();
                         break;
                     } else {
                         i = i + textFromSearchInput.length() - 1;
                     }
 
-                    indexFromListToCheck = pairArrayListOfMatches.get(indexOfCurrentItemInPairMatchesList).getKey();
+                    indexFromListToCheck = listOfIndexThatFoundOnKMP.get(indexOfCurrentItemInPairMatchesList);
                 } else {
                     createTextAndAddToTextFlow(originalText.substring(i, indexFromListToCheck), false, false);
                     i = indexFromListToCheck - 1;
@@ -230,7 +219,7 @@ public class JSearchableTextFlowController extends TextFlow {
                 i++;
             }
             if (j == M) {
-                pairArrayListOfMatches.add(0, new Pair<>(i - j, pat));
+                listOfIndexThatFoundOnKMP.add(i - j);
                 j = lps[j - 1];
             }
 

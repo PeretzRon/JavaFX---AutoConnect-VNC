@@ -68,16 +68,17 @@ public class ComputerRowController extends ListCell<Computer> {
     }
 
     public ComputerRowController(Pane paneBehind) {
+        logger.trace("ComputerRowController - Ctor");
         this.paneBehind = paneBehind;
     }
 
     @Override
     protected void updateItem(Computer computer, boolean empty) {
+        logger.trace("updateItem");
         super.updateItem(computer, empty);
         if (empty || computer == null) {
             setText(null);
             setGraphic(null);
-            logger.info("updateItem - empty");
         } else {
 //            setStyle(" -fx-background-color: transparent;");
             loadAndSetValues(computer);
