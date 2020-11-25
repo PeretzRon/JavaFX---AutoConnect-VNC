@@ -30,6 +30,7 @@ public class ComputerData {
     private ObservableList<Computer> computersListBackup; // use observable for binding data
     private final SimpleIntegerProperty stationCounterItems = new SimpleIntegerProperty(0);
     private final SimpleIntegerProperty rcgwCounterItems = new SimpleIntegerProperty(0);
+    private final SimpleIntegerProperty otherCounterItems = new SimpleIntegerProperty(0);
     private final BooleanProperty isComputerListHasChanged = new SimpleBooleanProperty(false);
     private IntegerBinding computerListSize;
 
@@ -43,6 +44,14 @@ public class ComputerData {
 
     public IntegerProperty getRcgwCounterItems() {
         return rcgwCounterItems;
+    }
+
+    public int getOtherCounterItems() {
+        return otherCounterItems.get();
+    }
+
+    public SimpleIntegerProperty getOtherCounterItemsProperty() {
+        return otherCounterItems;
     }
 
     public ObservableList<Computer> getComputersList() {
@@ -125,22 +134,28 @@ public class ComputerData {
             int oldValue = rcgwCounterItems.get();
             rcgwCounterItems.set(oldValue + value);
             logger.info("update RCGW: oldValue: " + oldValue + " NewValue: " + rcgwCounterItems.get());
-        } else {
+        } else if (computer.getComputerType() == KorTypes.ComputerType.Station) {
             int oldValue = stationCounterItems.get();
             stationCounterItems.set(stationCounterItems.get() + value);
-            logger.info("update RCGW: oldValue: " + oldValue + " NewValue: " + stationCounterItems.get());
-
+            logger.info("update Station: oldValue: " + oldValue + " NewValue: " + stationCounterItems.get());
+        } else {
+            int oldValue = otherCounterItems.get();
+            otherCounterItems.set(otherCounterItems.get() + value);
+            logger.info("update Other: oldValue: " + oldValue + " NewValue: " + otherCounterItems.get());
         }
     }
 
     private void calcCounters() {
         stationCounterItems.setValue(0);
         rcgwCounterItems.setValue(0);
+        otherCounterItems.setValue(0);
         computersList.forEach(computer -> {
             if (computer.getComputerType() == KorTypes.ComputerType.RCGW) {
                 rcgwCounterItems.set(rcgwCounterItems.get() + 1);
-            } else {
+            } else if (computer.getComputerType() == KorTypes.ComputerType.Station) {
                 stationCounterItems.set(stationCounterItems.get() + 1);
+            } else {
+                otherCounterItems.set(otherCounterItems.get() + 1);
             }
         });
     }

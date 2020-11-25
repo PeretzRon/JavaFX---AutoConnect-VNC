@@ -15,7 +15,8 @@ public class KorTypes {
 
     public enum ComputerType {
         Station,
-        RCGW
+        RCGW,
+        Other
     }
 
     public enum ShowNodeFrom {

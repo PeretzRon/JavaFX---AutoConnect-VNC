@@ -70,6 +70,7 @@ public class Utils {
     // Images file paths
     public static final String RCGW_ICON = IMAGES_BASE_PATH + "antenna.png";
     public static final String STATION_ICON = IMAGES_BASE_PATH + "stationKO.png";
+    public static final String OTHER_ICON = IMAGES_BASE_PATH + "desktop-pc.png";
     public static final String KEREN_OR_ICON = IMAGES_BASE_PATH + "ko.png";
     public static final String APP_ICON = IMAGES_BASE_PATH + "app-icon.png";
     public static final String REMOTE_ICON = IMAGES_BASE_PATH + "remote-btn-icon.png";

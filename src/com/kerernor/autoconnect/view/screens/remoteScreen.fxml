@@ -19,7 +19,7 @@
                 <Font size="24.0" />
             </font>
         </Label>
-        <HBox alignment="CENTER_LEFT" layoutX="55.0" layoutY="72.0" prefHeight="92.0" prefWidth="661.0" spacing="50.0">
+        <HBox alignment="CENTER_LEFT" layoutX="55.0" layoutY="72.0" prefHeight="92.0" prefWidth="661.0" spacing="10.0">
             <children>
                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                     <children>
@@ -49,6 +49,16 @@
                             </font>
                         </Label>
                         <Label text="RCGW" textFill="#e7e5e5" />
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <Label fx:id="otherCounter" alignment="CENTER" text="0" textFill="#fab12a">
+                            <font>
+                                <Font name="System Bold" size="26.0" />
+                            </font>
+                        </Label>
+                        <Label text="Other" textFill="#e7e5e5" />
                     </children>
                 </VBox>
             </children>

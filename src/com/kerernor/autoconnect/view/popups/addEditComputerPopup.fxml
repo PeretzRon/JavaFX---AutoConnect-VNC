@@ -75,6 +75,11 @@
                               <Insets bottom="5.0" top="5.0" />
                            </padding>
                         </RadioButton>
+                        <RadioButton fx:id="otherRadioButton" focusTraversable="true" mnemonicParsing="false" text="Other" textFill="WHITE" toggleGroup="$computerType">
+                           <padding>
+                              <Insets bottom="5.0" top="5.0" />
+                           </padding>
+                        </RadioButton>
                      </children>
                   </VBox>
                </children>

@@ -77,13 +77,17 @@ public class ComputerRowController extends ListCell<Computer> {
         if (empty || computer == null) {
             setText(null);
             setGraphic(null);
+            logger.info("updateItem - empty");
         } else {
 //            setStyle(" -fx-background-color: transparent;");
             loadAndSetValues(computer);
             setText(null);
             setGraphic(mainPane);
+            JSearchableTextFlowController.getActiveSearchableTextFlowMap().add(computerIP);
+            JSearchableTextFlowController.getActiveSearchableTextFlowMap().add(computerName);
+            JSearchableTextFlowController.getActiveSearchableTextFlowMap().add(computerLocation);
             final RemoteScreenController remoteScreenController = KorCommon.getInstance().getRemoteScreenController();
-            remoteScreenController.updateStyleOnText(remoteScreenController.getSearchAreaController().getTextField().getText(),remoteScreenController.getSearchAreaController().getTextField().getText().toLowerCase());
+            remoteScreenController.updateStyleOnText(remoteScreenController.getSearchAreaController().getTextField().getText(), remoteScreenController.getSearchAreaController().getTextField().getText().toLowerCase());
         }
     }
 
@@ -102,8 +106,10 @@ public class ComputerRowController extends ListCell<Computer> {
         computerIP.setFont(Font.font(16));
         if (computer.getComputerType() == KorTypes.ComputerType.RCGW) {
             computerType.setImage(Utils.getImageByName(Utils.RCGW_ICON));
-        } else {
+        } else if (computer.getComputerType() == KorTypes.ComputerType.Station) {
             computerType.setImage(Utils.getImageByName(Utils.STATION_ICON));
+        } else {
+            computerType.setImage(Utils.getImageByName(Utils.OTHER_ICON));
         }
     }
 

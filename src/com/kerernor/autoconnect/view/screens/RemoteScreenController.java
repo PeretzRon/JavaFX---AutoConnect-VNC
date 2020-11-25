@@ -44,6 +44,8 @@ public class RemoteScreenController extends Pane implements IDisplayable {
     @FXML
     private Label stationCounter;
     @FXML
+    private Label otherCounter;
+    @FXML
     private Label rcgwCounter;
     @FXML
     private JTextFieldController searchAreaController;
@@ -271,6 +273,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
     private void updateCounters() {
         totalComputers.textProperty().bind(ComputerData.getInstance().computerListSizeProperty().asString());
         stationCounter.textProperty().bind(ComputerData.getInstance().getStationsCounterItems().asString());
+        otherCounter.textProperty().bind(ComputerData.getInstance().getOtherCounterItemsProperty().asString());
         rcgwCounter.textProperty().bind(ComputerData.getInstance().getRcgwCounterItems().asString());
     }
 

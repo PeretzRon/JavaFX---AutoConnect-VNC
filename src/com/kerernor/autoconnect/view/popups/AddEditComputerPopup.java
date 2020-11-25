@@ -51,6 +51,9 @@ public class AddEditComputerPopup extends BorderPane {
     private RadioButton rcgwRadioButton;
 
     @FXML
+    private RadioButton otherRadioButton;
+
+    @FXML
     private Button saveButton;
 
     @FXML
@@ -186,6 +189,9 @@ public class AddEditComputerPopup extends BorderPane {
                 break;
             case Station:
                 stationRadioButton.setSelected(true);
+                break;
+            case Other:
+                otherRadioButton.setSelected(true);
                 break;
         }
     }

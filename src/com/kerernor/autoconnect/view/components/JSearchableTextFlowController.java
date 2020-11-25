@@ -11,6 +11,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Pair;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.*;
@@ -26,8 +27,10 @@ public class JSearchableTextFlowController extends TextFlow {
     private Font font = Font.font(16);
     private Color colorFoundText = Color.YELLOW;
     private Color colorOfText = Color.WHITE;
+    private String idd = UUID.randomUUID().toString();
 
     Text textToAdd = new Text("");
+    private Logger logger = Logger.getLogger(JSearchableTextFlowController.class);
     private final static Set<JSearchableTextFlowController> activeSearchableTextFlowMap = new HashSet<>();
     List<Pair<Integer, String>> pairArrayListOfMatches = new ArrayList<>();
 
@@ -54,7 +57,6 @@ public class JSearchableTextFlowController extends TextFlow {
     }
 
     public void initText(String text) {
-        activeSearchableTextFlowMap.add(this);
         originalText = text;
         textFlow.getChildren().clear();
         createTextAndAddToTextFlow(text, false, false);
@@ -88,7 +90,9 @@ public class JSearchableTextFlowController extends TextFlow {
             return;
         }
 
-        updateTextInternal(originalText, textFromSearchInput);
+        if (originalText.toLowerCase().contains(textFromSearchInput.toLowerCase())) {
+            updateTextInternal(originalText, textFromSearchInput);
+        }
     }
 
     private void updateTextInternal(String currentText, String textFromSearchInput) {
@@ -277,4 +281,5 @@ public class JSearchableTextFlowController extends TextFlow {
     public String toString() {
         return originalText;
     }
+
 }
