@@ -108,7 +108,6 @@ public class Utils {
     public static String CONFIG_IS_REMOTE_DRIVE_SCREEN_ACTIVE = "isRemoteDriveScreenActive";
     public static String CONFIG_IS_MARK_SEARCH_ACTIVE = "isMarkSearchTextActive";
 
-
     // Sizes and amounts
     public static final int BLUR_SIZE = 5;
     public static final int BLUR_ITERATIONS = 3;
@@ -119,6 +118,7 @@ public class Utils {
     public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_INFO = 4000;
     public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_ERROR = 4000;
     public static final long TIMEOUT_FOR_PROCESS_TO_END_IN_SECONDS = 20;
+    public static final int TIME_FOR_PERIOD_OF_MONITORING_UTILITY = 15000;
 
     // Text display
     public static final String TEXT_CONFIRM_DELETE_TITLE = "Deletion confirmation";
@@ -133,12 +133,12 @@ public class Utils {
     public static final String EXIT = "Exit";
     public static final String MINIMIZE = "Minimize";
     public static final String NEW_ITEM = "New item";
+    public static final String MONITORING_UTILITY_THREAD_NAME = "MonitoringUtility Thread";
 
     // Alert Messages
     public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong ip address, try again";
     public static final String VNC_PATH_ERROR = "Ultra VNC not installed or path not valid";
     public static final String CAN_NOT_MOVE_ROW_INFO = "Can't move rows during search";
-
 
     // Style
     public static final String PINGER_GROUP_ITEM_SELECTED = "pinger-item-selected";

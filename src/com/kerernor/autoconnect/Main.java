@@ -34,6 +34,7 @@ public class Main extends Application {
         this.primaryStage = primaryStage;
         initRootLayout();
         makeStageDraggable();
+        KorCommon.getInstance().getMonitoringUtility().start();
         Scene scene = primaryStage.getScene();
 //        ScenicView.show(scene);
     }
@@ -101,6 +102,7 @@ public class Main extends Application {
         PingerData.getInstance().storeData();
         LastConnectionData.getInstance().storeData();
     }
+
 
     public Stage getPrimaryStage() {
         return primaryStage;

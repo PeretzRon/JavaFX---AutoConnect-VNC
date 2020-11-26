@@ -29,19 +29,14 @@ public class ComputerRowController extends ListCell<Computer> {
 
     @FXML
     private BorderPane mainPane;
-
     @FXML
     private JSearchableTextFlowController computerLocation;
-
     @FXML
     private JSearchableTextFlowController computerIP;
-
     @FXML
     private JSearchableTextFlowController computerName;
-
     @FXML
     private ImageView computerType;
-
     @FXML
     private ImageView removeBtnID;
 
@@ -68,13 +63,11 @@ public class ComputerRowController extends ListCell<Computer> {
     }
 
     public ComputerRowController(Pane paneBehind) {
-        logger.trace("ComputerRowController - Ctor");
         this.paneBehind = paneBehind;
     }
 
     @Override
     protected void updateItem(Computer computer, boolean empty) {
-        logger.trace("updateItem");
         super.updateItem(computer, empty);
         if (empty || computer == null) {
             setText(null);
@@ -84,12 +77,17 @@ public class ComputerRowController extends ListCell<Computer> {
             loadAndSetValues(computer);
             setText(null);
             setGraphic(mainPane);
-            JSearchableTextFlowController.getActiveSearchableTextFlowMap().add(computerIP);
-            JSearchableTextFlowController.getActiveSearchableTextFlowMap().add(computerName);
-            JSearchableTextFlowController.getActiveSearchableTextFlowMap().add(computerLocation);
-            final RemoteScreenController remoteScreenController = KorCommon.getInstance().getRemoteScreenController();
-            remoteScreenController.updateStyleOnText(remoteScreenController.getSearchAreaController().getTextField().getText(), remoteScreenController.getSearchAreaController().getTextField().getText().toLowerCase());
+            addAndExecuteStyleOnText();
         }
+    }
+
+    private void addAndExecuteStyleOnText() {
+        JSearchableTextFlowController.getActiveSearchableTextFlowMap().add(computerIP);
+        JSearchableTextFlowController.getActiveSearchableTextFlowMap().add(computerName);
+        JSearchableTextFlowController.getActiveSearchableTextFlowMap().add(computerLocation);
+        final RemoteScreenController remoteScreenController = KorCommon.getInstance().getRemoteScreenController();
+        final String inputFromSearch = remoteScreenController.getSearchAreaController().getTextField().getText();
+        remoteScreenController.updateStyleOnText(inputFromSearch, inputFromSearch.toLowerCase());
     }
 
     public void loadAndSetValues(Computer computer) {

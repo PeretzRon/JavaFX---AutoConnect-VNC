@@ -222,7 +222,6 @@ public class RemoteScreenController extends Pane implements IDisplayable {
 
     public void updateStyleOnText(String input, String inputWithoutLowerCase) {
         Platform.runLater(() -> {
-            logger.info("Size: " + JSearchableTextFlowController.getActiveSearchableTextFlowMap().size());
             for (JSearchableTextFlowController searchableTextFlowController : JSearchableTextFlowController.getActiveSearchableTextFlowMap()) {
                 if (input.isEmpty()) {
                     searchableTextFlowController.setOriginalText();
@@ -344,5 +343,9 @@ public class RemoteScreenController extends Pane implements IDisplayable {
 
     public JTextFieldController getSearchAreaController() {
         return searchAreaController;
+    }
+
+    public ComputerListController getComputerListController() {
+        return computerListController;
     }
 }

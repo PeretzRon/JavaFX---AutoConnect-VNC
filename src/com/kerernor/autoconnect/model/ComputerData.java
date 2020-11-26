@@ -64,18 +64,16 @@ public class ComputerData {
 
     public void remove(Computer computerToDelete) {
         logger.trace("delete computer item - " + computerToDelete.getName());
-//        isComputerListHasChanged.set(true);
         computersList.remove(computerToDelete);
-        isComputerListHasChanged();
         updateCounters(computerToDelete, -1);
+        isComputerListHasChanged();
     }
 
     public void add(Computer newComputer) {
         logger.trace("add new computer - " + newComputer.getName());
-//        isComputerListHasChanged.set(true);
-        isComputerListHasChanged();
         computersList.add(newComputer);
         updateCounters(newComputer, 1);
+        isComputerListHasChanged();
     }
 
     public void update(Computer updatedComputer) {
@@ -87,7 +85,6 @@ public class ComputerData {
                 break;
             }
         }
-
         isComputerListHasChanged();
     }
 

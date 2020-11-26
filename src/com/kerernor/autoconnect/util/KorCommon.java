@@ -15,6 +15,7 @@ public class KorCommon {
     private final PingerScreenController pingerScreenController = PingerScreenController.getInstance();
     private final AboutScreenController aboutScreenController = AboutScreenController.getInstance();
     private final RemoteDriveScreenController remoteDriveScreenController = RemoteDriveScreenController.getInstance();
+    private final MonitoringUtility monitoringUtility = MonitoringUtility.getInstance();
 
     public static KorCommon getInstance() {
         if (instance == null) {
@@ -46,5 +47,9 @@ public class KorCommon {
 
     public RemoteDriveScreenController getRemoteDriveScreenController() {
         return remoteDriveScreenController;
+    }
+
+    public MonitoringUtility getMonitoringUtility() {
+        return monitoringUtility;
     }
 }
