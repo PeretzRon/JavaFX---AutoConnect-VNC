@@ -118,7 +118,7 @@ public class Utils {
     public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_INFO = 4000;
     public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_ERROR = 4000;
     public static final long TIMEOUT_FOR_PROCESS_TO_END_IN_SECONDS = 20;
-    public static final int TIME_FOR_PERIOD_OF_MONITORING_UTILITY = 15000;
+    public static final int TIME_FOR_PERIOD_OF_MONITORING_UTILITY = 90000;
 
     // Text display
     public static final String TEXT_CONFIRM_DELETE_TITLE = "Deletion confirmation";
@@ -133,12 +133,15 @@ public class Utils {
     public static final String EXIT = "Exit";
     public static final String MINIMIZE = "Minimize";
     public static final String NEW_ITEM = "New item";
-    public static final String MONITORING_UTILITY_THREAD_NAME = "MonitoringUtility Thread";
+    public static final String SAVE_CHANGES = "Save";
+    public static final String MONITORING_UTILITY_THREAD_NAME = "Monitoring Utility Thread";
 
     // Alert Messages
     public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong ip address, try again";
     public static final String VNC_PATH_ERROR = "Ultra VNC not installed or path not valid";
     public static final String CAN_NOT_MOVE_ROW_INFO = "Can't move rows during search";
+    public static final String ERROR_WHILE_SAVE_DATA = "Can't save data to file";
+
 
     // Style
     public static final String PINGER_GROUP_ITEM_SELECTED = "pinger-item-selected";

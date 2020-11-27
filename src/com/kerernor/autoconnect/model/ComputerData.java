@@ -1,8 +1,12 @@
 package com.kerernor.autoconnect.model;
 
 import com.google.gson.Gson;
+import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorTypes;
+import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
+import com.kerernor.autoconnect.view.popups.AlertPopupController;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.property.BooleanProperty;
@@ -85,6 +89,7 @@ public class ComputerData {
                 break;
             }
         }
+
         isComputerListHasChanged();
     }
 
@@ -182,4 +187,33 @@ public class ComputerData {
         isComputerListHasChanged.set(!computersList.equals(computersListBackup));
         logger.info("isComputerListHasChanged - " + isComputerListHasChanged.get());
     }
+
+    public void saveChangesToDB() {
+        logger.trace("saveChangesToDB");
+        isComputerListHasChanged.set(false); // prevent from user to click again until the operation complete
+        ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
+            try {
+                storeData();
+                Collections.copy(computersListBackup, computersList);
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                throw new IOException("Erroe");
+            } catch (IOException e) {
+                logger.error("failed to save - ", e);
+                Platform.runLater(() -> {
+                    isComputerListHasChanged.set(true);
+                    AlertPopupController.sendAlert(KorTypes.AlertTypes.ERROR, Utils.ERROR_WHILE_SAVE_DATA, KorCommon.getInstance().getRemoteScreenController());
+                });
+            }
+        });
+    }
+
 }

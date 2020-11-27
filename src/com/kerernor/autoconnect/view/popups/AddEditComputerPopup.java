@@ -216,11 +216,8 @@ public class AddEditComputerPopup extends BorderPane {
             ComputerData.getInstance().add(this.computer);
         } else {
             // edit exist computer
-            this.computer.setIp(cmpIP);
-            this.computer.setLocation(cmpLocation);
-            this.computer.setName(cmpName);
-            this.computer.setComputerType(cmpType);
-            ComputerData.getInstance().update(this.computer);
+            Computer computer = new Computer(cmpIP, cmpName,cmpLocation,cmpType, this.computer.getId());
+            ComputerData.getInstance().update(computer);
         }
 
         closeClickAction();

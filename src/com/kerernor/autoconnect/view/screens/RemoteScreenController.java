@@ -64,13 +64,13 @@ public class RemoteScreenController extends Pane implements IDisplayable {
     @FXML
     private Label resultLabel;
     @FXML
-    private ImageView addNewComputerImage;
+    private Button addNewComputerButton;
     @FXML
-    private ImageView upRowImageView;
+    private Button upRowImageView;
     @FXML
-    private ImageView downRowImageView;
+    private Button downRowImageView;
     @FXML
-    private Button saveChanges;
+    private Button saveChangesButton;
 
 
     private Logger logger = Logger.getLogger(RemoteScreenController.class);
@@ -116,7 +116,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
         lastConnectionsPopupController.setList(historySearchFilteredList);
         isHistoryListEmpty.set(historySearchFilteredList.size() == 0);
         openCloseHistoryImage.disableProperty().bind(isHistoryListEmpty);
-        saveChanges.disableProperty().bind(Bindings.not(ComputerData.getInstance().isComputerListHasChangedProperty()));
+        saveChangesButton.disableProperty().bind(Bindings.not(ComputerData.getInstance().isComputerListHasChangedProperty()));
         updateCounters();
 
         ComputerData.getInstance().getComputersList().addListener((ListChangeListener<? super Computer>) c -> {
@@ -217,7 +217,8 @@ public class RemoteScreenController extends Pane implements IDisplayable {
         Platform.runLater(() -> quickConnectTextField.requestFocus());
 
         noResultLabelInitAndAddListener();
-        Utils.createTooltipListener(addNewComputerImage, Utils.NEW_ITEM, KorTypes.ShowNodeFrom.LEFT);
+        Utils.createTooltipListener(addNewComputerButton, Utils.NEW_ITEM, KorTypes.ShowNodeFrom.LEFT);
+        Utils.createTooltipListener(saveChangesButton, Utils.SAVE_CHANGES, KorTypes.ShowNodeFrom.LEFT);
     }
 
     public void updateStyleOnText(String input, String inputWithoutLowerCase) {
@@ -297,7 +298,6 @@ public class RemoteScreenController extends Pane implements IDisplayable {
         if (isAllowedToMoveRows) {
             int currentIndex = computerListController.getCurrent();
             if (currentIndex >= 0 && currentIndex < ComputerData.getInstance().getComputersList().size() - 1) {
-//                Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex + 1);
                 ComputerData.getInstance().swapRows(currentIndex, currentIndex + 1);
                 computerListController.getComputerListView().getSelectionModel().select(currentIndex + 1);
                 computerListController.getComputerListView().scrollTo(currentIndex + 1);
@@ -314,7 +314,6 @@ public class RemoteScreenController extends Pane implements IDisplayable {
             int currentIndex = computerListController.getCurrent();
             if (currentIndex > 0 && currentIndex <= ComputerData.getInstance().getComputersList().size() - 1) {
                 ComputerData.getInstance().swapRows(currentIndex, currentIndex - 1);
-//                Collections.swap(ComputerData.getInstance().getComputersList(), currentIndex, currentIndex - 1);
                 computerListController.getComputerListView().getSelectionModel().select(currentIndex - 1);
                 computerListController.getComputerListView().scrollTo(currentIndex - 1);
             }
@@ -322,6 +321,12 @@ public class RemoteScreenController extends Pane implements IDisplayable {
             AlertPopupController alertPopupController = new AlertPopupController();
             alertPopupController.showAlert(KorTypes.AlertTypes.INFO, Utils.CAN_NOT_MOVE_ROW_INFO, this);
         }
+    }
+
+    @FXML
+    public void saveChangesHandler() {
+        logger.trace("saveChangesHandler");
+        ComputerData.getInstance().saveChangesToDB();
     }
 
 

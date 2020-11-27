@@ -24,7 +24,7 @@
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <JTextFieldController fx:id="computerIPAddress" prefHeight="54.0" prefWidth="140.0" />
+                        <JTextFieldController fx:id="computerIPAddress" prefHeight="54.0" prefWidth="170.0" />
                      </children>
                   </VBox>
                </children>

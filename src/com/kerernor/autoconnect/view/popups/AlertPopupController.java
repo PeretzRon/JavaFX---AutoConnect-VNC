@@ -152,4 +152,9 @@ public class AlertPopupController {
         }
     }
 
+    public static void sendAlert(KorTypes.AlertTypes alertType, String msg, Parent paneBehind) {
+        AlertPopupController alertPopupController = new AlertPopupController();
+        alertPopupController.showAlert(alertType, msg, paneBehind);
+    }
+
 }
