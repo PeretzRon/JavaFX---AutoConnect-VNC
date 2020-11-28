@@ -8,30 +8,25 @@ import com.kerernor.autoconnect.view.screens.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainController extends AnchorPane {
 
-    @FXML
-    private StackPane stackPaneAllScreens;
-    @FXML
     private RemoteScreenController remoteScreenController;
     @FXML
     private PingerScreenController pingerScreenController;
@@ -47,7 +42,15 @@ public class MainController extends AnchorPane {
     private StackPane minimizeAppStackPane;
     @FXML
     private VBox buttonScreens;
+    @FXML
+    StackPane koWebViewStackPane;
+    @FXML
+    private WebView koWebView;
+    @FXML
+    private StackPane stackPaneAllScreens;
 
+    URL logoAnimatedHtml = this.getClass().getResource("/com/kerernor/autoconnect/images/ko-logo-animated.html");
+    URL logoAnimatedHtmlOnlyScale = this.getClass().getResource("/com/kerernor/autoconnect/images/ko-logo-animated-scaled.html");
     private static MainController instance = null;
     private final Logger logger = Logger.getLogger(MainController.class);
     private Button currentSelectedMenuButton;
@@ -79,6 +82,19 @@ public class MainController extends AnchorPane {
 
         Utils.createTooltipListener(minimizeAppStackPane, Utils.MINIMIZE, KorTypes.ShowNodeFrom.RIGHT);
         Utils.createTooltipListener(exitAppStackPane, Utils.EXIT, KorTypes.ShowNodeFrom.RIGHT);
+
+        loadKerenOrLogo();
+    }
+
+    private void loadKerenOrLogo() {
+        logger.trace("loadKerenOrLogo");
+        koWebView.getEngine().load(logoAnimatedHtml.toString());
+        ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
+            Platform.runLater(() -> {
+                logger.info("Switch to logoAnimatedHtmlOnlyScale html file");
+                koWebView.getEngine().load(logoAnimatedHtmlOnlyScale.toString());
+            });
+        }, Utils.TIME_FOR_CHANGE_LOGO_KEREN_OR_IN_SECONDS, TimeUnit.SECONDS);
     }
 
     private void createAndAddMenuButtons() {

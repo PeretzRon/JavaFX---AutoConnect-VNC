@@ -123,6 +123,7 @@ public class Utils {
     public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_ERROR = 4000;
     public static final long TIMEOUT_FOR_PROCESS_TO_END_IN_SECONDS = 20;
     public static final int TIME_FOR_PERIOD_OF_MONITORING_UTILITY = 10000;
+    public static final int TIME_FOR_CHANGE_LOGO_KEREN_OR_IN_SECONDS = 8;
 
     // Text display
     public static final String TEXT_CONFIRM_DELETE_TITLE = "Deletion confirmation";

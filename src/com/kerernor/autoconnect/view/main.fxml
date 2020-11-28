@@ -1,31 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.kerernor.autoconnect.view.screens.*?>
 <?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.web.*?>
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="576.0" prefWidth="1050.0" stylesheets="@../style/style.css"
-            style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/8.0.121"
+            prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #02030A;"
+            stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/8.0.121"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kerernor.autoconnect.view.MainController">
     <children>
-        <VBox fx:id="buttonScreens" alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;"
-              AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox fx:id="buttonScreens" alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0"
+              style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <ImageView fitHeight="118.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/ko.png"/>
-                    </image>
-                    <VBox.margin>
-                        <Insets bottom="20.0" top="50.0"/>
-                    </VBox.margin>
-                </ImageView>
+                <StackPane fx:id="koWebViewStackPane">
+                    <WebView fx:id="koWebView" prefHeight="230.0" prefWidth="256.0"/>
+                </StackPane>
             </children>
         </VBox>
-        <StackPane fx:id="stackPaneAllScreens" layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
+        <StackPane fx:id="stackPaneAllScreens" layoutX="258.0" prefHeight="576.0" prefWidth="793.0"
+                   style="-fx-background-color: #02030A;">
             <children>
             </children>
         </StackPane>

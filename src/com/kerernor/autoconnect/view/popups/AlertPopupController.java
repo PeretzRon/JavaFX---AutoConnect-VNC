@@ -12,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -24,6 +23,8 @@ import javafx.util.Duration;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +41,7 @@ public class AlertPopupController {
 
     Logger logger = Logger.getLogger(AlertPopupController.class);
     private Stage stage;
-    private static AlertPopupController instance = null;
+    private static Queue<AlertPopupController> queue = new ArrayDeque<>();
     BorderPane borderPane;
     Parent paneBehind;
     Scene scene;
@@ -78,6 +79,7 @@ public class AlertPopupController {
     }
 
     public void showAlert(KorTypes.AlertTypes alertType, String msg, Parent paneBehind) {
+        queue.add(this);
         this.paneBehind = paneBehind;
         massageLabel.setText(msg);
         configAlertColorAndImage(alertType);
