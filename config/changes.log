@@ -1,3 +1,9 @@
+Version 1.2.3:
+- Fixes bugs
+- textfiled oriantion change automatically
+- add new button to save changes (remote screen)
+- add new catgorty of computer types (other)
+
 Version 1.2.2:
  - Fixes bugs
  - create new component of SerachableTextFlow - mark search result with color
