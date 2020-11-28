@@ -5,12 +5,13 @@ import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
-import javafx.util.Pair;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -27,15 +28,15 @@ public class JSearchableTextFlowController extends TextFlow {
     private Font font = Font.font(16);
     private Color colorFoundText = Color.YELLOW;
     private Color colorOfText = Color.WHITE;
-    private String idd = UUID.randomUUID().toString();
-
     Text textToAdd = new Text("");
     private Logger logger = Logger.getLogger(JSearchableTextFlowController.class);
-    private final static Set<JSearchableTextFlowController> activeSearchableTextFlowMap = new HashSet<>();
+
     List<Integer> listOfIndexThatFoundOnKMP = new ArrayList<>();
+
 
     @FXML
     public void initialize() {
+
     }
 
     public JSearchableTextFlowController() {
@@ -108,8 +109,16 @@ public class JSearchableTextFlowController extends TextFlow {
                     } else {
                         i = i + textFromSearchInput.length() - 1;
                     }
-
-                    indexFromListToCheck = listOfIndexThatFoundOnKMP.get(indexOfCurrentItemInPairMatchesList);
+                    do {
+                        if (indexOfCurrentItemInPairMatchesList >= listOfIndexThatFoundOnKMP.size()) {
+                            indexFromListToCheck = orginialTextInCharsArray.length;
+                            break;
+                        }
+                        indexFromListToCheck = listOfIndexThatFoundOnKMP.get(indexOfCurrentItemInPairMatchesList);
+                        if (indexFromListToCheck <= i) {
+                            indexOfCurrentItemInPairMatchesList++;
+                        }
+                    } while (indexFromListToCheck <= i);
                 } else {
                     createTextAndAddToTextFlow(originalText.substring(i, indexFromListToCheck), false, false);
                     i = indexFromListToCheck - 1;
@@ -168,8 +177,12 @@ public class JSearchableTextFlowController extends TextFlow {
         this.colorOfText = colorOfText;
     }
 
-    public static Set<JSearchableTextFlowController> getActiveSearchableTextFlowMap() {
-        return activeSearchableTextFlowMap;
+    public String getOriginalText() {
+        return originalText;
+    }
+
+    public void setAlignment(TextAlignment Alignment) {
+        textFlow.setTextAlignment(Alignment);
     }
 
     private List<String> permute(String input) {

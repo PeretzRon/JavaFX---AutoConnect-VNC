@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import sun.rmi.runtime.Log;
 
 import java.io.IOException;
+import java.util.Set;
 
 public class ComputerRowController extends ListCell<Computer> {
 
@@ -82,12 +83,13 @@ public class ComputerRowController extends ListCell<Computer> {
     }
 
     private void addAndExecuteStyleOnText() {
-        JSearchableTextFlowController.getActiveSearchableTextFlowMap().add(computerIP);
-        JSearchableTextFlowController.getActiveSearchableTextFlowMap().add(computerName);
-        JSearchableTextFlowController.getActiveSearchableTextFlowMap().add(computerLocation);
+        final Set<JSearchableTextFlowController> activeSearchableTextFlowMap = KorCommon.getInstance().getRemoteScreenController().getActiveSearchableTextFlowMap();
+        activeSearchableTextFlowMap.add(computerIP);
+        activeSearchableTextFlowMap.add(computerName);
+        activeSearchableTextFlowMap.add(computerLocation);
         final RemoteScreenController remoteScreenController = KorCommon.getInstance().getRemoteScreenController();
         final String inputFromSearch = remoteScreenController.getSearchAreaController().getTextField().getText();
-        remoteScreenController.updateStyleOnText(inputFromSearch, inputFromSearch.toLowerCase());
+        Utils.updateStyleOnText(inputFromSearch, inputFromSearch.toLowerCase(), remoteScreenController);
     }
 
     public void loadAndSetValues(Computer computer) {
@@ -126,9 +128,6 @@ public class ComputerRowController extends ListCell<Computer> {
         switch (callback) {
             case CONFIRM:
                 ComputerData.getInstance().remove(computer);
-                JSearchableTextFlowController.getActiveSearchableTextFlowMap().remove(computerIP);
-                JSearchableTextFlowController.getActiveSearchableTextFlowMap().remove(computerName);
-                JSearchableTextFlowController.getActiveSearchableTextFlowMap().remove(computerLocation);
                 break;
             case EXIT:
             default:

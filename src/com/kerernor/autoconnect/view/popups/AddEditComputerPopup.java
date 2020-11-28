@@ -13,10 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -99,6 +96,7 @@ public class AddEditComputerPopup extends BorderPane {
         });
 
         initTextFields();
+        textFieldsOrientationListeners();
     }
 
     private void initTextFields() {
@@ -114,6 +112,27 @@ public class AddEditComputerPopup extends BorderPane {
         computerLocation.setTextFieldColor("#fff");
         computerLocation.setFontPlaceHolderActive(14);
         computerLocation.setFontPlaceHolderNotActive(18);
+    }
+
+    private void textFieldsOrientationListeners() {
+        final TextField textFieldComputerIP = computerIPAddress.getTextField();
+        textFieldComputerIP.setOnKeyPressed(event -> {
+            Utils.setTextFieldOrientationByDetectLanguage(
+                    textFieldComputerIP.getText(), textFieldComputerIP, true);
+        });
+
+        final TextField textFieldComputerLocation = computerLocation.getTextField();
+        textFieldComputerLocation.setOnKeyPressed(event -> {
+            Utils.setTextFieldOrientationByDetectLanguage(
+                    textFieldComputerLocation.getText(), textFieldComputerLocation, true);
+        });
+
+        final TextField textFieldComputerName = computerName.getTextField();
+        textFieldComputerName.setOnKeyPressed(event -> {
+            Utils.setTextFieldOrientationByDetectLanguage(
+                    textFieldComputerName.getText(), textFieldComputerName, true);
+        });
+
     }
 
     public BorderPane loadView() {
@@ -162,7 +181,7 @@ public class AddEditComputerPopup extends BorderPane {
 
 
         // Prevent the window from closing in case of out of focus
-        stage.initModality(Modality.NONE);
+        stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(paneBehind.getScene().getWindow());
         stage.show();
 
@@ -178,6 +197,10 @@ public class AddEditComputerPopup extends BorderPane {
         computerIPAddress.getTextField().setText(computer.getIp());
         computerLocation.getTextField().setText(computer.getItemLocation());
         computerName.getTextField().setText(computer.getName());
+        Utils.setTextFieldOrientationByDetectLanguage(computer.getName(), computerName.getTextField(), false);
+        Utils.setTextFieldOrientationByDetectLanguage(computer.getIp(), computerIPAddress.getTextField(), false);
+        Utils.setTextFieldOrientationByDetectLanguage(computer.getItemLocation(), computerLocation.getTextField(), false);
+
 //        Platform.runLater(() -> computerIPAddress.getTextField().end());
         selectRadioButton(computer);
     }
@@ -216,7 +239,7 @@ public class AddEditComputerPopup extends BorderPane {
             ComputerData.getInstance().add(this.computer);
         } else {
             // edit exist computer
-            Computer computer = new Computer(cmpIP, cmpName,cmpLocation,cmpType, this.computer.getId());
+            Computer computer = new Computer(cmpIP, cmpName, cmpLocation, cmpType, this.computer.getId());
             ComputerData.getInstance().update(computer);
         }
 

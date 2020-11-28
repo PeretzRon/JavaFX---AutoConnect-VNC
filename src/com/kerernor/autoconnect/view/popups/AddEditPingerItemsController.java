@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
@@ -98,14 +99,16 @@ public class AddEditPingerItemsController extends GridPane {
         addedItemsList.setItems(pingerItemsAddedObservableList);
         mainPane.setOnMousePressed(e -> mainPane.requestFocus());
         initTextFields();
-
+        textFieldsOrientationListeners();
         addedItemsList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 String[] item = newValue.split("-");
-                String name = item[0];
-                String ip = item[1];
+                String name = item[0].trim();
+                String ip = item[1].trim();
                 IPTextField.getTextField().setText(ip);
                 nameItemTextField.getTextField().setText(name);
+                Utils.setTextFieldOrientationByDetectLanguage(name, nameItemTextField.getTextField(), false);
+                Utils.setTextFieldOrientationByDetectLanguage(ip, IPTextField.getTextField(), false);
             }
         });
         addedItemsList.setCellFactory(param -> {
@@ -137,6 +140,27 @@ public class AddEditPingerItemsController extends GridPane {
         nameItemTextField.setTextFieldColor("#fff");
         nameItemTextField.setFontPlaceHolderActive(14);
         nameItemTextField.setFontPlaceHolderNotActive(17);
+    }
+
+    private void textFieldsOrientationListeners() {
+        final TextField textFieldGroupName = groupNameTextField.getTextField();
+        textFieldGroupName.setOnKeyPressed(event -> {
+            Utils.setTextFieldOrientationByDetectLanguage(
+                    textFieldGroupName.getText(), textFieldGroupName, true);
+        });
+
+        final TextField textFieldIPAddress = IPTextField.getTextField();
+        textFieldIPAddress.setOnKeyPressed(event -> {
+            Utils.setTextFieldOrientationByDetectLanguage(
+                    textFieldIPAddress.getText(), textFieldIPAddress, true);
+        });
+
+        final TextField textFieldItemName = nameItemTextField.getTextField();
+        textFieldItemName.setOnKeyPressed(event -> {
+            Utils.setTextFieldOrientationByDetectLanguage(
+                    textFieldItemName.getText(), textFieldItemName, true);
+        });
+
     }
 
     @FXML
@@ -199,12 +223,7 @@ public class AddEditPingerItemsController extends GridPane {
         stage.initStyle(StageStyle.UNDECORATED);
 
         if (isEditItem) {
-            addEditPingItemTitle.setText(Utils.TEXT_EDIT_COMPUTER_POPUP + pingerItem.getName());
-            groupNameTextField.getTextField().setText(pingerItem.getName());
-            pingerItemList.addAll(pingerItem.getData());
-            pingerItemList.forEach(item -> {
-                pingerItemsAddedObservableList.add(displayItemNameInList(item.getName(), item.getIpAddress()));
-            });
+            setValues();
         } else {
             addEditPingItemTitle.setText(Utils.TEXT_ADD_NEW_GROUP_PINGER_POPUP_TITTLE);
         }
@@ -223,39 +242,19 @@ public class AddEditPingerItemsController extends GridPane {
         stage.initOwner(paneBehind.getScene().getWindow());
         stage.show();
 
-//        f1.setFromValue(0.5);
-//        f1.setToValue(1);
-//        f1.setDuration(Duration.seconds(0.3));
-//        f1.setNode(root);
-//        f1.play();
-//        scale1.setFromX(0.01);
-//        scale1.setFromY(0.01);
-//        scale1.setToY(1.5);
-//        scale1.setDuration(Duration.seconds(0.33));
-//        scale1.setNode(root);
-//
-//        scale1.play();
-//
-//        Timeline second = new Timeline(
-//                new KeyFrame(Duration.ZERO, new KeyValue(root.prefWidthProperty(), root.getWidth())),
-//                new KeyFrame(Duration.seconds(3), new KeyValue(root.prefWidthProperty(), 3 * root.getWidth())));
-//        second.play();
-//
-//        scale2.setFromX(0.01);
-//        scale2.setToX(1);
-//        scale2.setDuration(Duration.seconds(0.33));
-//        scale2.setNode(root);
-//        anim.play();
-//        this.setVisible(false);
-//        anim.setOnFinished(event -> {
-//            this.setVisible(true);
-//        });
-
-        // center stage
-//        Utils.centerNewStageToBehindStage(paneBehind, stage);
-
         // Blur the pane behind
         paneBehind.effectProperty().setValue(Utils.getBlurEffect());
+    }
+
+    private void setValues() {
+        addEditPingItemTitle.setText(Utils.TEXT_EDIT_COMPUTER_POPUP + pingerItem.getName());
+        groupNameTextField.getTextField().setText(pingerItem.getName());
+        pingerItemList.addAll(pingerItem.getData());
+        pingerItemList.forEach(item -> {
+            pingerItemsAddedObservableList.add(displayItemNameInList(item.getName(), item.getIpAddress()));
+        });
+
+        Utils.setTextFieldOrientationByDetectLanguage(pingerItem.getName(), groupNameTextField.getTextField(), false);
     }
 
     public void closeClickAction() {

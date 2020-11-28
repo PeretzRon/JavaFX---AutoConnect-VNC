@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.TextFlow?>
-<fx:root fx:id="textFlow" type="TextFlow" xmlns="http://javafx.com/javafx"
-         xmlns:fx="http://javafx.com/fxml">
+<?import javafx.scene.text.*?>
+
+
+<fx:root fx:id="textFlow" type="TextFlow" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
 </fx:root>

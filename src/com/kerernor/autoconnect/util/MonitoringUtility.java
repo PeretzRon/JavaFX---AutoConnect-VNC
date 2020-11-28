@@ -1,6 +1,8 @@
 package com.kerernor.autoconnect.util;
 
 import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
+import com.kerernor.autoconnect.view.screens.IDisplayable;
+import com.kerernor.autoconnect.view.screens.ISearchTextFlow;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 import org.apache.log4j.Logger;
 
@@ -30,8 +32,8 @@ public class MonitoringUtility {
                         isContinue.wait(Utils.TIME_FOR_PERIOD_OF_MONITORING_UTILITY);
                     }
                     logger.debug("MonitoringUtility execute");
-                    VirtualFlow virtualFlow = (VirtualFlow) KorCommon.getInstance().getRemoteScreenController().getComputerListController().getComputerListView().getChildrenUnmodifiable().get(0);
-                    clearMapOfTextFlow();
+                    clearMapOfTextFlow(KorCommon.getInstance().getRemoteScreenController());
+                    clearMapOfTextFlow(KorCommon.getInstance().getPingerScreenController());
                 } catch (InterruptedException ignore) {
                     synchronized (isContinue) {
                         isContinue = false;
@@ -42,9 +44,9 @@ public class MonitoringUtility {
         });
     }
 
-    private void clearMapOfTextFlow() {
-        int sizeOfElementsBeforeClearing = JSearchableTextFlowController.getActiveSearchableTextFlowMap().size();
-        JSearchableTextFlowController.getActiveSearchableTextFlowMap().clear();
-        logger.info("clearMapOfTextFlow - was " + sizeOfElementsBeforeClearing + " elements, now: 0 elements");
+    private void clearMapOfTextFlow(ISearchTextFlow screenNode) {
+        int sizeOfElementsBeforeClearing = screenNode.getActiveSearchableTextFlowMap().size();
+        screenNode.getActiveSearchableTextFlowMap().clear();
+        logger.info("clearMapOfTextFlow " + screenNode.getClass().getSimpleName() + " - was " + +sizeOfElementsBeforeClearing + " elements, now: 0 elements");
     }
 }

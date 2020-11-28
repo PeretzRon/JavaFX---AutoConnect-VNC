@@ -2,11 +2,13 @@ package com.kerernor.autoconnect.view.screens;
 
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.*;
+import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.PingGroupItemController;
 import com.kerernor.autoconnect.view.PingListGroupController;
+import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -24,11 +26,17 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class PingerScreenController extends Pane implements IDisplayable {
+public class PingerScreenController extends Pane implements IDisplayable, ISearchTextFlow {
 
     @FXML
     private Pane pnlSetting;
@@ -60,6 +68,9 @@ public class PingerScreenController extends Pane implements IDisplayable {
     private final AtomicInteger passPing = new AtomicInteger(0);
     private boolean isCheckPingRunning = false;
     private final List<PingGroupItemController> pingGroupItemControllerList = new ArrayList<>();
+    private final Set<JSearchableTextFlowController> activeSearchableTextFlowMap = ConcurrentHashMap.newKeySet();
+    private ScheduledFuture timer;
+
 
     public static PingerScreenController getInstance() {
         if (instance == null) {
@@ -97,13 +108,29 @@ public class PingerScreenController extends Pane implements IDisplayable {
         });
 
         filterPingerGroup.setOnKeyReleased(keyEvent -> {
-            String input = filterPingerGroup.getText();
+            String input = filterPingerGroup.getText().toLowerCase();
+            Utils.setTextFieldOrientationByDetectLanguage(input, filterPingerGroup, true); // change direction if needed
+            String inputWithoutLowerCase = filterPingerGroup.getText();
+            if (Utils.IS_MARK_SEARCH_ACTIVE) {
+                stopTimer();
+                timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
+                    Utils.updateStyleOnText(input, inputWithoutLowerCase, KorCommon.getInstance().getPingerScreenController());
+                }, 100, TimeUnit.MILLISECONDS);
+            }
+
             createPingerGroups(input);
         });
 
         createPingerGroups("");
         noResultLabel.toBack();
         noResultLabelInitAndAddListener();
+    }
+
+    private void stopTimer() {
+        if (timer != null) {
+            timer.cancel(true);
+            timer = null;
+        }
     }
 
     private Pane loadView() {
@@ -217,8 +244,8 @@ public class PingerScreenController extends Pane implements IDisplayable {
                     pingGroupItemControllerList.add(item);
                     item.getMainPane().setOnMousePressed(event -> {
                         event.consume();
-                        logger.trace("selected item: " + item.getName().getText());
-                        ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(item.getName().getText());
+                        logger.trace("selected item: " + item.getName());
+                        ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(item.getName());
                         pingListGroupController.loadList(pingerList);
                         pingListGroupController.resetProgressBar();
                         clearAndUpdateValues(item);
@@ -241,7 +268,7 @@ public class PingerScreenController extends Pane implements IDisplayable {
         selectItemStyle(item);
         passPing.set(0);
         totalProgressLabel.setText("");
-        selectedPingGroupName.setText(item.getName().getText());
+        selectedPingGroupName.setText(item.getName());
         totalProgress.setProgress(0);
         totalProgress.setVisible(false);
     }
@@ -253,6 +280,9 @@ public class PingerScreenController extends Pane implements IDisplayable {
         this.toFront();
         logger.trace("showPane");
     }
-    //TOOD: fix bug button is allow after create new group
-    //TOOD: group name cut
+
+    @Override
+    public Set<JSearchableTextFlowController> getActiveSearchableTextFlowMap() {
+        return activeSearchableTextFlowMap;
+    }
 }

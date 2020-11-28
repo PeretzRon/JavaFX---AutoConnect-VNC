@@ -10,6 +10,7 @@ import com.kerernor.autoconnect.util.*;
 import com.kerernor.autoconnect.view.ComputerListController;
 import com.kerernor.autoconnect.view.ComputerRowController;
 import com.kerernor.autoconnect.view.LastConnectionsPopupController;
+import com.kerernor.autoconnect.view.SearchAreaController;
 import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.components.JTextFieldController;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
@@ -23,19 +24,30 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import org.apache.log4j.Logger;
 
+import javax.security.auth.login.Configuration;
+import java.awt.*;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class RemoteScreenController extends Pane implements IDisplayable {
+public class RemoteScreenController extends Pane implements IDisplayable, ISearchTextFlow {
 
     @FXML
     private Pane mainPane;
@@ -72,7 +84,6 @@ public class RemoteScreenController extends Pane implements IDisplayable {
     @FXML
     private Button saveChangesButton;
 
-
     private Logger logger = Logger.getLogger(RemoteScreenController.class);
     private static RemoteScreenController instance = null;
     private final BooleanProperty isHistoryListEmpty = new SimpleBooleanProperty(true);
@@ -80,7 +91,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
     private boolean isViewOnly = false;
     private ScheduledFuture timer;
     private boolean isAllowedToMoveRows = true;
-
+    private final static Set<JSearchableTextFlowController> activeSearchableTextFlowMap = ConcurrentHashMap.newKeySet();
 
     public static RemoteScreenController getInstance() {
         if (instance == null) {
@@ -122,7 +133,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
         ComputerData.getInstance().getComputersList().addListener((ListChangeListener<? super Computer>) c -> {
             logger.trace("ComputerData ListChangeListener");
             final String input = searchAreaController.getTextField().getText();
-            updateStyleOnText(input, input.toLowerCase());
+            Utils.updateStyleOnText(input, input.toLowerCase(), KorCommon.getInstance().getRemoteScreenController());
         });
 
         LastConnectionData.getInstance().getLastConnectionItems().addListener((ListChangeListener<? super LastConnectionItem>) c -> {
@@ -162,6 +173,8 @@ public class RemoteScreenController extends Pane implements IDisplayable {
 
         searchAreaController.getTextField().setOnKeyReleased(keyEvent -> {
             String input = searchAreaController.getTextField().getText().toLowerCase();
+            Utils.setTextFieldOrientationByDetectLanguage(input, searchAreaController.getTextField(), true); // change direction if needed
+
             isAllowedToMoveRows = input.isEmpty(); // allow or disallow to move rows
             String inputWithoutLowerCase = searchAreaController.getTextField().getText();
 
@@ -174,7 +187,7 @@ public class RemoteScreenController extends Pane implements IDisplayable {
             if (Utils.IS_MARK_SEARCH_ACTIVE) {
                 stopTimer();
                 timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
-                    updateStyleOnText(input, inputWithoutLowerCase);
+                    Utils.updateStyleOnText(input, inputWithoutLowerCase, KorCommon.getInstance().getPingerScreenController());
                 }, 100, TimeUnit.MILLISECONDS);
             }
         });
@@ -219,18 +232,6 @@ public class RemoteScreenController extends Pane implements IDisplayable {
         noResultLabelInitAndAddListener();
         Utils.createTooltipListener(addNewComputerButton, Utils.NEW_ITEM, KorTypes.ShowNodeFrom.LEFT);
         Utils.createTooltipListener(saveChangesButton, Utils.SAVE_CHANGES, KorTypes.ShowNodeFrom.LEFT);
-    }
-
-    public void updateStyleOnText(String input, String inputWithoutLowerCase) {
-        Platform.runLater(() -> {
-            for (JSearchableTextFlowController searchableTextFlowController : JSearchableTextFlowController.getActiveSearchableTextFlowMap()) {
-                if (input.isEmpty()) {
-                    searchableTextFlowController.setOriginalText();
-                } else {
-                    searchableTextFlowController.updatedText(inputWithoutLowerCase);
-                }
-            }
-        });
     }
 
     private void stopTimer() {
@@ -352,5 +353,10 @@ public class RemoteScreenController extends Pane implements IDisplayable {
 
     public ComputerListController getComputerListController() {
         return computerListController;
+    }
+
+    @Override
+    public Set<JSearchableTextFlowController> getActiveSearchableTextFlowMap() {
+        return activeSearchableTextFlowMap;
     }
 }

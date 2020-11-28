@@ -13,7 +13,8 @@
     -fx-text-fill: #ffffff;
     -jfx-selected-color: #3c49ee;
 }
-.button-raised{
+
+.button-raised {
     -fx-padding: 0.5em 0.3em;
     -fx-font-size: 14px;
     -jfx-button-type: RAISED;
@@ -22,10 +23,10 @@
     -fx-text-fill: WHITE;
 }
 
-.dialog .button{
-    -fx-background-color:black;
-    -fx-text-fill:white;
+.dialog .button {
+    -fx-background-color: black;
+    -fx-text-fill: white;
     -fx-wrap-text: true;
-    -fx-effect: dropshadow( three-pass-box, yellow, 10.0, 0.0, 0.0, 0.0);
-    -fx-cursor:hand;
+    -fx-effect: dropshadow(three-pass-box, yellow, 10.0, 0.0, 0.0, 0.0);
+    -fx-cursor: hand;
 }

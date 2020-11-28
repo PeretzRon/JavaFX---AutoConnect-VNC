@@ -194,18 +194,8 @@ public class ComputerData {
         ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
             try {
                 storeData();
+                computersListBackup = FXCollections.observableArrayList();
                 Collections.copy(computersListBackup, computersList);
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                throw new IOException("Erroe");
             } catch (IOException e) {
                 logger.error("failed to save - ", e);
                 Platform.runLater(() -> {

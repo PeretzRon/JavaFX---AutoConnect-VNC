@@ -1,11 +1,15 @@
 package com.kerernor.autoconnect.util;
 
+import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
+import com.kerernor.autoconnect.view.screens.ISearchTextFlow;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.Event;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.Effect;
@@ -118,7 +122,7 @@ public class Utils {
     public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_INFO = 4000;
     public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_ERROR = 4000;
     public static final long TIMEOUT_FOR_PROCESS_TO_END_IN_SECONDS = 20;
-    public static final int TIME_FOR_PERIOD_OF_MONITORING_UTILITY = 90000;
+    public static final int TIME_FOR_PERIOD_OF_MONITORING_UTILITY = 10000;
 
     // Text display
     public static final String TEXT_CONFIRM_DELETE_TITLE = "Deletion confirmation";
@@ -255,6 +259,38 @@ public class Utils {
             cancelTimer();
             tooltip.hide();
         });
+    }
+
+    public static void updateStyleOnText(String input, String inputWithoutLowerCase, ISearchTextFlow node) {
+        Platform.runLater(() -> {
+            for (JSearchableTextFlowController searchableTextFlowController : node.getActiveSearchableTextFlowMap()) {
+                if (input.isEmpty()) {
+                    searchableTextFlowController.setOriginalText();
+                } else {
+                    searchableTextFlowController.updatedText(inputWithoutLowerCase);
+                }
+            }
+        });
+    }
+
+    public static void setTextFieldOrientationByDetectLanguage(String input, TextField textField, boolean isOnTyping) {
+        if (isOnTyping) {
+            if (input.length() > 0 && input.length() < 3) {
+                char c = input.charAt(0);
+                setTextFieldOrientationByDetectLanguageInternal(c, textField);
+            }
+        } else {
+            char c = input.charAt(0);
+            setTextFieldOrientationByDetectLanguageInternal(c, textField);
+        }
+    }
+
+    private static void setTextFieldOrientationByDetectLanguageInternal(char c, TextField textField) {
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || Character.isDigit(c)) {
+            textField.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+        } else {
+            textField.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        }
     }
 
     private static void cancelTimer() {

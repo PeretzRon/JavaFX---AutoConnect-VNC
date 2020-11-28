@@ -16,7 +16,7 @@
 <?import com.kerernor.autoconnect.view.ComputerListController?>
 <?import com.kerernor.autoconnect.view.LastConnectionsPopupController?>
 <fx:root fx:id="mainPane" prefHeight="576.0" prefWidth="773.0" stylesheets="@../../style/style.css" type="Pane"
-         xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+         xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <StackPane alignment="TOP_CENTER" layoutX="476.0" layoutY="-9.0" prefHeight="92.0" prefWidth="305.0"
                    styleClass="bordered-titled-border" stylesheets="@../../style/style.css">

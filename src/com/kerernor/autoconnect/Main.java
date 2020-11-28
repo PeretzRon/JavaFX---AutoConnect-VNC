@@ -47,6 +47,7 @@ public class Main extends Application {
         try {
             // Load root layout from fxml file.
             logger.trace("initRootLayout");
+            KorCommon.getInstance();
             loader = new FXMLLoader(getClass().getResource(Utils.MAIN_VIEW));
             this.rootLayout = loader.load();
             Scene scene = new Scene(rootLayout);

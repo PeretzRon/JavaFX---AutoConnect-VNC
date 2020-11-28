@@ -3,11 +3,15 @@ package com.kerernor.autoconnect.view;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
+import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
+import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
 import com.kerernor.autoconnect.view.popups.ConfirmPopupController;
+import com.kerernor.autoconnect.view.screens.PingerScreenController;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +19,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class PingGroupItemController extends HBox {
@@ -26,7 +33,7 @@ public class PingGroupItemController extends HBox {
     private HBox mainPane;
 
     @FXML
-    private Label name;
+    private JSearchableTextFlowController name;
 
     @FXML
     private ImageView editItem;
@@ -49,11 +56,15 @@ public class PingGroupItemController extends HBox {
     }
 
     private void setDataToComponent() {
-        name.setText(pingerItem.getName());
+        name.initText(pingerItem.getName());
+        name.setFont(Font.font(16));
+        name.setAlignment(TextAlignment.CENTER);
     }
 
     @FXML
     public void initialize() {
+         // TODO: check why need platform , otherwise tha app stuck on startup
+        Platform.runLater(() -> KorCommon.getInstance().getPingerScreenController().getActiveSearchableTextFlowMap().add(name));
         mainPane.setOnMouseClicked(event -> {
 
         });
@@ -76,7 +87,7 @@ public class PingGroupItemController extends HBox {
 
     @FXML
     public void editPingGroupHandler() {
-        AddEditPingerItemsController addEditPingerItemsController = new  AddEditPingerItemsController(behindPane, pingerItem, true);
+        AddEditPingerItemsController addEditPingerItemsController = new AddEditPingerItemsController(behindPane, pingerItem, true);
 
         infoEditPingerItems = event -> {
             event.consume();
@@ -128,8 +139,8 @@ public class PingGroupItemController extends HBox {
         return mainPane;
     }
 
-    public Label getName() {
-        return name;
+    public String getName() {
+        return name.getOriginalText();
     }
 
     @Override
