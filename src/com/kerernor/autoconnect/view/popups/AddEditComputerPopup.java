@@ -6,6 +6,7 @@ import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.components.JTextFieldController;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -14,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -83,6 +85,21 @@ public class AddEditComputerPopup extends BorderPane {
         }
 
         saveButton.disableProperty().bind(Bindings.or(isValidIPAddress, isValidLocationTextField).or(isValidNameTextField));
+
+        // save changes by click Enter on keyboard
+        mainPane.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                if (!saveButton.isDisable()) {
+                    saveClickAction();
+                }
+            }
+        });
+        checkValidateOfTextFieldsOfTextFields();
+        initTextFields();
+        textFieldsOrientationListeners();
+    }
+
+    private void checkValidateOfTextFieldsOfTextFields() {
         computerIPAddress.setOnKeyReleased(event -> {
             isValidIPAddress.setValue(!Utils.isValidateIpAddress(computerIPAddress.getTextField().getText()));
         });
@@ -94,9 +111,6 @@ public class AddEditComputerPopup extends BorderPane {
         computerName.setOnKeyReleased(event -> {
             isValidNameTextField.setValue(Utils.isNullOrEmptyString(computerName.getTextField().getText()));
         });
-
-        initTextFields();
-        textFieldsOrientationListeners();
     }
 
     private void initTextFields() {
@@ -201,7 +215,7 @@ public class AddEditComputerPopup extends BorderPane {
         Utils.setTextFieldOrientationByDetectLanguage(computer.getIp(), computerIPAddress.getTextField(), false);
         Utils.setTextFieldOrientationByDetectLanguage(computer.getItemLocation(), computerLocation.getTextField(), false);
 
-//        Platform.runLater(() -> computerIPAddress.getTextField().end());
+        Platform.runLater(() -> computerIPAddress.getTextField().end());
         selectRadioButton(computer);
     }
 

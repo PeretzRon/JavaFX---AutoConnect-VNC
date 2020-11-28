@@ -10,6 +10,7 @@ import com.kerernor.autoconnect.view.components.JTextFieldController;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -255,6 +256,8 @@ public class AddEditPingerItemsController extends GridPane {
         });
 
         Utils.setTextFieldOrientationByDetectLanguage(pingerItem.getName(), groupNameTextField.getTextField(), false);
+        Platform.runLater(() -> groupNameTextField.getTextField().end());
+
     }
 
     public void closeClickAction() {

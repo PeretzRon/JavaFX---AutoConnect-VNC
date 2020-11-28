@@ -65,7 +65,7 @@ public class JTextFieldController extends StackPane {
     @FXML
     private void initialize() {
         logger.trace("initialize");
-        textField.setFocusTraversable(false);
+//        textField.setFocusTraversable(false);
         lineUnderTextField.widthProperty().bind(underLineWidth);
         initControllers();
         addTextFieldListeners();

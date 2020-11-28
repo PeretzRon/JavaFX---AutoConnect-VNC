@@ -254,7 +254,10 @@ public class Utils {
                 });
             }, 500, TimeUnit.MILLISECONDS);
         });
-
+        node.setOnMousePressed(event -> {
+            cancelTimer();
+            tooltip.hide();
+        });
         node.setOnMouseExited(event -> {
             cancelTimer();
             tooltip.hide();
