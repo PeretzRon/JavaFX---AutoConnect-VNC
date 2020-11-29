@@ -6,49 +6,48 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.web.*?>
 
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #02030A;"
-            stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/8.0.121"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kerernor.autoconnect.view.MainController">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #02030A;" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kerernor.autoconnect.view.MainController">
     <children>
-        <VBox fx:id="buttonScreens" alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0"
-              style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox fx:id="buttonScreens" alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <StackPane fx:id="koWebViewStackPane">
-                    <WebView fx:id="koWebView" prefHeight="230.0" prefWidth="256.0"/>
+                    <WebView fx:id="koWebView" prefHeight="220.0" prefWidth="256.0" translateY="-30.0">
+                  <StackPane.margin>
+                     <Insets />
+                  </StackPane.margin></WebView>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
                 </StackPane>
             </children>
         </VBox>
-        <StackPane fx:id="stackPaneAllScreens" layoutX="258.0" prefHeight="576.0" prefWidth="793.0"
-                   style="-fx-background-color: #02030A;">
+        <StackPane fx:id="stackPaneAllScreens" layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
             <children>
             </children>
         </StackPane>
         <HBox prefHeight="43.0" prefWidth="85.0" spacing="1.0">
             <children>
                 <StackPane fx:id="exitAppStackPane" onMouseClicked="#exitAppHandler">
-                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true"
-                               styleClass="hand-cursor-hover">
+                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" styleClass="hand-cursor-hover">
                         <image>
-                            <Image url="@../images/remove-white-2.png"/>
+                            <Image url="@../images/remove-white-2.png" />
                         </image>
                     </ImageView>
                 </StackPane>
                 <StackPane fx:id="minimizeAppStackPane" onMouseClicked="#minimizeAppHandler">
-                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true"
-                               styleClass="hand-cursor-hover">
+                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" styleClass="hand-cursor-hover">
                         <image>
-                            <Image url="@../images/minus-white-2.png"/>
+                            <Image url="@../images/minus-white-2.png" />
                         </image>
                     </ImageView>
                 </StackPane>
             </children>
             <padding>
-                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
             </padding>
         </HBox>
     </children>
     <effect>
-        <DropShadow color="#1b1eeb"/>
+        <DropShadow color="#1b1eeb" />
     </effect>
 </AnchorPane>

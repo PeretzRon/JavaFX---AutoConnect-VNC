@@ -148,7 +148,7 @@ public class Utils {
     public static final String SWITCH_LOGO_ANIMATION_THREAD_NAME = "Logo Animated  Thread";
 
     // Alert Messages
-    public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong ip address, try again";
+    public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong IP address, try again";
     public static final String VNC_PATH_ERROR = "Ultra VNC not installed or path not valid";
     public static final String CAN_NOT_MOVE_ROW_INFO = "Can't move rows during search";
     public static final String ERROR_WHILE_SAVE_DATA = "Can't save data to file";
@@ -298,7 +298,7 @@ public class Utils {
     }
 
     private static void setTextFieldOrientationByDetectLanguageInternal(char c, TextField textField) {
-        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || Character.isDigit(c)) {
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || Character.isDigit(c) || c == '.') {
             textField.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
         } else {
             textField.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);

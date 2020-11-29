@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<fx:root fx:id="mainPane" prefHeight="576.0" prefWidth="773.0" stylesheets="@../../style/style.css" type="Pane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="mainPane" prefHeight="576.0" prefWidth="773.0" stylesheets="@../../style/style.css" type="Pane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <StackPane alignment="TOP_CENTER" layoutX="476.0" layoutY="-9.0" prefHeight="92.0" prefWidth="305.0" styleClass="bordered-titled-border" stylesheets="@../../style/style.css">
             <children>
@@ -82,6 +82,18 @@
                      </StackPane.margin>
                         </ImageView>
                     </StackPane>
+                    <Button fx:id="hhh" styleClass="dd, scale-button" disable="true">
+                        <graphic>
+                            <ImageView fitHeight="36.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+                                <image>
+                                    <Image url="@../../images/add.png" />
+                                </image>
+                                <StackPane.margin>
+                                    <Insets top="4.0" />
+                                </StackPane.margin>
+                            </ImageView>
+                        </graphic>
+                    </Button>
                     <StackPane prefHeight="31.0" prefWidth="25.0" styleClass="scale-button">
                         <ImageView fx:id="saveChangesImage" fitHeight="29.0" fitWidth="30.0" onMouseClicked="#saveChangesHandler">
                             <image>
