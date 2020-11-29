@@ -95,33 +95,33 @@ public class JSearchableTextFlowController extends TextFlow {
         Collections.sort(listOfIndexThatFoundOnKMP, Comparator.comparingInt(o -> o));
         if (listOfIndexThatFoundOnKMP.size() > 0) {
             this.textFlow.getChildren().clear();
-            int indexOfCurrentItemInPairMatchesList = 0;
+            int indexOfCurrentItemInMatchesList = 0;
             int i;
             char[] orginialTextInCharsArray = originalText.toCharArray();
-            int indexFromListToCheck = listOfIndexThatFoundOnKMP.get(0);
+            int indexToSubStringFromOriginalText = listOfIndexThatFoundOnKMP.get(0);
             for (i = 0; i < orginialTextInCharsArray.length; i++) {
-                if (indexFromListToCheck == i) {
+                if (indexToSubStringFromOriginalText == i) {
                     createTextAndAddToTextFlow(originalText.substring(i, i + textFromSearchInput.length()), false, true);
-                    indexOfCurrentItemInPairMatchesList++;
-                    if (indexOfCurrentItemInPairMatchesList >= listOfIndexThatFoundOnKMP.size()) {
+                    indexOfCurrentItemInMatchesList++;
+                    if (indexOfCurrentItemInMatchesList >= listOfIndexThatFoundOnKMP.size()) {
                         i = i + textFromSearchInput.length();
                         break;
                     } else {
                         i = i + textFromSearchInput.length() - 1;
                     }
                     do {
-                        if (indexOfCurrentItemInPairMatchesList >= listOfIndexThatFoundOnKMP.size()) {
-                            indexFromListToCheck = orginialTextInCharsArray.length;
+                        if (indexOfCurrentItemInMatchesList >= listOfIndexThatFoundOnKMP.size()) {
+                            indexToSubStringFromOriginalText = orginialTextInCharsArray.length;
                             break;
                         }
-                        indexFromListToCheck = listOfIndexThatFoundOnKMP.get(indexOfCurrentItemInPairMatchesList);
-                        if (indexFromListToCheck <= i) {
-                            indexOfCurrentItemInPairMatchesList++;
+                        indexToSubStringFromOriginalText = listOfIndexThatFoundOnKMP.get(indexOfCurrentItemInMatchesList);
+                        if (indexToSubStringFromOriginalText <= i) {
+                            indexOfCurrentItemInMatchesList++;
                         }
-                    } while (indexFromListToCheck <= i);
+                    } while (indexToSubStringFromOriginalText <= i);
                 } else {
-                    createTextAndAddToTextFlow(originalText.substring(i, indexFromListToCheck), false, false);
-                    i = indexFromListToCheck - 1;
+                    createTextAndAddToTextFlow(originalText.substring(i, indexToSubStringFromOriginalText), false, false);
+                    i = indexToSubStringFromOriginalText - 1;
                 }
             }
 

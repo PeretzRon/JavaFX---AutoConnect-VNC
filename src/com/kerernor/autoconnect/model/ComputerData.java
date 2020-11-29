@@ -131,19 +131,24 @@ public class ComputerData {
     }
 
     private void updateCounters(Computer computer, int value) {
-        logger.trace("updateCounters");
         if (computer.getComputerType() == KorTypes.ComputerType.RCGW) {
             int oldValue = rcgwCounterItems.get();
             rcgwCounterItems.set(oldValue + value);
-            logger.info("update RCGW: oldValue: " + oldValue + " NewValue: " + rcgwCounterItems.get());
+            if (Utils.IS_FULL_TRACE) {
+                logger.info("update RCGW: oldValue: " + oldValue + " NewValue: " + rcgwCounterItems.get());
+            }
         } else if (computer.getComputerType() == KorTypes.ComputerType.Station) {
             int oldValue = stationCounterItems.get();
             stationCounterItems.set(stationCounterItems.get() + value);
-            logger.info("update Station: oldValue: " + oldValue + " NewValue: " + stationCounterItems.get());
+            if (Utils.IS_FULL_TRACE) {
+                logger.info("update Station: oldValue: " + oldValue + " NewValue: " + stationCounterItems.get());
+            }
         } else {
             int oldValue = otherCounterItems.get();
             otherCounterItems.set(otherCounterItems.get() + value);
-            logger.info("update Other: oldValue: " + oldValue + " NewValue: " + otherCounterItems.get());
+            if (Utils.IS_FULL_TRACE) {
+                logger.info("update Other: oldValue: " + oldValue + " NewValue: " + otherCounterItems.get());
+            }
         }
     }
 

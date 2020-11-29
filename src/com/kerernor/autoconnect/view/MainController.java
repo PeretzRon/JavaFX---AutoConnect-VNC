@@ -51,10 +51,13 @@ public class MainController extends AnchorPane {
 
     URL logoAnimatedHtml = this.getClass().getResource("/com/kerernor/autoconnect/images/ko-logo-animated.html");
     URL logoAnimatedHtmlOnlyScale = this.getClass().getResource("/com/kerernor/autoconnect/images/ko-logo-animated-scaled.html");
+    URL logoHtmlNoAnimation = this.getClass().getResource("/com/kerernor/autoconnect/images/ko-logo-no-animated.html");
     private static MainController instance = null;
     private final Logger logger = Logger.getLogger(MainController.class);
     private Button currentSelectedMenuButton;
     private List<Button> screenButtonsList;
+    private Boolean isRunning = true;
+    private boolean isShowImageWithoutAnimation = true;
 
     private Button btnRemoteScreen;
     private Button btnPingerScreen;
@@ -90,9 +93,36 @@ public class MainController extends AnchorPane {
         logger.trace("loadKerenOrLogo");
         koWebView.getEngine().load(logoAnimatedHtml.toString());
         ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
-            Platform.runLater(() -> {
-                logger.info("Switch to logoAnimatedHtmlOnlyScale html file");
-                koWebView.getEngine().load(logoAnimatedHtmlOnlyScale.toString());
+            ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
+                Thread.currentThread().setName(Utils.SWITCH_LOGO_ANIMATION_THREAD_NAME);
+                while (isRunning) {
+                    try {
+                        if (isShowImageWithoutAnimation) {
+                            if (Utils.IS_FULL_TRACE) {
+                                logger.info("Switch logo from non-animated to animated");
+                            }
+                            Platform.runLater(() -> {
+                                koWebView.getEngine().load(logoAnimatedHtmlOnlyScale.toString());
+                            });
+                        } else {
+                            if (Utils.IS_FULL_TRACE) {
+                                logger.info("Switch logo from animated to non-animated");
+                            }
+                            Platform.runLater(() -> {
+                                koWebView.getEngine().load(logoHtmlNoAnimation.toString());
+                            });
+                        }
+                        isShowImageWithoutAnimation = !isShowImageWithoutAnimation;
+                        synchronized (isRunning) {
+                            isRunning.wait(isShowImageWithoutAnimation ? 15000 : 8000);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        synchronized (isRunning) {
+                            isRunning = false;
+                        }
+                    }
+                }
             });
         }, Utils.TIME_FOR_CHANGE_LOGO_KEREN_OR_IN_SECONDS, TimeUnit.SECONDS);
     }

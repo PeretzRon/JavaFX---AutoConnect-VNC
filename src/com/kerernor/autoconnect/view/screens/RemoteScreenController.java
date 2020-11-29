@@ -78,11 +78,15 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
     @FXML
     private Button addNewComputerButton;
     @FXML
-    private Button upRowImageView;
+    private ImageView upRowImageView;
     @FXML
-    private Button downRowImageView;
+    private ImageView downRowImageView;
     @FXML
-    private Button saveChangesButton;
+    private ImageView saveChangesButton;
+    @FXML
+    private ImageView saveChangesImage;
+    @FXML
+    private ImageView addNewComputerImage;
 
     private Logger logger = Logger.getLogger(RemoteScreenController.class);
     private static RemoteScreenController instance = null;
@@ -127,7 +131,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
         lastConnectionsPopupController.setList(historySearchFilteredList);
         isHistoryListEmpty.set(historySearchFilteredList.size() == 0);
         openCloseHistoryImage.disableProperty().bind(isHistoryListEmpty);
-        saveChangesButton.disableProperty().bind(Bindings.not(ComputerData.getInstance().isComputerListHasChangedProperty()));
+        saveChangesImage.disableProperty().bind(Bindings.not(ComputerData.getInstance().isComputerListHasChangedProperty()));
         updateCounters();
 
         ComputerData.getInstance().getComputersList().addListener((ListChangeListener<? super Computer>) c -> {
@@ -187,7 +191,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
             if (Utils.IS_MARK_SEARCH_ACTIVE) {
                 stopTimer();
                 timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
-                    Utils.updateStyleOnText(input, inputWithoutLowerCase, KorCommon.getInstance().getPingerScreenController());
+                    Utils.updateStyleOnText(input, inputWithoutLowerCase, KorCommon.getInstance().getRemoteScreenController());
                 }, 100, TimeUnit.MILLISECONDS);
             }
         });
@@ -230,8 +234,8 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
         Platform.runLater(() -> quickConnectTextField.requestFocus());
 
         noResultLabelInitAndAddListener();
-        Utils.createTooltipListener(addNewComputerButton, Utils.NEW_ITEM, KorTypes.ShowNodeFrom.LEFT);
-        Utils.createTooltipListener(saveChangesButton, Utils.SAVE_CHANGES, KorTypes.ShowNodeFrom.LEFT);
+        Utils.createTooltipListener(addNewComputerImage, Utils.NEW_ITEM, KorTypes.ShowNodeFrom.LEFT);
+        Utils.createTooltipListener(saveChangesImage, Utils.SAVE_CHANGES, KorTypes.ShowNodeFrom.LEFT);
     }
 
     private void stopTimer() {

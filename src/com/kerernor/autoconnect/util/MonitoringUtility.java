@@ -1,9 +1,6 @@
 package com.kerernor.autoconnect.util;
 
-import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
-import com.kerernor.autoconnect.view.screens.IDisplayable;
 import com.kerernor.autoconnect.view.screens.ISearchTextFlow;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import org.apache.log4j.Logger;
 
 public class MonitoringUtility {
@@ -29,7 +26,7 @@ public class MonitoringUtility {
             while (isContinue) {
                 try {
                     synchronized (isContinue) {
-                        isContinue.wait(Utils.TIME_FOR_PERIOD_OF_MONITORING_UTILITY);
+                        isContinue.wait(Utils.TIME_FOR_PERIOD_OF_MONITORING_UTILITY_MILLI_SECONDS);
                     }
                     logger.debug("MonitoringUtility execute");
                     clearMapOfTextFlow(KorCommon.getInstance().getRemoteScreenController());

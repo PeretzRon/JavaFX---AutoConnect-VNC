@@ -102,6 +102,8 @@ public class Utils {
     public static String VNC_SCRIPT_PATH = "C:\\Programs\\ControlKO\\vnc\\";
     public static boolean IS_REMOTE_DRIVE_SCREEN_ACTIVE = true;
     public static boolean IS_MARK_SEARCH_ACTIVE = false;
+    public static boolean IS_FULL_TRACE = false;
+
 
     // App setting properties
     public static final String CONFIG_ULTRA_VNC_PROGRAM_PATH = "UltraVncProgramPath";
@@ -111,6 +113,8 @@ public class Utils {
     public static boolean CONFIG_IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING = true;
     public static String CONFIG_IS_REMOTE_DRIVE_SCREEN_ACTIVE = "isRemoteDriveScreenActive";
     public static String CONFIG_IS_MARK_SEARCH_ACTIVE = "isMarkSearchTextActive";
+    public static String CONFIG_TIME_FOR_PERIOD_OF_MONITORING_UTILITY_MILLISECONDS = "timeForPeriodOfMonitoringUtilityMilliSeconds";
+    public static String CONFIG_IS_FULL_TRACE = "isFullTraceEnable";
 
     // Sizes and amounts
     public static final int BLUR_SIZE = 5;
@@ -122,8 +126,9 @@ public class Utils {
     public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_INFO = 4000;
     public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_ERROR = 4000;
     public static final long TIMEOUT_FOR_PROCESS_TO_END_IN_SECONDS = 20;
-    public static final int TIME_FOR_PERIOD_OF_MONITORING_UTILITY = 10000;
+    public static int TIME_FOR_PERIOD_OF_MONITORING_UTILITY_MILLI_SECONDS = 30000;
     public static final int TIME_FOR_CHANGE_LOGO_KEREN_OR_IN_SECONDS = 8;
+
 
     // Text display
     public static final String TEXT_CONFIRM_DELETE_TITLE = "Deletion confirmation";
@@ -140,6 +145,7 @@ public class Utils {
     public static final String NEW_ITEM = "New item";
     public static final String SAVE_CHANGES = "Save";
     public static final String MONITORING_UTILITY_THREAD_NAME = "Monitoring Utility Thread";
+    public static final String SWITCH_LOGO_ANIMATION_THREAD_NAME = "Logo Animated  Thread";
 
     // Alert Messages
     public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong ip address, try again";
@@ -220,6 +226,8 @@ public class Utils {
                 Utils.CONFIG_IS_POPUP_CLOSE_IF_LOSE_FOCUS_SETTING = Boolean.parseBoolean(properties.getProperty(CONFIG_IS_POPUP_CLOSE_IF_LOSE_FOCUS));
                 Utils.IS_REMOTE_DRIVE_SCREEN_ACTIVE = Boolean.parseBoolean(properties.getProperty(CONFIG_IS_REMOTE_DRIVE_SCREEN_ACTIVE));
                 Utils.IS_MARK_SEARCH_ACTIVE = Boolean.parseBoolean(properties.getProperty(CONFIG_IS_MARK_SEARCH_ACTIVE));
+                Utils.IS_FULL_TRACE = Boolean.parseBoolean(properties.getProperty(CONFIG_IS_FULL_TRACE));
+                Utils.TIME_FOR_PERIOD_OF_MONITORING_UTILITY_MILLI_SECONDS = Integer.parseInt(properties.getProperty(CONFIG_TIME_FOR_PERIOD_OF_MONITORING_UTILITY_MILLISECONDS));
                 Platform.runLater(() -> Utils.VERSION_NUMBER.set(properties.getProperty(Utils.CONFIG_VERSION_NUMBER_PROPERTIES)));
             } catch (IOException e) {
                 logger.error("failed to load app settings");
