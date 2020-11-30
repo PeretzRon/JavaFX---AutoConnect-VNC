@@ -236,8 +236,8 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
         upRowButton.setOnMousePressed(this::longPressOnUpOrDownArrow);
         downRowButton.setOnMousePressed(this::longPressOnUpOrDownArrow);
 
-        upRowButton.disableProperty().bind(isAllowedToMoveRows);
-        downRowButton.disableProperty().bind(isAllowedToMoveRows);
+        upRowButton.disableProperty().bind(Bindings.not(isAllowedToMoveRows));
+        downRowButton.disableProperty().bind(Bindings.not(isAllowedToMoveRows));
     }
 
     private void stopTimer(ScheduledFuture<?> timer) {
@@ -374,8 +374,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
     }
 
     private void disableButtonWhileSaveData(boolean isToDisable) {
-        upRowButton.setDisable(isToDisable);
-        downRowButton.setDisable(isToDisable);
+        isAllowedToMoveRows.set(!isToDisable);
         addNewComputerButton.setDisable(isToDisable);
         ComputerRowController.setIsButtonsDisabled(isToDisable);
     }
