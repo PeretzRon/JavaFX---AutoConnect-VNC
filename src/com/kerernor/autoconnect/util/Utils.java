@@ -1,7 +1,9 @@
 package com.kerernor.autoconnect.util;
 
+import com.kerernor.autoconnect.view.ComputerRowController;
 import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.screens.ISearchTextFlow;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -9,6 +11,8 @@ import javafx.event.Event;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.IndexedCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.BoxBlur;
@@ -243,10 +247,23 @@ public class Utils {
         Platform.runLater(() -> stage.setAlwaysOnTop(false));
     }
 
+    // keep for use in other cases
     public static void onMouseClickNode(Node node) {
         Event.fireEvent(node, new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
                 0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
                 true, true, true, true, true, true, null));
+    }
+
+    // keep for use in other cases
+    public static void doOperationOnVirtualFlowOfList(ListView listView, Runnable runnable) {
+        VirtualFlow virtualFlow = (VirtualFlow) listView.getChildrenUnmodifiable().get(0);
+        int size = virtualFlow.getCellCount();
+        for (int i = 0; i < size; i++) {
+            IndexedCell cell = virtualFlow.getCell(i);
+            if (cell instanceof ComputerRowController) {
+                System.out.println(((ComputerRowController) cell).getComputerName().getOriginalText());
+            }
+        }
     }
 
     public static Image getImageByName(String name) {
