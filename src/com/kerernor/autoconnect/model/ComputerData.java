@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class ComputerData {
 
@@ -95,6 +96,18 @@ public class ComputerData {
 
     public void swapRows(int currentIndex, int currentIndexMinusPlus) {
         Collections.swap(this.computersList, currentIndex, currentIndexMinusPlus);
+        isComputerListHasChanged();
+    }
+
+    public void removeAndInsertToStart(Computer computer) {
+        computersList.remove(computer);
+        computersList.add(0, computer);
+        isComputerListHasChanged();
+    }
+
+    public void removeAndInsertToEnd(Computer computer) {
+        computersList.remove(computer);
+        computersList.add(computersList.size() , computer);
         isComputerListHasChanged();
     }
 
@@ -193,16 +206,18 @@ public class ComputerData {
         logger.info("isComputerListHasChanged - " + isComputerListHasChanged.get());
     }
 
-    public void saveChangesToDB() {
+    public void saveChangesToDB(Consumer<Boolean> isFinishedSuccessfully) {
         logger.trace("saveChangesToDB");
         isComputerListHasChanged.set(false); // prevent from user to click again until the operation complete
         ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
             try {
                 storeData();
-                computersListBackup = FXCollections.observableArrayList();
-                Collections.copy(computersListBackup, computersList);
-            } catch (IOException e) {
+                computersListBackup.clear();
+                computersListBackup.addAll(computersList);
+                isFinishedSuccessfully.accept(true);
+            } catch (Exception e) {
                 logger.error("failed to save - ", e);
+                isFinishedSuccessfully.accept(false);
                 Platform.runLater(() -> {
                     isComputerListHasChanged.set(true);
                     AlertPopupController.sendAlert(KorTypes.AlertTypes.ERROR, Utils.ERROR_WHILE_SAVE_DATA, KorCommon.getInstance().getRemoteScreenController());

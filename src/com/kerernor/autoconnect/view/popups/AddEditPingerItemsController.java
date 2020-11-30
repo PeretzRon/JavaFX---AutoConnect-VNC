@@ -4,7 +4,9 @@ import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.model.PingerItem;
+import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorEvents;
+import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.components.JTextFieldController;
 import javafx.animation.FadeTransition;
@@ -166,6 +168,11 @@ public class AddEditPingerItemsController extends GridPane {
 
     @FXML
     public void addPingItemToListHandler() {
+        if (pingerItemsAddedObservableList.size() > Utils.MAX_PINGER_ITEMS_IN_ONE_GROUP) {
+            AlertPopupController.sendAlert(KorTypes.AlertTypes.WARNING, Utils.REACH_MAX_PINGER_ITEM + Utils.MAX_PINGER_ITEMS_IN_ONE_GROUP, KorCommon.getInstance().getAboutScreenController());
+            return;
+        }
+
         String ip = IPTextField.getTextField().getText();
         String name = nameItemTextField.getTextField().getText();
         pingerItemList.add(new PingerItem(ip, name));

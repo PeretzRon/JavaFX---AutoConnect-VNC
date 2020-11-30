@@ -11,9 +11,12 @@ import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.ConfirmPopupController;
 import com.kerernor.autoconnect.view.screens.RemoteScreenController;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -21,7 +24,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import org.apache.log4j.Logger;
-import sun.rmi.runtime.Log;
 
 import java.io.IOException;
 import java.util.Set;
@@ -40,14 +42,23 @@ public class ComputerRowController extends ListCell<Computer> {
     private ImageView computerType;
     @FXML
     private ImageView removeBtnID;
+    @FXML
+    private Button removeComputerButton;
+    @FXML
+    private Button connectToComputerButton;
+    @FXML
+    private Button editComputerButton;
 
     private Computer computer;
     private FXMLLoader loader;
     private Parent paneBehind;
+    private static BooleanProperty isButtonsDisabled = new SimpleBooleanProperty(false);
     private Logger logger = Logger.getLogger(ComputerRowController.class);
 
     public void initialize() {
         computerName.setColorFoundText(Color.YELLOW);
+        removeComputerButton.disableProperty().bind(isButtonsDisabled);
+        editComputerButton.disableProperty().bind(isButtonsDisabled);
     }
 
     public FXMLLoader loadView() {
@@ -152,5 +163,29 @@ public class ComputerRowController extends ListCell<Computer> {
 
     public void setComputerName(JSearchableTextFlowController computerName) {
         this.computerName = computerName;
+    }
+
+    public Button getRemoveComputerButton() {
+        return removeComputerButton;
+    }
+
+    public Button getConnectToComputerButton() {
+        return connectToComputerButton;
+    }
+
+    public Button getEditComputerButton() {
+        return editComputerButton;
+    }
+
+    public static boolean getIsButtonsDisabled() {
+        return isButtonsDisabled.get();
+    }
+
+    public static boolean isIsButtonsDisabled() {
+        return isButtonsDisabled.get();
+    }
+
+    public static void setIsButtonsDisabled(boolean isButtonsDisabled) {
+        ComputerRowController.isButtonsDisabled.set(isButtonsDisabled);
     }
 }

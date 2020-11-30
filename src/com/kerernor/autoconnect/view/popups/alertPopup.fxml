@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
 <BorderPane fx:id="mainPane" onMouseClicked="#autoClosePopUpTimerHandler" prefHeight="55.0" prefWidth="1050.0" styleClass="alert-popup" stylesheets="@../../style/popupStyle.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <left>
-        <HBox  prefHeight="62.0" prefWidth="596.0" spacing="10.0" BorderPane.alignment="CENTER">
+        <HBox prefHeight="62.0" prefWidth="763.0" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
                 <ImageView fx:id="alertIcon" fitHeight="44.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -18,7 +15,7 @@
                     </image>
                 </ImageView>
                 <Separator opacity="0.41" orientation="VERTICAL" prefHeight="200.0" styleClass="kor-separator" />
-                <Label fx:id="massageLabel" prefHeight="35.0" prefWidth="427.0" text="Popup massage to user">
+                <Label fx:id="massageLabel" prefHeight="37.0" prefWidth="678.0" text="Popup massage to user">
                <padding>
                   <Insets top="2.0" />
                </padding></Label>

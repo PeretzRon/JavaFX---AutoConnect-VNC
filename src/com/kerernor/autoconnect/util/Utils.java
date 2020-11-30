@@ -120,6 +120,7 @@ public class Utils {
     public static final int BLUR_SIZE = 5;
     public static final int BLUR_ITERATIONS = 3;
     public static final int MAX_HISTORY_CONNECT_LIST = 50;
+    public static final int MAX_PINGER_ITEMS_IN_ONE_GROUP = 5;
     public static final int MAX_REMOTE_DRIVE_CONNECT_LIST = 50;
     public static final int TIME_FOR_CLOSE_POPUP = 7000;
     public static final int TIME_FOR_CLOSE_ALERT_MESSAGE_WARNING = 4000;
@@ -152,6 +153,7 @@ public class Utils {
     public static final String VNC_PATH_ERROR = "Ultra VNC not installed or path not valid";
     public static final String CAN_NOT_MOVE_ROW_INFO = "Can't move rows during search";
     public static final String ERROR_WHILE_SAVE_DATA = "Can't save data to file";
+    public static final String REACH_MAX_PINGER_ITEM = "Can't add item - The amount of items allowed is: ";
 
 
     // Style

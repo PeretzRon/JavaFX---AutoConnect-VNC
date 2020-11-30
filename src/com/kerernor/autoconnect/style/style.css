@@ -144,7 +144,11 @@
 }
 
 .scale-button:hover {
-    -fx-scale-x: 1.1;
-    -fx-scale-y: 1.1;
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+.button-image.button {
+    -fx-background-color: transparent;
 }
 

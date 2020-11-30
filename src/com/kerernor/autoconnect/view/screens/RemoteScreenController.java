@@ -10,12 +10,10 @@ import com.kerernor.autoconnect.util.*;
 import com.kerernor.autoconnect.view.ComputerListController;
 import com.kerernor.autoconnect.view.ComputerRowController;
 import com.kerernor.autoconnect.view.LastConnectionsPopupController;
-import com.kerernor.autoconnect.view.SearchAreaController;
 import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.components.JTextFieldController;
 import com.kerernor.autoconnect.view.popups.AddEditComputerPopup;
 import com.kerernor.autoconnect.view.popups.AlertPopupController;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -24,26 +22,19 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.NodeOrientation;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
 import org.apache.log4j.Logger;
 
-import javax.security.auth.login.Configuration;
-import java.awt.*;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -82,20 +73,22 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
     @FXML
     private ImageView downRowImageView;
     @FXML
-    private ImageView saveChangesButton;
+    private Button saveChangesButton;
     @FXML
-    private ImageView saveChangesImage;
+    private Button downRowButton;
     @FXML
-    private ImageView addNewComputerImage;
+    private Button upRowButton;
 
     private Logger logger = Logger.getLogger(RemoteScreenController.class);
     private static RemoteScreenController instance = null;
     private final BooleanProperty isHistoryListEmpty = new SimpleBooleanProperty(true);
+    private final BooleanProperty isAllowedToMoveRows = new SimpleBooleanProperty(true);
     private boolean isHistoryListOpen = false;
     private boolean isViewOnly = false;
     private ScheduledFuture timer;
-    private boolean isAllowedToMoveRows = true;
     private final static Set<JSearchableTextFlowController> activeSearchableTextFlowMap = ConcurrentHashMap.newKeySet();
+    private boolean isLongPressActive = false;
+    ScheduledFuture<?> timerForLongPress;
 
     public static RemoteScreenController getInstance() {
         if (instance == null) {
@@ -131,7 +124,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
         lastConnectionsPopupController.setList(historySearchFilteredList);
         isHistoryListEmpty.set(historySearchFilteredList.size() == 0);
         openCloseHistoryImage.disableProperty().bind(isHistoryListEmpty);
-        saveChangesImage.disableProperty().bind(Bindings.not(ComputerData.getInstance().isComputerListHasChangedProperty()));
+        saveChangesButton.disableProperty().bind(Bindings.not(ComputerData.getInstance().isComputerListHasChangedProperty()));
         updateCounters();
 
         ComputerData.getInstance().getComputersList().addListener((ListChangeListener<? super Computer>) c -> {
@@ -179,7 +172,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
             String input = searchAreaController.getTextField().getText().toLowerCase();
             Utils.setTextFieldOrientationByDetectLanguage(input, searchAreaController.getTextField(), true); // change direction if needed
 
-            isAllowedToMoveRows = input.isEmpty(); // allow or disallow to move rows
+            isAllowedToMoveRows.set(input.isEmpty());; // allow or disallow to move rows
             String inputWithoutLowerCase = searchAreaController.getTextField().getText();
 
             computerFilteredList.setPredicate(input.isEmpty() ? computer -> true :
@@ -189,7 +182,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
             computerListController.scrollTo(0);
 
             if (Utils.IS_MARK_SEARCH_ACTIVE) {
-                stopTimer();
+                stopTimer(timer);
                 timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
                     Utils.updateStyleOnText(input, inputWithoutLowerCase, KorCommon.getInstance().getRemoteScreenController());
                 }, 100, TimeUnit.MILLISECONDS);
@@ -234,14 +227,22 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
         Platform.runLater(() -> quickConnectTextField.requestFocus());
 
         noResultLabelInitAndAddListener();
-        Utils.createTooltipListener(addNewComputerImage, Utils.NEW_ITEM, KorTypes.ShowNodeFrom.LEFT);
-        Utils.createTooltipListener(saveChangesImage, Utils.SAVE_CHANGES, KorTypes.ShowNodeFrom.LEFT);
+        Utils.createTooltipListener(addNewComputerButton, Utils.NEW_ITEM, KorTypes.ShowNodeFrom.LEFT);
+        Utils.createTooltipListener(saveChangesButton, Utils.SAVE_CHANGES, KorTypes.ShowNodeFrom.LEFT);
+
+        upRowButton.setOnMouseClicked(this::upComputerInList);
+        downRowButton.setOnMouseClicked(this::downComputerInList);
+
+        upRowButton.setOnMousePressed(this::longPressOnUpOrDownArrow);
+        downRowButton.setOnMousePressed(this::longPressOnUpOrDownArrow);
+
+        upRowButton.disableProperty().bind(isAllowedToMoveRows);
+        downRowButton.disableProperty().bind(isAllowedToMoveRows);
     }
 
-    private void stopTimer() {
+    private void stopTimer(ScheduledFuture<?> timer) {
         if (timer != null) {
             timer.cancel(true);
-            timer = null;
         }
     }
 
@@ -298,14 +299,44 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
         VNCRemote.connect(ip, isViewOnly);
     }
 
-    @FXML
-    public void DownComputerInList() {
-        if (isAllowedToMoveRows) {
-            int currentIndex = computerListController.getCurrent();
-            if (currentIndex >= 0 && currentIndex < ComputerData.getInstance().getComputersList().size() - 1) {
-                ComputerData.getInstance().swapRows(currentIndex, currentIndex + 1);
-                computerListController.getComputerListView().getSelectionModel().select(currentIndex + 1);
-                computerListController.getComputerListView().scrollTo(currentIndex + 1);
+    private void longPressOnUpOrDownArrow(MouseEvent event) {
+        isLongPressActive = false;
+        stopTimer(timerForLongPress);
+        timerForLongPress = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
+            onLongPressDetected(event);
+        }, 500, TimeUnit.MILLISECONDS);
+    }
+
+    private void onLongPressDetected(MouseEvent event) {
+        isLongPressActive = true;
+        logger.trace("long press - upComputerInList");
+        int currentIndex = computerListController.getCurrent();
+        Computer computer = computerListController.getComputerListView().getItems().get(currentIndex);
+        Platform.runLater(() -> {
+            if (event.getSource().toString().contains("up")) {
+                ComputerData.getInstance().removeAndInsertToStart(computer);
+                computerListController.getComputerListView().scrollTo(0);
+                computerListController.getComputerListView().getSelectionModel().select(0);
+            } else {
+                final int size = ComputerData.getInstance().getComputersList().size();
+                ComputerData.getInstance().removeAndInsertToEnd(computer);
+                computerListController.getComputerListView().scrollTo(size - 1);
+                computerListController.getComputerListView().getSelectionModel().select(size - 1);
+            }
+        });
+    }
+
+    private void downComputerInList(MouseEvent event) {
+        stopTimer(timerForLongPress);
+        if (isAllowedToMoveRows.get()) {
+            if (!isLongPressActive) {
+                int currentIndex = computerListController.getCurrent();
+                if (currentIndex >= 0 && currentIndex < ComputerData.getInstance().getComputersList().size() - 1) {
+                    ComputerData.getInstance().swapRows(currentIndex, currentIndex + 1);
+                    computerListController.getComputerListView().getSelectionModel().select(currentIndex + 1);
+                    computerListController.getComputerListView().scrollTo(currentIndex + 1);
+                }
+                isLongPressActive = false;
             }
         } else {
             AlertPopupController alertPopupController = new AlertPopupController();
@@ -313,14 +344,18 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
         }
     }
 
-    @FXML
-    public void UpComputerInList() {
-        if (isAllowedToMoveRows) {
-            int currentIndex = computerListController.getCurrent();
-            if (currentIndex > 0 && currentIndex <= ComputerData.getInstance().getComputersList().size() - 1) {
-                ComputerData.getInstance().swapRows(currentIndex, currentIndex - 1);
-                computerListController.getComputerListView().getSelectionModel().select(currentIndex - 1);
-                computerListController.getComputerListView().scrollTo(currentIndex - 1);
+    private void upComputerInList(MouseEvent event) {
+        stopTimer(timerForLongPress);
+        if (isAllowedToMoveRows.get()) {
+            if (!isLongPressActive) {
+                int currentIndex = computerListController.getCurrent();
+                if (currentIndex > 0 && currentIndex <= ComputerData.getInstance().getComputersList().size() - 1) {
+                    ComputerData.getInstance().swapRows(currentIndex, currentIndex - 1);
+                    computerListController.getComputerListView().getSelectionModel().select(currentIndex - 1);
+                    computerListController.getComputerListView().scrollTo(currentIndex - 1);
+                }
+            } else {
+                isLongPressActive = false;
             }
         } else {
             AlertPopupController alertPopupController = new AlertPopupController();
@@ -328,12 +363,22 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
         }
     }
 
-    @FXML
     public void saveChangesHandler() {
         logger.trace("saveChangesHandler");
-        ComputerData.getInstance().saveChangesToDB();
+        disableButtonWhileSaveData(true);
+        ComputerData.getInstance().saveChangesToDB(isFinishedSuccessfully -> {
+            Platform.runLater(() -> {
+                disableButtonWhileSaveData(false);
+            });
+        });
     }
 
+    private void disableButtonWhileSaveData(boolean isToDisable) {
+        upRowButton.setDisable(isToDisable);
+        downRowButton.setDisable(isToDisable);
+        addNewComputerButton.setDisable(isToDisable);
+        ComputerRowController.setIsButtonsDisabled(isToDisable);
+    }
 
     @Override
     public void showPane() {

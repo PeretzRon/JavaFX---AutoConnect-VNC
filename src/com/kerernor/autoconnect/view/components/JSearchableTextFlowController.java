@@ -5,8 +5,6 @@ import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -15,7 +13,10 @@ import javafx.scene.text.TextFlow;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class JSearchableTextFlowController extends TextFlow {
 
