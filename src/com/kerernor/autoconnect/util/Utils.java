@@ -108,6 +108,9 @@ public class Utils {
     public static boolean IS_MARK_SEARCH_ACTIVE = false;
     public static boolean IS_FULL_TRACE = false;
 
+    // Fonts
+    public static final String VARELA_ROUND = "fonts/VarelaRound.ttf";
+
 
     // App setting properties
     public static final String CONFIG_ULTRA_VNC_PROGRAM_PATH = "UltraVncProgramPath";
@@ -302,6 +305,14 @@ public class Utils {
                 }
             }
         });
+    }
+
+    public static String addDotIfTextIsLong(String text) {
+        if (text.length() < 10) {
+            return text;
+        } else {
+            return text.substring(0, 10) + "...";
+        }
     }
 
     public static void setTextFieldOrientationByDetectLanguage(String input, TextField textField, boolean isOnTyping) {

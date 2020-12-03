@@ -45,6 +45,11 @@ public class ComputerListController extends ListView {
         loadView();
     }
 
+    @FXML
+    public void initialize() {
+        computerListView.getStyleClass().add("computer-list");
+    }
+
 
     private void loadView() {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.COMPUTER_LIST));

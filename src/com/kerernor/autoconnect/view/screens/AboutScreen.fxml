@@ -14,10 +14,7 @@
             <children>
          <VBox alignment="CENTER" prefHeight="576.0" prefWidth="773.0" spacing="20.0">
             <children>
-               <Label fx:id="appNameLabel" text="Label" textFill="WHITE">
-                  <font>
-                     <Font size="50.0" />
-                  </font>
+               <Label fx:id="appNameLabel" styleClass="app-name-label" text="Label" textFill="WHITE" >
                </Label>
                <StackPane prefHeight="322.0" prefWidth="773.0">
                   <children>

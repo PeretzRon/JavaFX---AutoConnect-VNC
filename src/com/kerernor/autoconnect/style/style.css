@@ -89,6 +89,10 @@
     -fx-background-color: #10165F;
 }
 
+.computer-list.list-cell:hover {
+    -fx-background-color: #10165F;
+}
+
 .list-cell:empty:hover {
     -fx-background-color: black;
 }
@@ -152,3 +156,23 @@
     -fx-background-color: transparent;
 }
 
+
+/*Fonts*/
+@font-face {
+    font-family: 'Babycakes';
+    src: url('BABYCAKE.ttf');
+}
+
+@font-face {
+    font-family: 'Varela Round';
+    src: url('VarelaRound.ttf');
+}
+
+.root {
+    -fx-font-family: "Bybycakes";
+}
+
+.app-name-label {
+    -fx-font-family: "Babycakes";
+    -fx-font-size: 50;
+}

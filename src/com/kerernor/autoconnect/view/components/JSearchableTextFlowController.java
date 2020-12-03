@@ -24,16 +24,12 @@ public class JSearchableTextFlowController extends TextFlow {
     private TextFlow textFlow;
 
     private String originalText;
-
-    // default values, can be change by setter
+    private String textToShow;
     private Font font = Font.font(16);
     private Color colorFoundText = Color.YELLOW;
     private Color colorOfText = Color.WHITE;
-    Text textToAdd = new Text("");
-    private Logger logger = Logger.getLogger(JSearchableTextFlowController.class);
-
     List<Integer> listOfIndexThatFoundOnKMP = new ArrayList<>();
-
+    private final Logger logger = Logger.getLogger(JSearchableTextFlowController.class);
 
     @FXML
     public void initialize() {
@@ -51,12 +47,18 @@ public class JSearchableTextFlowController extends TextFlow {
 
     public void initText(String text) {
         originalText = text;
+        originalText = Utils.addDotIfTextIsLong(text);
         textFlow.getChildren().clear();
-        createTextAndAddToTextFlow(text, false, false);
+        createTextAndAddToTextFlow(textToShow, false, false);
     }
 
+    /**
+     * @param text            - text to create Text object of javafx
+     * @param isWithUnderline - is to set underLine on the bottom of the text
+     * @param isWithColor     - is to set color on the text
+     */
     private void createTextAndAddToTextFlow(String text, boolean isWithUnderline, boolean isWithColor) {
-        textToAdd = new Text(text);
+        Text textToAdd = new Text(text);
         textToAdd.setFont(font);
         textToAdd.setFill(colorOfText);
         if (isWithUnderline) {
@@ -67,7 +69,9 @@ public class JSearchableTextFlowController extends TextFlow {
             textToAdd.setFill(colorFoundText);
             textToAdd.setUnderline(true);
         }
-
+        if (Utils.IS_FULL_TRACE) {
+            logger.trace("createTextAndAddToTextFlow - text: " + text + " isWithStyle: " + isWithColor);
+        }
         textFlow.getChildren().add(textToAdd);
     }
 
@@ -92,7 +96,6 @@ public class JSearchableTextFlowController extends TextFlow {
         String originalTextLowerCase = originalText.toLowerCase();
         listOfIndexThatFoundOnKMP.clear();
         KMPSearch(textFromSearchInput.toLowerCase(), originalTextLowerCase);
-
         Collections.sort(listOfIndexThatFoundOnKMP, Comparator.comparingInt(o -> o));
         if (listOfIndexThatFoundOnKMP.size() > 0) {
             this.textFlow.getChildren().clear();
@@ -131,11 +134,6 @@ public class JSearchableTextFlowController extends TextFlow {
 
     }
 
-    /**
-     * this method load the fxml
-     *
-     * @return the controller
-     */
     private TextFlow loadView() {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.J_SEARCHABLE_TEXT_FLOW));
         loader.setController(this);
@@ -150,8 +148,78 @@ public class JSearchableTextFlowController extends TextFlow {
         return null;
     }
 
-    // Getters and Setters
+    /**
+     * @param pattern - the sub string of the text
+     * @param text    - the full text
+     */
+    private void KMPSearch(String pattern, String text) {
+        int M = pattern.length();
+        int N = text.length();
 
+        // create lps[] that will hold the longest
+        // prefix suffix values for pattern
+        int lps[] = new int[M];
+        int j = 0; // index for pat[]
+
+        // Preprocess the pattern (calculate lps[]
+        // array)
+        computeLPSArray(pattern, M, lps);
+
+        int i = 0; // index for txt[]
+        while (i < N) {
+            if (pattern.charAt(j) == text.charAt(i)) {
+                j++;
+                i++;
+            }
+            if (j == M) {
+                listOfIndexThatFoundOnKMP.add(i - j);
+                j = lps[j - 1];
+            }
+
+            // mismatch after j matches
+            else if (i < N && pattern.charAt(j) != text.charAt(i)) {
+                // Do not match lps[0..lps[j-1]] characters,
+                // they will match anyway
+                if (j != 0)
+                    j = lps[j - 1];
+                else
+                    i = i + 1;
+            }
+        }
+    }
+
+    private void computeLPSArray(String pat, int M, int lps[]) {
+        // length of the previous longest prefix suffix
+        int len = 0;
+        int i = 1;
+        lps[0] = 0; // lps[0] is always 0
+
+        // the loop calculates lps[i] for i = 1 to M-1
+        while (i < M) {
+            if (pat.charAt(i) == pat.charAt(len)) {
+                len++;
+                lps[i] = len;
+                i++;
+            } else // (pat[i] != pat[len])
+            {
+                // This is tricky. Consider the example.
+                // AAACAAAA and i = 7. The idea is similar
+                // to search step.
+                if (len != 0) {
+                    len = lps[len - 1];
+
+                    // Also, note that we do not increment
+                    // i here
+                } else // if (len == 0)
+                {
+                    lps[i] = len;
+                    i++;
+                }
+            }
+        }
+    }
+
+    // Getters and Setters
     public Font getFont() {
         return font;
     }
@@ -211,73 +279,6 @@ public class JSearchableTextFlowController extends TextFlow {
         }
 
         return list;
-    }
-
-    private void KMPSearch(String pat, String txt) {
-        int M = pat.length();
-        int N = txt.length();
-
-        // create lps[] that will hold the longest
-        // prefix suffix values for pattern
-        int lps[] = new int[M];
-        int j = 0; // index for pat[]
-
-        // Preprocess the pattern (calculate lps[]
-        // array)
-        computeLPSArray(pat, M, lps);
-
-        int i = 0; // index for txt[]
-        while (i < N) {
-            if (pat.charAt(j) == txt.charAt(i)) {
-                j++;
-                i++;
-            }
-            if (j == M) {
-                listOfIndexThatFoundOnKMP.add(i - j);
-                j = lps[j - 1];
-            }
-
-            // mismatch after j matches
-            else if (i < N && pat.charAt(j) != txt.charAt(i)) {
-                // Do not match lps[0..lps[j-1]] characters,
-                // they will match anyway
-                if (j != 0)
-                    j = lps[j - 1];
-                else
-                    i = i + 1;
-            }
-        }
-    }
-
-    private void computeLPSArray(String pat, int M, int lps[]) {
-        // length of the previous longest prefix suffix
-        int len = 0;
-        int i = 1;
-        lps[0] = 0; // lps[0] is always 0
-
-        // the loop calculates lps[i] for i = 1 to M-1
-        while (i < M) {
-            if (pat.charAt(i) == pat.charAt(len)) {
-                len++;
-                lps[i] = len;
-                i++;
-            } else // (pat[i] != pat[len])
-            {
-                // This is tricky. Consider the example.
-                // AAACAAAA and i = 7. The idea is similar
-                // to search step.
-                if (len != 0) {
-                    len = lps[len - 1];
-
-                    // Also, note that we do not increment
-                    // i here
-                } else // if (len == 0)
-                {
-                    lps[i] = len;
-                    i++;
-                }
-            }
-        }
     }
 
     @Override
