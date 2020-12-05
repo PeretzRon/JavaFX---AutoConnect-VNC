@@ -168,13 +168,18 @@ public class AddEditPingerItemsController extends GridPane {
 
     @FXML
     public void addPingItemToListHandler() {
-        if (pingerItemsAddedObservableList.size() > Utils.MAX_PINGER_ITEMS_IN_ONE_GROUP) {
+        if (pingerItemsAddedObservableList.size() >= Utils.MAX_PINGER_ITEMS_IN_ONE_GROUP) {
             AlertPopupController.sendAlert(KorTypes.AlertTypes.WARNING, Utils.REACH_MAX_PINGER_ITEM + Utils.MAX_PINGER_ITEMS_IN_ONE_GROUP, KorCommon.getInstance().getAboutScreenController());
             return;
         }
 
         String ip = IPTextField.getTextField().getText();
         String name = nameItemTextField.getTextField().getText();
+        if (ip.isEmpty() || name.isEmpty()) {
+            AlertPopupController.sendAlert(KorTypes.AlertTypes.WARNING, Utils.SOME_OF_FIELDS_ARE_EMPTY, KorCommon.getInstance().getAboutScreenController());
+            return;
+        }
+
         pingerItemList.add(new PingerItem(ip, name));
         pingerItemsAddedObservableList.add(displayItemNameInList(name, ip));
     }

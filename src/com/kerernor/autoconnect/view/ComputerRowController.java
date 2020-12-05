@@ -110,11 +110,11 @@ public class ComputerRowController extends ListCell<Computer> {
             loader = loadView();
         }
 
-        computerName.initText(computer.getName());
+        computerName.initText(computer.getName(),true);
         computerName.setFont(Font.font(25));
-        computerLocation.initText(computer.getItemLocation());
+        computerLocation.initText(computer.getItemLocation(), true);
         computerLocation.setFont(Font.font(16));
-        computerIP.initText(computer.getIp());
+        computerIP.initText(computer.getIp(), false);
         computerIP.setFont(Font.font(16));
         if (computer.getComputerType() == KorTypes.ComputerType.RCGW) {
             computerType.setImage(Utils.getImageByName(Utils.RCGW_ICON));

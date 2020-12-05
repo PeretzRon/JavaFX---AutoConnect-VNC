@@ -2,6 +2,7 @@ package com.kerernor.autoconnect;
 
 import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.model.LastConnectionData;
+import com.kerernor.autoconnect.model.LastRemoteDriveData;
 import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.Utils;
@@ -94,6 +95,7 @@ public class Main extends Application {
         ComputerData.getInstance().loadData();
         PingerData.getInstance().loadData();
         LastConnectionData.getInstance().loadData();
+        LastRemoteDriveData.getInstance().loadData();
     }
 
     @Override
@@ -102,6 +104,7 @@ public class Main extends Application {
         ComputerData.getInstance().storeData();
         PingerData.getInstance().storeData();
         LastConnectionData.getInstance().storeData();
+        LastRemoteDriveData.getInstance().storeData();
     }
 
 

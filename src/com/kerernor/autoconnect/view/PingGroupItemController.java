@@ -56,7 +56,7 @@ public class PingGroupItemController extends HBox {
     }
 
     private void setDataToComponent() {
-        name.initText(pingerItem.getName());
+        name.initText(pingerItem.getName(), true);
         name.setFont(Font.font(16));
         name.setAlignment(TextAlignment.CENTER);
     }
@@ -141,6 +141,10 @@ public class PingGroupItemController extends HBox {
 
     public String getName() {
         return name.getOriginalText();
+    }
+
+    public Pinger getPingerItem() {
+        return pingerItem;
     }
 
     @Override

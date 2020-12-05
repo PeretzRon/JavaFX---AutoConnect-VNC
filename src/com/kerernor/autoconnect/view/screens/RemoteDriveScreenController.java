@@ -85,13 +85,13 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
     }
 
     private void noResultLabelInitAndAddListener() {
-        if (LastRemoteDriveData.getInstance().getLastRemoteDriveItems().size() == 0) {
+        if (LastRemoteDriveData.getInstance().getLastRemoteDriveItemsList().size() == 0) {
             noValueInListLabel.toFront();
         } else {
             noValueInListLabel.toBack();
         }
 
-        LastRemoteDriveData.getInstance().getLastRemoteDriveItems().addListener((ListChangeListener<? super LastRemoteDriveItem>) c -> {
+        LastRemoteDriveData.getInstance().getLastRemoteDriveItemsList().addListener((ListChangeListener<? super LastRemoteDriveItem>) c -> {
             if (c.getList().size() == 0) {
                 noValueInListLabel.toFront();
             } else {

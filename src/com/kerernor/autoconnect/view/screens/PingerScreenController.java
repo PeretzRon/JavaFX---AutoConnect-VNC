@@ -244,8 +244,8 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
                     pingGroupItemControllerList.add(item);
                     item.getMainPane().setOnMousePressed(event -> {
                         event.consume();
-                        logger.trace("selected item: " + item.getName());
-                        ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(item.getName());
+                        logger.trace("selected item: " + item.getPingerItem().getName());
+                        ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(item.getPingerItem().getName());
                         pingListGroupController.loadList(pingerList);
                         pingListGroupController.resetProgressBar();
                         clearAndUpdateValues(item);
@@ -268,7 +268,7 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
         selectItemStyle(item);
         passPing.set(0);
         totalProgressLabel.setText("");
-        selectedPingGroupName.setText(item.getName());
+        selectedPingGroupName.setText(item.getPingerItem().getName());
         totalProgress.setProgress(0);
         totalProgress.setVisible(false);
     }

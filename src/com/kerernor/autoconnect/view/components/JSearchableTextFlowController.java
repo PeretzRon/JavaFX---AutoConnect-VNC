@@ -45,9 +45,12 @@ public class JSearchableTextFlowController extends TextFlow {
         createTextAndAddToTextFlow(originalText, false, false);
     }
 
-    public void initText(String text) {
+    public void initText(String text, boolean isToCutTextIfLong) {
         originalText = text;
-        originalText = Utils.addDotIfTextIsLong(text);
+        if (isToCutTextIfLong) {
+            originalText = Utils.addDotIfTextIsLong(text);
+        }
+
         textFlow.getChildren().clear();
         createTextAndAddToTextFlow(textToShow, false, false);
     }

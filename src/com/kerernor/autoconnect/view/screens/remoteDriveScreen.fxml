@@ -48,7 +48,7 @@
                 </children>
             </VBox>
             <StackPane layoutX="17.0" layoutY="319.0">
-                <LastRemoteDriveListController fx:id="lastRemoteDriveListController" layoutX="20.0" layoutY="322.0" prefHeight="227.0" prefWidth="705.0" style="-fx-background-color: #ccc;" />
+                <LastRemoteDriveListController fx:id="lastRemoteDriveListController" layoutX="20.0" layoutY="322.0" prefHeight="227.0" prefWidth="730.0" />
             <Label fx:id="noValueInListLabel" text="No Valuse!!" textFill="WHITE">
                <font>
                   <Font size="22.0" />
@@ -60,6 +60,7 @@
                <Font size="18.0" />
             </font>
          </Label>
+         <Label layoutX="20.0" layoutY="553.0" prefHeight="18.0" prefWidth="698.0" text="This screen is still unfinished, so there may be bugs (this screen can be turned off in the settings file)" textFill="WHITE" />
         </AnchorPane>
     </children>
 </fx:root>

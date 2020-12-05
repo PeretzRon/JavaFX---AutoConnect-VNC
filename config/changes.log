@@ -1,3 +1,8 @@
+Version 1.2.4:
+- Fixes bugs
+- cut long text and put ...
+- add clock to app (with config paramter from setting.properties)
+
 Version 1.2.3:
 - Fixes bugs
 - textfiled oriantion change automatically

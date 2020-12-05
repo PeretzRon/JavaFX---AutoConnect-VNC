@@ -94,6 +94,7 @@ public class Utils {
 
     // Data paths
     public static final String COMPUTER_DATA = "data/data.json";
+    public static final String LAST_CONNECTIONS_HISTORY_SHARE_DRIVE_DATA = "data/lastShareDriveHistory.json";
     public static final String PINGER_DATA = "data/pingData.json";
     public static final String LAST_CONNECTIONS_HISTORY_DATA = "data/lastConnectionsHistory.json";
 
@@ -107,6 +108,7 @@ public class Utils {
     public static boolean IS_REMOTE_DRIVE_SCREEN_ACTIVE = true;
     public static boolean IS_MARK_SEARCH_ACTIVE = false;
     public static boolean IS_FULL_TRACE = false;
+    public static boolean IS_CLOCK_ACTIVE = false;
 
     // Fonts
     public static final String VARELA_ROUND = "fonts/VarelaRound.ttf";
@@ -122,6 +124,7 @@ public class Utils {
     public static String CONFIG_IS_MARK_SEARCH_ACTIVE = "isMarkSearchTextActive";
     public static String CONFIG_TIME_FOR_PERIOD_OF_MONITORING_UTILITY_MILLISECONDS = "timeForPeriodOfMonitoringUtilityMilliSeconds";
     public static String CONFIG_IS_FULL_TRACE = "isFullTraceEnable";
+    public static String CONFIG_IS_SHOW_CLOCK = "isClockActive";
 
     // Sizes and amounts
     public static final int BLUR_SIZE = 5;
@@ -136,6 +139,7 @@ public class Utils {
     public static final long TIMEOUT_FOR_PROCESS_TO_END_IN_SECONDS = 20;
     public static int TIME_FOR_PERIOD_OF_MONITORING_UTILITY_MILLI_SECONDS = 30000;
     public static final int TIME_FOR_CHANGE_LOGO_KEREN_OR_IN_SECONDS = 8;
+    public static final int MAX_CHARACTER_TO_CUT_TEXT = 19;
 
 
     // Text display
@@ -161,6 +165,7 @@ public class Utils {
     public static final String CAN_NOT_MOVE_ROW_INFO = "Can't move rows during search";
     public static final String ERROR_WHILE_SAVE_DATA = "Can't save data to file";
     public static final String REACH_MAX_PINGER_ITEM = "Can't add item - The amount of items allowed is: ";
+    public static final String SOME_OF_FIELDS_ARE_EMPTY = "Some of the fields are empty";
 
 
     // Style
@@ -236,6 +241,7 @@ public class Utils {
                 Utils.IS_REMOTE_DRIVE_SCREEN_ACTIVE = Boolean.parseBoolean(properties.getProperty(CONFIG_IS_REMOTE_DRIVE_SCREEN_ACTIVE));
                 Utils.IS_MARK_SEARCH_ACTIVE = Boolean.parseBoolean(properties.getProperty(CONFIG_IS_MARK_SEARCH_ACTIVE));
                 Utils.IS_FULL_TRACE = Boolean.parseBoolean(properties.getProperty(CONFIG_IS_FULL_TRACE));
+                Utils.IS_CLOCK_ACTIVE = Boolean.parseBoolean(properties.getProperty(CONFIG_IS_SHOW_CLOCK));
                 Utils.TIME_FOR_PERIOD_OF_MONITORING_UTILITY_MILLI_SECONDS = Integer.parseInt(properties.getProperty(CONFIG_TIME_FOR_PERIOD_OF_MONITORING_UTILITY_MILLISECONDS));
                 Platform.runLater(() -> Utils.VERSION_NUMBER.set(properties.getProperty(Utils.CONFIG_VERSION_NUMBER_PROPERTIES)));
             } catch (IOException e) {
@@ -308,22 +314,24 @@ public class Utils {
     }
 
     public static String addDotIfTextIsLong(String text) {
-        if (text.length() < 10) {
+        if (text.length() < MAX_CHARACTER_TO_CUT_TEXT) {
             return text;
         } else {
-            return text.substring(0, 10) + "...";
+            return text.substring(0, MAX_CHARACTER_TO_CUT_TEXT) + "...";
         }
     }
 
     public static void setTextFieldOrientationByDetectLanguage(String input, TextField textField, boolean isOnTyping) {
-        if (isOnTyping) {
-            if (input.length() > 0 && input.length() < 3) {
+        if (!input.isEmpty()) {
+            if (isOnTyping) {
+                if (input.length() > 0 && input.length() < 3) {
+                    char c = input.charAt(0);
+                    setTextFieldOrientationByDetectLanguageInternal(c, textField);
+                }
+            } else {
                 char c = input.charAt(0);
                 setTextFieldOrientationByDetectLanguageInternal(c, textField);
             }
-        } else {
-            char c = input.charAt(0);
-            setTextFieldOrientationByDetectLanguageInternal(c, textField);
         }
     }
 

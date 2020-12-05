@@ -48,7 +48,7 @@ public class LastRemoteDriveListController extends ListView {
 
     public void loadList() {
         logger.trace("loadList");
-        lastRemoteDriveList.setItems(LastRemoteDriveData.getInstance().getLastRemoteDriveItems());
+        lastRemoteDriveList.setItems(LastRemoteDriveData.getInstance().getLastRemoteDriveItemsList());
 
         lastRemoteDriveList.setCellFactory(lastRemoteDriveItemListView -> {
             LastRemoteDriveRowController lastRemoteDriveRowController = new LastRemoteDriveRowController();

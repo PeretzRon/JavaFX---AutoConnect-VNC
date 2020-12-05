@@ -2,5 +2,5 @@
 
 <?import javafx.scene.control.ListView?>
 <fx:root stylesheets="@../style/style.css" type="ListView" fx:id="lastRemoteDriveList" xmlns="http://javafx.com/javafx"
-         xmlns:fx="http://javafx.com/fxml">
+         xmlns:fx="http://javafx.com/fxml" style="-fx-background-color: black">
 </fx:root>

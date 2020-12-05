@@ -35,7 +35,7 @@
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <JTextFieldController fx:id="groupNameTextField" prefHeight="54.0" prefWidth="180.0" />
+                        <JTextFieldController fx:id="groupNameTextField" prefHeight="54.0" prefWidth="210.0" />
                      </children>
                   </HBox>
                </children>

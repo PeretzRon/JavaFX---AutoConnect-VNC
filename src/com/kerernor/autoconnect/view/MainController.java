@@ -5,28 +5,36 @@ import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.screens.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.apache.log4j.Logger;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MainController extends AnchorPane {
 
+    @FXML
     private RemoteScreenController remoteScreenController;
     @FXML
     private PingerScreenController pingerScreenController;
@@ -80,6 +88,9 @@ public class MainController extends AnchorPane {
         pingerScreenController.setVisible(false);
         aboutScreenController.setVisible(false);
         createAndAddMenuButtons();
+        if (Utils.IS_CLOCK_ACTIVE) {
+            createClockLabel();
+        }
         btnRemoteScreen.getStyleClass().add("selected-menu-item");
         remoteScreenController.showPane();
 
@@ -87,6 +98,16 @@ public class MainController extends AnchorPane {
         Utils.createTooltipListener(exitAppStackPane, Utils.EXIT, KorTypes.ShowNodeFrom.RIGHT);
 
         loadKerenOrLogo();
+    }
+
+    private void createClockLabel() {
+        Label timerLabel = new Label();
+        timerLabel.setFont(Font.font(22));
+        timerLabel.setTextFill(Color.valueOf("#13B4FF"));
+        timerLabel.setAlignment(Pos.CENTER);
+        VBox.setMargin(timerLabel, new Insets(100, 0, 0, 0));
+        appClock(timerLabel);
+        buttonScreens.getChildren().add(timerLabel);
     }
 
     private void loadKerenOrLogo() {
@@ -186,6 +207,34 @@ public class MainController extends AnchorPane {
         }
 
         selectedMenuPane.showPane();
+    }
+
+    private void appClock(Label timeLabel) {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, event -> {
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int min = calendar.get(Calendar.MINUTE);
+            int sec = calendar.get(Calendar.SECOND);
+
+            String minute = addZeroIfOneDigit(String.valueOf(min));
+            String second = addZeroIfOneDigit(String.valueOf(sec));
+            String time = String.format("%d:%s:%s", hour, minute, second);
+            if (!timeLabel.getText().equals(time)) {
+                timeLabel.setText(time);
+            }
+        }),
+                new KeyFrame(Duration.seconds(1))
+        );
+
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
+    private String addZeroIfOneDigit(String digit) {
+        if (digit.length() == 1) {
+            digit = "0" + digit;
+        }
+        return digit;
     }
 
     @FXML
