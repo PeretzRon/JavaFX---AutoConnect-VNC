@@ -158,21 +158,21 @@
 
 
 /*Fonts*/
-@font-face {
-    font-family: 'Babycakes';
-    src: url('BABYCAKE.ttf');
-}
+/*@font-face {*/
+/*    font-family: 'Babycakes';*/
+/*    src: url('BABYCAKE.ttf');*/
+/*}*/
 
-@font-face {
-    font-family: 'Varela Round';
-    src: url('VarelaRound.ttf');
-}
+/*@font-face {*/
+/*    font-family: 'Varela Round';*/
+/*    src: url('VarelaRound.ttf');*/
+/*}*/
 
-.root {
-    -fx-font-family: "Bybycakes";
-}
+/*.root {*/
+/*    -fx-font-family: "Babycakes";*/
+/*}*/
 
 .app-name-label {
-    -fx-font-family: "Babycakes";
+    /*-fx-font-family: "Babycakes";*/
     -fx-font-size: 50;
 }

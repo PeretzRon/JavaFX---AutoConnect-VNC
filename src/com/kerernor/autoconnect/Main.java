@@ -31,7 +31,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         logger.trace("********************** Start Main *************************");
-
+        logger.info("Java version: " + System.getProperty("sun.arch.data.model"));
         this.primaryStage = primaryStage;
         initRootLayout();
         makeStageDraggable();
