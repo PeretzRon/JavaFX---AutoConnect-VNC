@@ -105,6 +105,7 @@ public class Main extends Application {
         PingerData.getInstance().storeData();
         LastConnectionData.getInstance().storeData();
         LastRemoteDriveData.getInstance().storeData();
+        System.exit(0);
     }
 
 

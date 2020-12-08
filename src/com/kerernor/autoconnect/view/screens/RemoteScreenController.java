@@ -296,7 +296,9 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
         lastConnectionsPopupController.hide();
         isHistoryListOpen = false;
         lastConnectionsPopupController.getLastConnectionListController().getLastConnectionList().getSelectionModel().select(0);
-        VNCRemote.connect(ip, isViewOnly);
+        ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
+            VNCRemote.connect(ip, isViewOnly);
+        });
     }
 
     private void longPressOnUpOrDownArrow(MouseEvent event) {

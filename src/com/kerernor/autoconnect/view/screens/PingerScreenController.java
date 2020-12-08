@@ -1,7 +1,9 @@
 package com.kerernor.autoconnect.view.screens;
 
 import com.kerernor.autoconnect.Main;
-import com.kerernor.autoconnect.model.*;
+import com.kerernor.autoconnect.model.Pinger;
+import com.kerernor.autoconnect.model.PingerData;
+import com.kerernor.autoconnect.model.PingerItem;
 import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorEvents;
 import com.kerernor.autoconnect.util.ThreadManger;
@@ -26,11 +28,9 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;

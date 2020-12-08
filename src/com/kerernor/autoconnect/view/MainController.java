@@ -24,6 +24,7 @@ import javafx.scene.text.Font;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.net.URL;
@@ -274,6 +275,7 @@ public class MainController extends AnchorPane {
     private void exitApp() {
         logger.trace("exitApp");
         ThreadManger.getInstance().shutDown();
+        LogManager.shutdown();
         Platform.exit();
     }
 

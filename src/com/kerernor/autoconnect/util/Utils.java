@@ -22,6 +22,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -162,6 +163,7 @@ public class Utils {
     // Alert Messages
     public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong IP address, try again";
     public static final String VNC_PATH_ERROR = "Ultra VNC not installed or path not valid";
+    public static final String VNC_PATH_ERROR_2 = "Error running script VNC in program folder";
     public static final String CAN_NOT_MOVE_ROW_INFO = "Can't move rows during search";
     public static final String ERROR_WHILE_SAVE_DATA = "Can't save data to file";
     public static final String REACH_MAX_PINGER_ITEM = "Can't add item - The amount of items allowed is: ";
