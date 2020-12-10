@@ -5,10 +5,10 @@
 ![screenshot-1](src/com/kerernor/autoconnect/images/screenshot-4.gif)
 
 ## Screenshots:
-![screenshot-1](src/com/kerernor/autoconnect/images/screenshot-1.jpg)
+![screenshot-1](src/com/kerernor/autoconnect/images/screenshot-1.png)
 <br />
 <br />
-![screenshot-1](src/com/kerernor/autoconnect/images/screenshot-2.jpg)
+![screenshot-2](src/com/kerernor/autoconnect/images/screenshot-2.png)
 <br />
 <br />
-![screenshot-1](src/com/kerernor/autoconnect/images/screenshot-3.jpg)
+![screenshot-3](src/com/kerernor/autoconnect/images/screenshot-3.png)
