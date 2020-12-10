@@ -80,7 +80,7 @@ public class AboutScreenController extends Pane implements IDisplayable {
         logger.trace("showPane");
         webView.getEngine().load(url.toString());
         this.setVisible(true);
-        this.setStyle("-fx-background-color : #02050A");
+        this.setStyle(Utils.SCREEN_BACKGROUND_COLOR);
         this.toFront();
     }
 

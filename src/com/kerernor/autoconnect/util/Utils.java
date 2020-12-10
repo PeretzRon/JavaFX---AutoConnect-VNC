@@ -159,6 +159,7 @@ public class Utils {
     public static final String SAVE_CHANGES = "Save";
     public static final String MONITORING_UTILITY_THREAD_NAME = "Monitoring Utility Thread";
     public static final String SWITCH_LOGO_ANIMATION_THREAD_NAME = "Logo Animated  Thread";
+    public static final String ZERO_SLASH = "0/";
 
     // Alert Messages
     public static final String WRONG_IP_ADDRESS_MASSAGE = "Wrong IP address, try again";
@@ -172,6 +173,7 @@ public class Utils {
 
     // Style
     public static final String PINGER_GROUP_ITEM_SELECTED = "pinger-item-selected";
+    public static final String SCREEN_BACKGROUND_COLOR = "-fx-background-color : #02050A";
 
     /**
      * This method gets the blur effect.

@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
@@ -63,7 +64,6 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
 
     private Logger logger = Logger.getLogger(PingerScreenController.class);
     private static PingerScreenController instance = null;
-    FXMLLoader loader = null;
     private final BooleanProperty isRunPingerButtonDisabled = new SimpleBooleanProperty(true);
     private final AtomicInteger passPing = new AtomicInteger(0);
     private boolean isCheckPingRunning = false;
@@ -85,10 +85,21 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
 
     @FXML
     public void initialize() {
+        initController();
+        addEventsHandlerForFlowPane();
+        filterTextFieldListener();
+        noResultLabelInitAndAddListener();
+    }
+
+    private void initController() {
         checkPing.disableProperty().bind(isRunPingerButtonDisabled);
         totalProgressLabel.setText("");
         selectedPingGroupName.setText("");
+        noResultLabel.toBack();
+        createPingerGroups("");
+    }
 
+    private void addEventsHandlerForFlowPane() {
         flowPaneGroupPinger.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_ITEM, event -> {
             logger.trace("KorEvents.PingerEvent.UPDATE_PINGER_ITEMS");
             pingListGroupController.getPingerListView().getChildren().clear();
@@ -106,7 +117,9 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
             logger.trace("ListChangeListener - Pinger");
             refreshPingerItemWhenUpdated(c.getList().size());
         });
+    }
 
+    private void filterTextFieldListener() {
         filterPingerGroup.setOnKeyReleased(keyEvent -> {
             String input = filterPingerGroup.getText().toLowerCase();
             Utils.setTextFieldOrientationByDetectLanguage(input, filterPingerGroup, true); // change direction if needed
@@ -120,10 +133,6 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
 
             createPingerGroups(input);
         });
-
-        createPingerGroups("");
-        noResultLabel.toBack();
-        noResultLabelInitAndAddListener();
     }
 
     private void stopTimer() {
@@ -166,7 +175,6 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
     @FXML
     public void addPingerItemHandler() {
         logger.trace("addPingerItemHandler");
-
         AddEditPingerItemsController addEditPingerItemsController = new AddEditPingerItemsController(pnlSetting, null, false);
         addEditPingerItemsController.show();
     }
@@ -180,7 +188,7 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
         double buffer = 1 / (double) listSizeOfCurrentSelected;
 
         resetCounterAndProgressBarForPingerScreen();
-        totalProgressLabel.setText("0/" + listSizeOfCurrentSelected);
+        totalProgressLabel.setText(Utils.ZERO_SLASH + listSizeOfCurrentSelected);
         pingListGroupController.getListToSendPing().forEach(pingerItem -> ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
             sendPing(pingerItem, progress, buffer, listSizeOfCurrentSelected);
         }));
@@ -194,6 +202,7 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
     }
 
     private void resetCounterAndProgressBarForPingerScreen() {
+        logger.trace("resetCounterAndProgressBarForPingerScreen");
         pingListGroupController.resetProgressBar();
         totalProgress.setProgress(0);
         totalProgress.setVisible(true);
@@ -242,17 +251,21 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
                 .forEach(pingerGroup -> {
                     PingGroupItemController item = new PingGroupItemController(pingerGroup, pnlSetting);
                     pingGroupItemControllerList.add(item);
-                    item.getMainPane().setOnMousePressed(event -> {
-                        event.consume();
-                        logger.trace("selected item: " + item.getPingerItem().getName());
-                        ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(item.getPingerItem().getName());
-                        pingListGroupController.loadList(pingerList);
-                        pingListGroupController.resetProgressBar();
-                        clearAndUpdateValues(item);
-                    });
-
+                    item.getMainPane().setOnMousePressed(this::onPingGroupItemMousePressed);
                     flowPaneGroupPinger.getChildren().add(item);
                 });
+    }
+
+    private void onPingGroupItemMousePressed(MouseEvent event) {
+        event.consume();
+        PingGroupItemController item = (PingGroupItemController) event.getSource();
+        if (item != null) {
+            logger.trace("selected item: " + item.getPingerItem().getName());
+            ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(item.getPingerItem().getName());
+            pingListGroupController.loadList(pingerList);
+            pingListGroupController.resetProgressBar();
+            clearAndUpdateValues(item);
+        }
     }
 
     private void selectItemStyle(PingGroupItemController item) {
@@ -275,10 +288,10 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
 
     @Override
     public void showPane() {
-        this.setVisible(true);
-        this.setStyle("-fx-background-color : #02050A");
-        this.toFront();
         logger.trace("showPane");
+        this.setVisible(true);
+        this.setStyle(Utils.SCREEN_BACKGROUND_COLOR);
+        this.toFront();
     }
 
     @Override

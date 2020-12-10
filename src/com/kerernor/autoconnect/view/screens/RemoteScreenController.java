@@ -88,6 +88,8 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
     private ScheduledFuture timer;
     private final static Set<JSearchableTextFlowController> activeSearchableTextFlowMap = ConcurrentHashMap.newKeySet();
     private boolean isLongPressActive = false;
+    FilteredList<Computer> computerFilteredList;
+    FilteredList<LastConnectionItem> historySearchFilteredList;
     ScheduledFuture<?> timerForLongPress;
 
     public static RemoteScreenController getInstance() {
@@ -117,20 +119,114 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
 
     @FXML
     public void initialize() {
-        FilteredList<Computer> computerFilteredList = new FilteredList<>(ComputerData.getInstance().getComputersList(), computer -> true);
-        FilteredList<LastConnectionItem> historySearchFilteredList = new FilteredList<>(LastConnectionData.getInstance().getLastConnectionItems(), pingItemsScrollPane -> true);
+        init();
+        updateCounters();
+        quickConnectTextFieldAddListener();
+        addListenersToOtherControllers();
+        searchAreaControllerAddListeners();
+        lastConnectionsPopupControllerAddListeners();
+        noResultLabelInitAndAddListener();
+        addListenersToMoveRowsArrows();
+        createToolTipToNodes();
+        mainPane.setOnMousePressed(e -> mainPane.requestFocus());
+        Platform.runLater(() -> quickConnectTextField.requestFocus());
+//        computerListController.addEventHandler(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, event -> {
+//            event.consume();
+//        });
+
+    }
+
+    private void init() {
+        computerFilteredList = new FilteredList<>(ComputerData.getInstance().getComputersList(), computer -> true);
+        historySearchFilteredList = new FilteredList<>(LastConnectionData.getInstance().getLastConnectionItems(), pingItemsScrollPane -> true);
         computerListController.setPaneBehind(this.mainPane);
         computerListController.loadList(computerFilteredList);
         lastConnectionsPopupController.setList(historySearchFilteredList);
         isHistoryListEmpty.set(historySearchFilteredList.size() == 0);
         openCloseHistoryImage.disableProperty().bind(isHistoryListEmpty);
         saveChangesButton.disableProperty().bind(Bindings.not(ComputerData.getInstance().isComputerListHasChangedProperty()));
-        updateCounters();
+        searchAreaController.setInitData("Filter list", 18, searchAreaController.getPrefWidth());
+        searchAreaController.setTextFieldColor("#fff");
+    }
+
+    private void createToolTipToNodes() {
+        Utils.createTooltipListener(addNewComputerButton, Utils.NEW_ITEM, KorTypes.ShowNodeFrom.LEFT);
+        Utils.createTooltipListener(saveChangesButton, Utils.SAVE_CHANGES, KorTypes.ShowNodeFrom.LEFT);
+    }
+
+    private void addListenersToMoveRowsArrows() {
+        upRowButton.setOnMouseClicked(this::upComputerInList);
+        downRowButton.setOnMouseClicked(this::downComputerInList);
+
+        upRowButton.setOnMousePressed(this::longPressOnUpOrDownArrow);
+        downRowButton.setOnMousePressed(this::longPressOnUpOrDownArrow);
+
+        upRowButton.disableProperty().bind(Bindings.not(isAllowedToMoveRows));
+        downRowButton.disableProperty().bind(Bindings.not(isAllowedToMoveRows));
+    }
+
+    private void addListenersToOtherControllers() {
+        computerListController.addEventHandler(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, event -> {
+            connectToVNC(event.getIpAddress());
+        });
+
+        viewOnlyCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            isViewOnly = newValue;
+        });
+
+        quickConnectBtn.setOnAction(actionEvent -> {
+            connectToVNC(quickConnectTextField.getText());
+        });
 
         ComputerData.getInstance().getComputersList().addListener((ListChangeListener<? super Computer>) c -> {
             logger.trace("ComputerData ListChangeListener");
             final String input = searchAreaController.getTextField().getText();
             Utils.updateStyleOnText(input, input.toLowerCase(), KorCommon.getInstance().getRemoteScreenController());
+        });
+
+    }
+
+    private void searchAreaControllerAddListeners() {
+        searchAreaController.getTextField().setOnKeyReleased(keyEvent -> {
+            String input = searchAreaController.getTextField().getText().toLowerCase();
+            Utils.setTextFieldOrientationByDetectLanguage(input, searchAreaController.getTextField(), true); // change direction if needed
+
+            isAllowedToMoveRows.set(input.isEmpty());
+            ; // allow or disallow to move rows
+            String inputWithoutLowerCase = searchAreaController.getTextField().getText();
+
+            computerFilteredList.setPredicate(input.isEmpty() ? computer -> true :
+                    computer -> computer.getIp().contains(input) ||
+                            computer.getName().toLowerCase().contains(input) ||
+                            computer.getItemLocation().toLowerCase().contains(input));
+            computerListController.scrollTo(0);
+
+            if (Utils.IS_MARK_SEARCH_ACTIVE) {
+                stopTimer(timer);
+                timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
+                    Utils.updateStyleOnText(input, inputWithoutLowerCase, KorCommon.getInstance().getRemoteScreenController());
+                }, 100, TimeUnit.MILLISECONDS);
+            }
+        });
+    }
+
+    private void lastConnectionsPopupControllerAddListeners() {
+        openCloseHistoryImage.setOnMouseClicked(event -> {
+            if (lastConnectionsPopupController.isShow()) {
+                lastConnectionsPopupController.hide();
+                isHistoryListOpen = false;
+            } else {
+                openLastConnectionPopupController();
+            }
+        });
+
+        lastConnectionsPopupController.addEventFilter(KorEvents.SearchHistoryConnectionEvent.SEARCH_HISTORY_CONNECTION_EVENT_EVENT_TYPE, event -> {
+            event.consume();
+            quickConnectTextField.setText(event.getLastConnectionItem().getIp());
+            lastConnectionsPopupController.hide();
+            isHistoryListOpen = false;
+            quickConnectTextField.requestFocus();
+            quickConnectTextField.selectEnd();
         });
 
         LastConnectionData.getInstance().getLastConnectionItems().addListener((ListChangeListener<? super LastConnectionItem>) c -> {
@@ -142,7 +238,9 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
                 isHistoryListEmpty.set(false);
             }
         });
+    }
 
+    private void quickConnectTextFieldAddListener() {
         quickConnectTextField.setOnKeyReleased(keyEvent -> {
             String input = quickConnectTextField.getText();
 
@@ -163,81 +261,6 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
                 }
             }
         });
-
-        quickConnectBtn.setOnAction(actionEvent -> {
-            connectToVNC(quickConnectTextField.getText());
-        });
-
-        searchAreaController.getTextField().setOnKeyReleased(keyEvent -> {
-            String input = searchAreaController.getTextField().getText().toLowerCase();
-            Utils.setTextFieldOrientationByDetectLanguage(input, searchAreaController.getTextField(), true); // change direction if needed
-
-            isAllowedToMoveRows.set(input.isEmpty());; // allow or disallow to move rows
-            String inputWithoutLowerCase = searchAreaController.getTextField().getText();
-
-            computerFilteredList.setPredicate(input.isEmpty() ? computer -> true :
-                    computer -> computer.getIp().contains(input) ||
-                            computer.getName().toLowerCase().contains(input) ||
-                            computer.getItemLocation().toLowerCase().contains(input));
-            computerListController.scrollTo(0);
-
-            if (Utils.IS_MARK_SEARCH_ACTIVE) {
-                stopTimer(timer);
-                timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
-                    Utils.updateStyleOnText(input, inputWithoutLowerCase, KorCommon.getInstance().getRemoteScreenController());
-                }, 100, TimeUnit.MILLISECONDS);
-            }
-        });
-
-//        computerListController.addEventHandler(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, event -> {
-//            event.consume();
-//        });
-
-        computerListController.addEventHandler(KorEvents.ConnectVNCEvent.CONNECT_VNC_EVENT_EVENT, event -> {
-            connectToVNC(event.getIpAddress());
-        });
-
-        viewOnlyCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            isViewOnly = newValue;
-        });
-
-        openCloseHistoryImage.setOnMouseClicked(event -> {
-            if (lastConnectionsPopupController.isShow()) {
-                lastConnectionsPopupController.hide();
-                isHistoryListOpen = false;
-            } else {
-                openLastConnectionPopupController();
-            }
-        });
-
-        lastConnectionsPopupController.addEventFilter(KorEvents.SearchHistoryConnectionEvent.SEARCH_HISTORY_CONNECTION_EVENT_EVENT_TYPE, event -> {
-            event.consume();
-            quickConnectTextField.setText(event.getLastConnectionItem().getIp());
-            lastConnectionsPopupController.hide();
-            isHistoryListOpen = false;
-            quickConnectTextField.requestFocus();
-            quickConnectTextField.selectEnd();
-        });
-
-        searchAreaController.setInitData("Filter list", 18, searchAreaController.getPrefWidth());
-        searchAreaController.setTextFieldColor("#fff");
-
-        mainPane.setOnMousePressed(e -> mainPane.requestFocus());
-
-        Platform.runLater(() -> quickConnectTextField.requestFocus());
-
-        noResultLabelInitAndAddListener();
-        Utils.createTooltipListener(addNewComputerButton, Utils.NEW_ITEM, KorTypes.ShowNodeFrom.LEFT);
-        Utils.createTooltipListener(saveChangesButton, Utils.SAVE_CHANGES, KorTypes.ShowNodeFrom.LEFT);
-
-        upRowButton.setOnMouseClicked(this::upComputerInList);
-        downRowButton.setOnMouseClicked(this::downComputerInList);
-
-        upRowButton.setOnMousePressed(this::longPressOnUpOrDownArrow);
-        downRowButton.setOnMousePressed(this::longPressOnUpOrDownArrow);
-
-        upRowButton.disableProperty().bind(Bindings.not(isAllowedToMoveRows));
-        downRowButton.disableProperty().bind(Bindings.not(isAllowedToMoveRows));
     }
 
     private void stopTimer(ScheduledFuture<?> timer) {
@@ -383,10 +406,10 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
 
     @Override
     public void showPane() {
-        this.setVisible(true);
-        this.setStyle("-fx-background-color : #02050A");
-        this.toFront();
         logger.trace("showPane");
+        this.setVisible(true);
+        this.setStyle(Utils.SCREEN_BACKGROUND_COLOR);
+        this.toFront();
     }
 
     public LastConnectionsPopupController getLastConnectionsPopupController() {

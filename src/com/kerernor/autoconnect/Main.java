@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -71,21 +72,25 @@ public class Main extends Application {
         this.rootLayout.setOnMousePressed(event -> {
             x = event.getSceneX();
             y = event.getSceneY();
-            if (!(event.getTarget() instanceof ImageView)) {
-                MainController mainController = loader.getController();
-                final RemoteScreenController remoteScreenController = mainController.getRemoteScreenController();
-                if (remoteScreenController.getLastConnectionsPopupController().isShow()) {
-                    remoteScreenController.getLastConnectionsPopupController().hide();
-                    remoteScreenController.setHistoryListOpen(false);
-                    logger.trace("hide last connection popup");
-                }
-            }
+            closePopupIfOpened(event);
         });
 
         this.rootLayout.setOnMouseDragged(event -> {
             primaryStage.setX(event.getScreenX() - x);
             primaryStage.setY(event.getScreenY() - y);
         });
+    }
+
+    private void closePopupIfOpened(MouseEvent event) {
+        if (!(event.getTarget() instanceof ImageView)) {
+            MainController mainController = loader.getController();
+            final RemoteScreenController remoteScreenController = mainController.getRemoteScreenController();
+            if (remoteScreenController.getLastConnectionsPopupController().isShow()) {
+                remoteScreenController.getLastConnectionsPopupController().hide();
+                remoteScreenController.setHistoryListOpen(false);
+                logger.trace("hide last connection popup");
+            }
+        }
     }
 
     @Override
@@ -106,10 +111,5 @@ public class Main extends Application {
         LastConnectionData.getInstance().storeData();
         LastRemoteDriveData.getInstance().storeData();
         System.exit(0);
-    }
-
-
-    public Stage getPrimaryStage() {
-        return primaryStage;
     }
 }
