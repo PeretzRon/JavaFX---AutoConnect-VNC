@@ -20,7 +20,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -39,7 +40,7 @@ public class AlertPopupController {
     @FXML
     private ImageView alertIcon;
 
-    Logger logger = Logger.getLogger(AlertPopupController.class);
+    private Logger logger = LogManager.getLogger(AlertPopupController.class);
     private Stage stage;
     private static Queue<AlertPopupController> queue = new ArrayDeque<>();
     BorderPane borderPane;

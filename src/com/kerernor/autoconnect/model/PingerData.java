@@ -4,7 +4,8 @@ import com.google.gson.Gson;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PingerData {
-    private Logger logger = Logger.getLogger(PingerData.class);
+    private Logger logger = LogManager.getLogger(PingerData.class);
     private static PingerData instance = new PingerData();
     private ObservableList<Pinger> pingerObservableList;
 

@@ -30,7 +30,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Set;
@@ -79,7 +80,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
     @FXML
     private Button upRowButton;
 
-    private Logger logger = Logger.getLogger(RemoteScreenController.class);
+    private Logger logger = LogManager.getLogger(RemoteScreenController.class);
     private static RemoteScreenController instance = null;
     private final BooleanProperty isHistoryListEmpty = new SimpleBooleanProperty(true);
     private final BooleanProperty isAllowedToMoveRows = new SimpleBooleanProperty(true);

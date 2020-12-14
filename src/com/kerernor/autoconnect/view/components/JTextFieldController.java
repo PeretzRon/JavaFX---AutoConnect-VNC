@@ -16,7 +16,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -33,7 +34,7 @@ public class JTextFieldController extends StackPane {
     @FXML
     Line lineDraw;
 
-    private Logger logger = Logger.getLogger(JTextFieldController.class);
+    private Logger logger = LogManager.getLogger(JTextFieldController.class);
     private TranslateTransition translateTransitionForPlaceHolder;
     private ParallelTransition parallelTransition;
     private final ObjectProperty<Color> colorLineUnderTextField = new SimpleObjectProperty<>(Color.rgb(40, 20, 190));

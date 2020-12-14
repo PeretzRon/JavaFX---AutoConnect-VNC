@@ -10,7 +10,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class JSearchableTextFlowController extends TextFlow {
     private Color colorFoundText = Color.YELLOW;
     private Color colorOfText = Color.WHITE;
     List<Integer> listOfIndexThatFoundOnKMP = new ArrayList<>();
-    private final Logger logger = Logger.getLogger(JSearchableTextFlowController.class);
+    private final Logger logger = LogManager.getLogger(JSearchableTextFlowController.class);
 
     @FXML
     public void initialize() {

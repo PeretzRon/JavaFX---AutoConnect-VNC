@@ -2,24 +2,18 @@ package com.kerernor.autoconnect.view.screens;
 
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.util.Utils;
-import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
 import javafx.scene.web.WebView;
-import javafx.util.Duration;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Paths;
 
 public class AboutScreenController extends Pane implements IDisplayable {
 
@@ -36,7 +30,7 @@ public class AboutScreenController extends Pane implements IDisplayable {
     @FXML
     private WebView webView;
 
-    private Logger logger = Logger.getLogger(AboutScreenController.class);
+    private Logger logger = LogManager.getLogger(AboutScreenController.class);
     FXMLLoader loader = null;
     private static AboutScreenController instance = null;
     URL url = this.getClass().getResource("/com/kerernor/autoconnect/images/app-icon-animated.html");

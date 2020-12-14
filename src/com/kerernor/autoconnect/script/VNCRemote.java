@@ -5,7 +5,8 @@ import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.popups.AlertPopupController;
 import javafx.application.Platform;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -15,7 +16,7 @@ public class VNCRemote {
     private static final String mPathToVNC = Utils.VNC_PROGRAM_PATH;
     private static final String mPathScript = Utils.VNC_SCRIPT_PATH;
     private static final String mAdminPassword = "P@ssw0rd";
-    private static Logger logger = Logger.getLogger(VNCRemote.class);
+    private static Logger logger = LogManager.getLogger(VNCRemote.class);
 
     public static void connect(String ip, boolean isViewOnlySelected) {
         logger.info("Try to connect via VNC to: " + ip + " ViewOnly: " + isViewOnlySelected);

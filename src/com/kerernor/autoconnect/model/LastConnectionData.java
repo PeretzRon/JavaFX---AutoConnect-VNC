@@ -2,10 +2,10 @@ package com.kerernor.autoconnect.model;
 
 import com.google.gson.Gson;
 import com.kerernor.autoconnect.util.Utils;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -20,7 +20,7 @@ public class LastConnectionData {
 
     private static final LastConnectionData instance = new LastConnectionData();
     private ObservableList<LastConnectionItem> lastConnectionItems = FXCollections.observableArrayList();
-    private Logger logger = Logger.getLogger(LastConnectionData.class);
+    private Logger logger = LogManager.getLogger(LastConnectionData.class);
 
     private LastConnectionData() {
     }

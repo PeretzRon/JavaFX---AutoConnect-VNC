@@ -9,7 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -18,7 +19,7 @@ public class LastConnectionListController extends ListView {
     @FXML
     private ListView<LastConnectionItem> lastConnectionList;
 
-    private Logger logger = Logger.getLogger(LastConnectionListController.class);
+    private Logger logger = LogManager.getLogger(LastConnectionListController.class);
 
     public LastConnectionListController() {
         super();

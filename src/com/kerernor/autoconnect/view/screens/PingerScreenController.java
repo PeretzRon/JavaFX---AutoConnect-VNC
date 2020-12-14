@@ -24,7 +24,8 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -62,7 +63,7 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
     @FXML
     private Label noResultLabel;
 
-    private Logger logger = Logger.getLogger(PingerScreenController.class);
+    private Logger logger = LogManager.getLogger(PingerScreenController.class);
     private static PingerScreenController instance = null;
     private final BooleanProperty isRunPingerButtonDisabled = new SimpleBooleanProperty(true);
     private final AtomicInteger passPing = new AtomicInteger(0);

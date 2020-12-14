@@ -23,7 +23,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class ComputerRowController extends ListCell<Computer> {
     private FXMLLoader loader;
     private Parent paneBehind;
     private static BooleanProperty isButtonsDisabled = new SimpleBooleanProperty(false);
-    private Logger logger = Logger.getLogger(ComputerRowController.class);
+    private Logger logger = LogManager.getLogger(ComputerRowController.class);
 
     public void initialize() {
         computerName.setColorFoundText(Color.YELLOW);

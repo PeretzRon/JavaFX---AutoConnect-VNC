@@ -1,11 +1,12 @@
 package com.kerernor.autoconnect.util;
 
 import com.kerernor.autoconnect.view.screens.ISearchTextFlow;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MonitoringUtility {
 
-    Logger logger = Logger.getLogger(MonitoringUtility.class);
+    Logger logger = LogManager.getLogger(MonitoringUtility.class);
     private static MonitoringUtility instance = null;
     private Boolean isContinue = true;
 

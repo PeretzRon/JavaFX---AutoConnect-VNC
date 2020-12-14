@@ -7,7 +7,8 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -19,7 +20,7 @@ public class LastConnectionsPopupController extends GridPane {
     @FXML
     private LastConnectionListController lastConnectionListController;
 
-    private Logger logger = Logger.getLogger(LastConnectionsPopupController.class);
+    private Logger logger = LogManager.getLogger(LastConnectionsPopupController.class);
 
     public LastConnectionsPopupController() {
         loadView();

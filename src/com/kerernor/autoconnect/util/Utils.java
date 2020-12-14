@@ -22,10 +22,12 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.ConfigurationSource;
+import org.apache.logging.log4j.core.config.Configurator;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Utils {
 
-    private static Logger logger = Logger.getLogger(Utils.class);
+    private static Logger logger = LogManager.getLogger(Utils.class);
     public static Map<String, Image> appImages = new HashMap<>();
     private static ScheduledFuture timer;
 
@@ -220,12 +222,20 @@ public class Utils {
     public static boolean isNullOrEmptyString(final String str) {
         return str != null && str.length() == 0;
     }
-
     public static void loadAndSetLoggerSetting() {
+        String log4jConfigFile = System.getProperty("user.dir") + File.separator + "config" + File.separator + "log4j2.xml";
+        System.out.println(log4jConfigFile);
+        ConfigurationSource source = null;
+//        try {
+//            source = new ConfigurationSource(new FileInputStream(log4jConfigFile));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        Configurator.initialize(null, source);
         Properties props = new Properties();
         try (InputStream inputStream = new FileInputStream(LOG_4_J_CONFIG)) {
             props.load(inputStream);
-            PropertyConfigurator.configure(props);
+//            PropertyConfigurator.configure(props);
             logger.info("loadAndSetLoggerSetting");
         } catch (IOException e) {
             logger.error("failed to load log4j settings");

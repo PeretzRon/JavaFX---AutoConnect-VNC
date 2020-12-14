@@ -20,7 +20,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -43,7 +44,7 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
     @FXML
     private Label noValueInListLabel;
 
-    private Logger logger = Logger.getLogger(RemoteDriveScreenController.class);
+    private Logger logger = LogManager.getLogger(RemoteDriveScreenController.class);
     private static RemoteDriveScreenController instance = null;
     private static final String DRIVE = "c$";
     Process windowsProcess = null;

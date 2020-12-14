@@ -8,7 +8,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -17,7 +18,7 @@ public class LastRemoteDriveListController extends ListView {
     @FXML
     private ListView<LastRemoteDriveItem> lastRemoteDriveList;
 
-    private Logger logger = Logger.getLogger(LastRemoteDriveListController.class);
+    private Logger logger = LogManager.getLogger(LastRemoteDriveListController.class);
     private Pane paneBehind;
 
     public void setPaneBehind(Pane paneBehind) {

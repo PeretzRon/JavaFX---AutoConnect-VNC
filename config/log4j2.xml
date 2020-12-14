@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="ERROR">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%highlight{%d{yyyy-MM-dd HH:mm:ss:SSS}  %-5p    %-30t  Line:%4L   %c{1} - %m%n}"
+                     disableAnsi="false"/>
+    </Console>
+    <File name="MyFile" fileName="log/app.log">
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss:SSS}  %-5p    %-30t  Line:%4L   %c{1} - %m%n"
+                     disableAnsi="false"/>    </File>
+  </Appenders>
+  <Loggers>
+    <Logger name="com.kerernor.autoconnect" level="TRACE">
+      <Console name="Console" target="SYSTEM_OUT">
+      </Console>
+    </Logger>
+    <Root level="ERROR">
+      <AppenderRef ref="Console"/>
+      <appender-ref ref="MyFile" level="trace"/>
+    </Root>
+  </Loggers>
+</Configuration>

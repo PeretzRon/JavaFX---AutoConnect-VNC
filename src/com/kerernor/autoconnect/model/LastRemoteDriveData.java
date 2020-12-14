@@ -4,7 +4,8 @@ import com.google.gson.Gson;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -19,7 +20,7 @@ public class LastRemoteDriveData {
 
     private static final LastRemoteDriveData instance = new LastRemoteDriveData();
     private ObservableList<LastRemoteDriveItem> lastRemoteDriveItemsList = FXCollections.observableArrayList();
-    private Logger logger = Logger.getLogger(LastRemoteDriveData.class);
+    private Logger logger = LogManager.getLogger(LastRemoteDriveData.class);
 
     static {
 //        LastRemoteDriveData.getInstance().getLastRemoteDriveItemsList().add(new LastRemoteDriveItem("10.0.0.10", "\\\\10.0.0.10\\c$"));

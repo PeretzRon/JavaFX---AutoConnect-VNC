@@ -17,16 +17,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
 public class Main extends Application {
+    static {
+        System.setProperty("log4j.configurationFile","D:\\Projects\\IntelliJ Projects\\AutoConnectKO\\config\\log4j2.xml");
+    }
     private double x, y;
     private Stage primaryStage;
     private AnchorPane rootLayout;
     private FXMLLoader loader;
-    private Logger logger = Logger.getLogger(Main.class);
+    private Logger logger = LogManager.getLogger(Main.class);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -95,7 +99,7 @@ public class Main extends Application {
 
     @Override
     public void init() throws Exception {
-        Utils.loadAndSetLoggerSetting();
+//        Utils.loadAndSetLoggerSetting();
         Utils.loadAppSettings();
         ComputerData.getInstance().loadData();
         PingerData.getInstance().loadData();

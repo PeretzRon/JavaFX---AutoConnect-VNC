@@ -15,7 +15,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -29,7 +30,7 @@ import java.util.function.Consumer;
 
 public class ComputerData {
 
-    private final Logger logger = Logger.getLogger(ComputerData.class);
+    private final Logger logger = LogManager.getLogger(ComputerData.class);
     private static final ComputerData instance = new ComputerData();
     private ObservableList<Computer> computersList; // use observable for binding data
     private ObservableList<Computer> computersListBackup; // use observable for binding data
