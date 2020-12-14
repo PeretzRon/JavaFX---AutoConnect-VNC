@@ -77,7 +77,7 @@ public class AddEditPingerItemsController extends GridPane {
     private SequentialTransition anim = new SequentialTransition(scale1, scale2);
 
     public AddEditPingerItemsController(Parent paneBehind, Pinger pingerItem, boolean isEditItem) {
-        logger.trace("AddEditPingerItemsController");
+        logger.debug("AddEditPingerItemsController");
         this.paneBehind = paneBehind;
         this.pingerItem = pingerItem;
         this.isEditItem = isEditItem;

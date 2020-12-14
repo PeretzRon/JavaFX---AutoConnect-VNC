@@ -180,7 +180,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
         });
 
         ComputerData.getInstance().getComputersList().addListener((ListChangeListener<? super Computer>) c -> {
-            logger.trace("ComputerData ListChangeListener");
+            logger.debug("ComputerData ListChangeListener");
             final String input = searchAreaController.getTextField().getText();
             Utils.updateStyleOnText(input, input.toLowerCase(), KorCommon.getInstance().getRemoteScreenController());
         });
@@ -288,7 +288,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
 
     private void openLastConnectionPopupController() {
         if (LastConnectionData.getInstance().getLastConnectionItems().size() > 0) {
-            logger.trace("openLastConnectionPopupController");
+            logger.debug("openLastConnectionPopupController");
             lastConnectionsPopupController.show();
             isHistoryListOpen = true;
         }
@@ -335,7 +335,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
 
     private void onLongPressDetected(MouseEvent event) {
         isLongPressActive = true;
-        logger.trace("long press - upComputerInList");
+        logger.debug("long press - upComputerInList");
         int currentIndex = computerListController.getCurrent();
         Computer computer = computerListController.getComputerListView().getItems().get(currentIndex);
         Platform.runLater(() -> {
@@ -390,7 +390,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
     }
 
     public void saveChangesHandler() {
-        logger.trace("saveChangesHandler");
+        logger.debug("saveChangesHandler");
         disableButtonWhileSaveData(true);
         ComputerData.getInstance().saveChangesToDB(isFinishedSuccessfully -> {
             Platform.runLater(() -> {
@@ -407,7 +407,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
 
     @Override
     public void showPane() {
-        logger.trace("showPane");
+        logger.debug("showPane");
         this.setVisible(true);
         this.setStyle(Utils.SCREEN_BACKGROUND_COLOR);
         this.toFront();

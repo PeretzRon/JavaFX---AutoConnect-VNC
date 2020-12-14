@@ -69,21 +69,21 @@ public class ComputerData {
     }
 
     public void remove(Computer computerToDelete) {
-        logger.trace("delete computer item - " + computerToDelete.getName());
+        logger.debug("delete computer item - " + computerToDelete.getName());
         computersList.remove(computerToDelete);
         updateCounters(computerToDelete, -1);
         isComputerListHasChanged();
     }
 
     public void add(Computer newComputer) {
-        logger.trace("add new computer - " + newComputer.getName());
+        logger.debug("add new computer - " + newComputer.getName());
         computersList.add(newComputer);
         updateCounters(newComputer, 1);
         isComputerListHasChanged();
     }
 
     public void update(Computer updatedComputer) {
-        logger.trace("update computer - " + updatedComputer.getName());
+        logger.debug("update computer - " + updatedComputer.getName());
         for (int i = 0; i < computersList.size(); i++) {
             if (computersList.get(i).getId().equals(updatedComputer.getId())) {
                 computersList.set(i, updatedComputer.clone());
@@ -108,12 +108,12 @@ public class ComputerData {
 
     public void removeAndInsertToEnd(Computer computer) {
         computersList.remove(computer);
-        computersList.add(computersList.size() , computer);
+        computersList.add(computersList.size(), computer);
         isComputerListHasChanged();
     }
 
     public void loadData() {
-        logger.trace("ComputerData.loadData");
+        logger.debug("ComputerData.loadData");
         computersList = FXCollections.observableArrayList(); // FXCollection is for better performance
         computersListBackup = FXCollections.observableArrayList();
         computerListSize = Bindings.size(computersList);
@@ -134,7 +134,7 @@ public class ComputerData {
     }
 
     public void storeData() throws IOException {
-        logger.trace("storeData");
+        logger.debug("storeData");
         Path path = Paths.get(Utils.COMPUTER_DATA);
         try (BufferedWriter bw = Files.newBufferedWriter(path)) {
             List<Computer> computerListToSave = new ArrayList<>(computersList);
@@ -148,21 +148,15 @@ public class ComputerData {
         if (computer.getComputerType() == KorTypes.ComputerType.RCGW) {
             int oldValue = rcgwCounterItems.get();
             rcgwCounterItems.set(oldValue + value);
-            if (Utils.IS_FULL_TRACE) {
-                logger.info("update RCGW: oldValue: " + oldValue + " NewValue: " + rcgwCounterItems.get());
-            }
+            logger.trace("update RCGW: oldValue: " + oldValue + " NewValue: " + rcgwCounterItems.get());
         } else if (computer.getComputerType() == KorTypes.ComputerType.Station) {
             int oldValue = stationCounterItems.get();
             stationCounterItems.set(stationCounterItems.get() + value);
-            if (Utils.IS_FULL_TRACE) {
-                logger.info("update Station: oldValue: " + oldValue + " NewValue: " + stationCounterItems.get());
-            }
+            logger.trace("update Station: oldValue: " + oldValue + " NewValue: " + stationCounterItems.get());
         } else {
             int oldValue = otherCounterItems.get();
             otherCounterItems.set(otherCounterItems.get() + value);
-            if (Utils.IS_FULL_TRACE) {
-                logger.info("update Other: oldValue: " + oldValue + " NewValue: " + otherCounterItems.get());
-            }
+            logger.trace("update Other: oldValue: " + oldValue + " NewValue: " + otherCounterItems.get());
         }
     }
 
@@ -208,7 +202,7 @@ public class ComputerData {
     }
 
     public void saveChangesToDB(Consumer<Boolean> isFinishedSuccessfully) {
-        logger.trace("saveChangesToDB");
+        logger.debug("saveChangesToDB");
         isComputerListHasChanged.set(false); // prevent from user to click again until the operation complete
         ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
             try {

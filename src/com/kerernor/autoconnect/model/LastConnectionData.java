@@ -43,7 +43,7 @@ public class LastConnectionData {
     }
 
     public void storeData() throws IOException {
-        logger.trace("LastConnectionData.storeData");
+        logger.debug("LastConnectionData.storeData");
         Path path = Paths.get(Utils.LAST_CONNECTIONS_HISTORY_DATA);
         try (BufferedWriter bw = Files.newBufferedWriter(path)) {
             List<LastConnectionItem> lastConnectionItemsList = new ArrayList<>(lastConnectionItems);
@@ -54,7 +54,7 @@ public class LastConnectionData {
     }
 
     public void loadData() {
-        logger.trace("LastConnectionData.loadData");
+        logger.debug("LastConnectionData.loadData");
         lastConnectionItems = FXCollections.observableArrayList(); // FXCollection is for better performance
         LastConnectionItem[] lastConnectionItemsList = {};
         try (Reader reader = new InputStreamReader(new FileInputStream(Utils.LAST_CONNECTIONS_HISTORY_DATA), StandardCharsets.UTF_8)) {

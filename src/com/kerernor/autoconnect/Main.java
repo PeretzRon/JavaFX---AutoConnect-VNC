@@ -20,12 +20,16 @@ import javafx.stage.StageStyle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Main extends Application {
     static {
-        System.setProperty("log4j.configurationFile","D:\\Projects\\IntelliJ Projects\\AutoConnectKO\\config\\log4j2.xml");
+        String filePath = new File("").getAbsolutePath();
+        filePath = filePath.concat(File.separator + "config" + File.separator + "log4j2.xml");
+        System.setProperty("log4j.configurationFile", filePath);
     }
+
     private double x, y;
     private Stage primaryStage;
     private AnchorPane rootLayout;
@@ -35,7 +39,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        logger.trace("********************** Start Main *************************");
+        logger.info("********************** Start Main *************************");
         logger.info("Java version: " + System.getProperty("sun.arch.data.model"));
         this.primaryStage = primaryStage;
         initRootLayout();
@@ -52,7 +56,7 @@ public class Main extends Application {
     private void initRootLayout() {
         try {
             // Load root layout from fxml file.
-            logger.trace("initRootLayout");
+            logger.debug("initRootLayout");
             KorCommon.getInstance();
             loader = new FXMLLoader(getClass().getResource(Utils.MAIN_VIEW));
             this.rootLayout = loader.load();
@@ -72,7 +76,7 @@ public class Main extends Application {
     }
 
     private void makeStageDraggable() {
-        logger.trace("makeStageDraggable");
+        logger.debug("makeStageDraggable");
         this.rootLayout.setOnMousePressed(event -> {
             x = event.getSceneX();
             y = event.getSceneY();
@@ -92,7 +96,7 @@ public class Main extends Application {
             if (remoteScreenController.getLastConnectionsPopupController().isShow()) {
                 remoteScreenController.getLastConnectionsPopupController().hide();
                 remoteScreenController.setHistoryListOpen(false);
-                logger.trace("hide last connection popup");
+                logger.debug("hide last connection popup");
             }
         }
     }
@@ -109,7 +113,7 @@ public class Main extends Application {
 
     @Override
     public void stop() throws Exception {
-        logger.trace("Main.stop");
+        logger.debug("Main.stop");
         ComputerData.getInstance().storeData();
         PingerData.getInstance().storeData();
         LastConnectionData.getInstance().storeData();

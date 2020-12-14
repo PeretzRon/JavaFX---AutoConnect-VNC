@@ -57,7 +57,7 @@ public class LastRemoteDriveData {
     }
 
     public void loadData() {
-        logger.trace("LastRemoteDriveData.loadData");
+        logger.debug("LastRemoteDriveData.loadData");
         lastRemoteDriveItemsList = FXCollections.observableArrayList(); // FXCollection is for better performance
         LastRemoteDriveItem[] lastRemoteDriveItems = {};
         try (Reader reader = new InputStreamReader(new FileInputStream(Utils.LAST_CONNECTIONS_HISTORY_SHARE_DRIVE_DATA), StandardCharsets.UTF_8)) {
@@ -73,7 +73,7 @@ public class LastRemoteDriveData {
     }
 
     public void storeData() throws IOException {
-        logger.trace("storeData");
+        logger.debug("storeData");
         Path path = Paths.get(Utils.LAST_CONNECTIONS_HISTORY_SHARE_DRIVE_DATA);
         try (BufferedWriter bw = Files.newBufferedWriter(path)) {
             List<LastRemoteDriveItem> lastRemoteDriveItems = new ArrayList<>(lastRemoteDriveItemsList);

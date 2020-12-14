@@ -21,7 +21,7 @@ public class MonitoringUtility {
     }
 
     public void start() {
-        logger.trace("start");
+        logger.debug("start");
         ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
             Thread.currentThread().setName(Utils.MONITORING_UTILITY_THREAD_NAME);
             while (isContinue) {
@@ -29,7 +29,7 @@ public class MonitoringUtility {
                     synchronized (isContinue) {
                         isContinue.wait(Utils.TIME_FOR_PERIOD_OF_MONITORING_UTILITY_MILLI_SECONDS);
                     }
-                    logger.debug("MonitoringUtility execute");
+                    logger.info("MonitoringUtility execute");
                     clearMapOfTextFlow(KorCommon.getInstance().getRemoteScreenController());
                     clearMapOfTextFlow(KorCommon.getInstance().getPingerScreenController());
                 } catch (InterruptedException ignore) {

@@ -103,7 +103,7 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
 
     @FXML
     public void openRemoteWindowBtnHandler() {
-        logger.trace("openRemoteWindowBtnHandler");
+        logger.debug("openRemoteWindowBtnHandler");
         String ip = ipTextFieldForRemoteWindow.getText();
         if (!isIPCorrectToConnect(ip)) return; // ip not valid can't continue with the operation
         String pathToConnect = createPathFromIP(ip);
@@ -130,7 +130,7 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
         processLoadingProgressBar.setVisible(true);
         ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
             try {
-                logger.trace("openRemoteWindowBtnInternal - " + pathToConnect);
+                logger.debug("openRemoteWindowBtnInternal - " + pathToConnect);
                 logger.info("try connect to path: " + pathToConnect);
                 Platform.runLater(() -> LastRemoteDriveData.getInstance().addItemIfNotExist(new LastRemoteDriveItem(ip, pathToConnect)));
                 windowsProcess = new ProcessBuilder("explorer.exe", pathToConnect).start();
@@ -155,7 +155,7 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
 
     @FXML
     public void cancelOpenRemoteWindowBtnHandler() {
-        logger.trace("cancelOpenRemoteWindowBtnHandler");
+        logger.debug("cancelOpenRemoteWindowBtnHandler");
         if (windowsProcess != null && windowsProcess.isAlive()) {
             windowsProcess.destroy();
             logger.info("openRemoteWindow - operation canceled by user");
@@ -164,10 +164,10 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
 
     @Override
     public void showPane() {
+        logger.debug("showPane");
         this.setVisible(true);
         this.setStyle("-fx-background-color : #02050A");
         this.toFront();
-        logger.trace("showPane");
     }
 
     public static BooleanProperty isProcessRunningProperty() {

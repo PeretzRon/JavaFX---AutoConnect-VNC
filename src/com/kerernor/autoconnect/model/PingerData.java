@@ -30,7 +30,7 @@ public class PingerData {
     }
 
     public void loadData() {
-        logger.trace("PingerData.loadData");
+        logger.debug("PingerData.loadData");
         pingerObservableList = FXCollections.observableArrayList(); // FXCollection is for better performance
         Pinger[] pingers;
         try (Reader reader = new InputStreamReader(new FileInputStream(Utils.PINGER_DATA), StandardCharsets.UTF_8)) {
@@ -43,7 +43,7 @@ public class PingerData {
     }
 
     public void storeData() throws IOException {
-        logger.trace("storeData");
+        logger.debug("storeData");
         Path path = Paths.get(Utils.PINGER_DATA);
         try (BufferedWriter bw = Files.newBufferedWriter(path)) {
             List<Pinger> pingerList = new ArrayList<>(pingerObservableList);

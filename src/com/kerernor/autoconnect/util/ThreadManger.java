@@ -19,7 +19,7 @@ public class ThreadManger {
 
     public static ThreadManger getInstance() {
         if (instance == null) {
-            logger.trace("Create ThreadManger ");
+            logger.debug("Create ThreadManger ");
             instance = new ThreadManger();
         }
         return instance;

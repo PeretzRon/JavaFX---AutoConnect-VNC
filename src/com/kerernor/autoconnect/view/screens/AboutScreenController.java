@@ -71,7 +71,7 @@ public class AboutScreenController extends Pane implements IDisplayable {
 
     @Override
     public void showPane() {
-        logger.trace("showPane");
+        logger.debug("showPane");
         webView.getEngine().load(url.toString());
         this.setVisible(true);
         this.setStyle(Utils.SCREEN_BACKGROUND_COLOR);

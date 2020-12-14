@@ -102,7 +102,7 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
 
     private void addEventsHandlerForFlowPane() {
         flowPaneGroupPinger.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_ITEM, event -> {
-            logger.trace("KorEvents.PingerEvent.UPDATE_PINGER_ITEMS");
+            logger.debug("KorEvents.PingerEvent.UPDATE_PINGER_ITEMS");
             pingListGroupController.getPingerListView().getChildren().clear();
             ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(event.getName());
             pingListGroupController.loadList(pingerList);
@@ -110,12 +110,12 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
         });
 
         flowPaneGroupPinger.addEventHandler(KorEvents.PingerEvent.UPDATE_PINGER_NAME, event -> {
-            logger.trace("KorEvents.PingerEvent.UPDATE_PINGER_NAME");
+            logger.debug("KorEvents.PingerEvent.UPDATE_PINGER_NAME");
             refreshPingerItemWhenUpdated(event.getListSize());
         });
 
         PingerData.getInstance().getPingerObservableList().addListener((ListChangeListener<? super Pinger>) c -> {
-            logger.trace("ListChangeListener - Pinger");
+            logger.debug("ListChangeListener - Pinger");
             refreshPingerItemWhenUpdated(c.getList().size());
         });
     }
@@ -175,14 +175,14 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
 
     @FXML
     public void addPingerItemHandler() {
-        logger.trace("addPingerItemHandler");
+        logger.debug("addPingerItemHandler");
         AddEditPingerItemsController addEditPingerItemsController = new AddEditPingerItemsController(pnlSetting, null, false);
         addEditPingerItemsController.show();
     }
 
     @FXML
     public void checkPingHandler() {
-        logger.trace("Start Sending Ping");
+        logger.debug("Start Sending Ping");
         isCheckPingRunning = true;
         int listSizeOfCurrentSelected = pingListGroupController.getListToSendPing().size();
         AtomicReference<Double> progress = new AtomicReference<>((double) 0);
@@ -196,14 +196,14 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
     }
 
     private void refreshPingerItemWhenUpdated(int listSize) {
-        logger.trace("refreshPingerItemWhenUpdated");
+        logger.debug("refreshPingerItemWhenUpdated");
         selectedPingGroupName.setText("");
         createPingerGroups(filterPingerGroup.getText());
         pingListGroupController.getPingerListView().getChildren().clear();
     }
 
     private void resetCounterAndProgressBarForPingerScreen() {
-        logger.trace("resetCounterAndProgressBarForPingerScreen");
+        logger.debug("resetCounterAndProgressBarForPingerScreen");
         pingListGroupController.resetProgressBar();
         totalProgress.setProgress(0);
         totalProgress.setVisible(true);
@@ -211,7 +211,7 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
     }
 
     private void sendPing(PingerItem pingerItem, AtomicReference<Double> progress, double buffer, int listSize) {
-        logger.info("Send Ping to: " + pingerItem.getIpAddress());
+        logger.trace("Send Ping to: " + pingerItem.getIpAddress());
         if (Utils.isValidateIpAddress(pingerItem.getIpAddress())) {
             try {
                 InetAddress ip = InetAddress.getByName(pingerItem.getIpAddress());
@@ -261,7 +261,7 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
         event.consume();
         PingGroupItemController item = (PingGroupItemController) event.getSource();
         if (item != null) {
-            logger.trace("selected item: " + item.getPingerItem().getName());
+            logger.debug("selected item: " + item.getPingerItem().getName());
             ObservableList<PingerItem> pingerList = PingerData.getInstance().getListOfPingItemByName(item.getPingerItem().getName());
             pingListGroupController.loadList(pingerList);
             pingListGroupController.resetProgressBar();
@@ -289,7 +289,7 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
 
     @Override
     public void showPane() {
-        logger.trace("showPane");
+        logger.debug("showPane");
         this.setVisible(true);
         this.setStyle(Utils.SCREEN_BACKGROUND_COLOR);
         this.toFront();

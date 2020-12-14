@@ -33,7 +33,7 @@ public class VNCRemote {
 
             int exitValue = process.waitFor();
             if (exitValue != 0) {
-                logger.info("Process connect to vnc finished with exitValue: " + exitValue);
+                logger.debug("Process connect to vnc finished with exitValue: " + exitValue);
                 sendAlert(Utils.VNC_PATH_ERROR);
                 return;
             }

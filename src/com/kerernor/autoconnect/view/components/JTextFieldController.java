@@ -65,7 +65,7 @@ public class JTextFieldController extends StackPane {
      */
     @FXML
     private void initialize() {
-        logger.trace("initialize");
+        logger.debug("initialize");
 //        textField.setFocusTraversable(false);
         lineUnderTextField.widthProperty().bind(underLineWidth);
         initControllers();
@@ -126,7 +126,7 @@ public class JTextFieldController extends StackPane {
     }
 
     private void afterInitialize() {
-        logger.trace("afterInitialize");
+        logger.debug("afterInitialize");
         final KeyValue kvStart = new KeyValue(lineDraw.endXProperty(), lineUnderTextField.getWidth());
         final KeyFrame kfStart = new KeyFrame(Duration.millis(TIME_FOR_EFFECT_LINE_ON_UNDER_LINE_WHEN_FOCUS), kvStart);
         timelineOnFocus.getKeyFrames().add(kfStart);

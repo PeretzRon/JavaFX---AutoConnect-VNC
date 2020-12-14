@@ -49,7 +49,7 @@ public class LastConnectionsPopupController extends GridPane {
     }
 
     public void show() {
-        logger.trace("LastConnectionsPopupController.show");
+        logger.debug("LastConnectionsPopupController.show");
         mainPane.setVisible(true);
         lastConnectionListController.getLastConnectionList().scrollTo(0);
         lastConnectionListController.getLastConnectionList().requestFocus();
@@ -60,7 +60,7 @@ public class LastConnectionsPopupController extends GridPane {
     }
 
     public void hide() {
-        logger.trace("LastConnectionsPopupController.hide");
+        logger.debug("LastConnectionsPopupController.hide");
         mainPane.setVisible(false);
     }
 

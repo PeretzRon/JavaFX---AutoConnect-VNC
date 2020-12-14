@@ -21,7 +21,7 @@ public class KorCommon {
 
     public static KorCommon getInstance() {
         if (instance == null) {
-            logger.trace("KorCommon init");
+            logger.debug("KorCommon init");
             instance = new KorCommon();
         }
 

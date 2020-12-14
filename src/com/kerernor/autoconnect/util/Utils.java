@@ -183,7 +183,7 @@ public class Utils {
      * @return BoxBlur effect.
      */
     public static Effect getBlurEffect() {
-        logger.trace("Effect.getBlurEffect");
+        logger.debug("Effect.getBlurEffect");
         BoxBlur blurEffect = new BoxBlur();
         blurEffect.setWidth(BLUR_SIZE);
         blurEffect.setHeight(BLUR_SIZE);
@@ -198,14 +198,14 @@ public class Utils {
      * @return empty effect (null).
      */
     public static Effect getEmptyEffect() {
-        logger.trace("Effect.getEmptyEffect");
+        logger.debug("Effect.getEmptyEffect");
         return null;
     }
 
 
     public static void centerNewStageToBehindStage(Parent paneBehind, Stage newStage) {
         // Calculate the center position of the parent Stage
-        logger.info("centerNewStageToBehindStage");
+        logger.debug("centerNewStageToBehindStage");
         Stage primaryStage = (Stage) paneBehind.getScene().getWindow();
         double centerXPosition = primaryStage.getX() + primaryStage.getWidth() / 2d;
         double centerYPosition = primaryStage.getY() + primaryStage.getHeight() / 2d;

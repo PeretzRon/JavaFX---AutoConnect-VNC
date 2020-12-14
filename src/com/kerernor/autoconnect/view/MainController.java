@@ -83,7 +83,7 @@ public class MainController extends AnchorPane {
 
     @FXML
     private void initialize() {
-        logger.trace("MainController.initialize");
+        logger.debug("MainController.initialize");
         loadScreenInstances();
         currentSelectedMenuButton = btnRemoteScreen;
         pingerScreenController.setVisible(false);
@@ -112,7 +112,7 @@ public class MainController extends AnchorPane {
     }
 
     private void loadKerenOrLogo() {
-        logger.trace("loadKerenOrLogo");
+        logger.debug("loadKerenOrLogo");
         koWebView.getEngine().load(logoAnimatedHtml.toString());
         ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
             ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
@@ -120,16 +120,12 @@ public class MainController extends AnchorPane {
                 while (isRunning) {
                     try {
                         if (isShowImageWithoutAnimation) {
-                            if (Utils.IS_FULL_TRACE) {
-                                logger.info("Switch logo from non-animated to animated");
-                            }
+                            logger.trace("Switch logo from non-animated to animated");
                             Platform.runLater(() -> {
                                 koWebView.getEngine().load(logoAnimatedHtmlOnlyScale.toString());
                             });
                         } else {
-                            if (Utils.IS_FULL_TRACE) {
-                                logger.info("Switch logo from animated to non-animated");
-                            }
+                            logger.trace("Switch logo from animated to non-animated");
                             Platform.runLater(() -> {
                                 koWebView.getEngine().load(logoHtmlNoAnimation.toString());
                             });
@@ -182,7 +178,7 @@ public class MainController extends AnchorPane {
     }
 
     public void handleClicks(ActionEvent actionEvent) {
-        logger.trace("ChangeScreenHandler");
+        logger.debug("ChangeScreenHandler");
 
         if (actionEvent.getSource() == btnRemoteScreen && currentSelectedMenuButton != btnRemoteScreen) {
             changeScreenHandler(btnRemoteScreen, remoteScreenController);
@@ -245,7 +241,7 @@ public class MainController extends AnchorPane {
 
     @FXML
     public void minimizeAppHandler() {
-        logger.trace("minimizeAppHandler");
+        logger.debug("minimizeAppHandler");
         Stage stage = (Stage) minimizeAppStackPane.getScene().getWindow();
         // is stage minimizable into task bar. (true | false)
         stage.setIconified(true);
@@ -273,7 +269,7 @@ public class MainController extends AnchorPane {
     }
 
     private void exitApp() {
-        logger.trace("exitApp");
+        logger.debug("exitApp");
         ThreadManger.getInstance().shutDown();
         LogManager.shutdown();
         Platform.exit();

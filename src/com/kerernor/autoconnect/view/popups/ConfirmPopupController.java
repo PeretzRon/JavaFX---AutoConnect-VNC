@@ -81,7 +81,7 @@ public class ConfirmPopupController extends GridPane {
     }
 
     public GridPane loadView() {
-        logger.trace("loadView");
+        logger.debug("loadView");
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.CONFIRM_POPUP));
 
         loader.setController(this);
@@ -98,7 +98,7 @@ public class ConfirmPopupController extends GridPane {
 
 
     public KorTypes.ConfirmPopUpControllerTypes openPopup() {
-        logger.trace("openPopup");
+        logger.debug("openPopup");
         Scene scene = new Scene(this.loadView());
 
         stage = new Stage();
@@ -112,7 +112,7 @@ public class ConfirmPopupController extends GridPane {
 
         // Blur the pane behind
         paneBehind.effectProperty().setValue(Utils.getBlurEffect());
-        logger.info("paneBehind - BlueEffect");
+        logger.debug("paneBehind - BlueEffect");
 
         timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
             Platform.runLater(this::closeClickAction);
@@ -129,7 +129,7 @@ public class ConfirmPopupController extends GridPane {
 
     @FXML
     public void closeClickAction() {
-        logger.trace("close confirm popup - NO Action");
+        logger.debug("close confirm popup - NO Action");
         callback = KorTypes.ConfirmPopUpControllerTypes.EXIT;
         stopTimer();
         paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
@@ -138,15 +138,15 @@ public class ConfirmPopupController extends GridPane {
 
     @FXML
     public void confirmClickAction() {
-        logger.trace("close confirm popup - CONFIRM THE Action");
+        logger.debug("close confirm popup - CONFIRM THE Action");
         callback = KorTypes.ConfirmPopUpControllerTypes.CONFIRM;
         closeStage();
     }
 
     private void closeStage() {
-        logger.trace("closeStage");
+        logger.debug("closeStage");
         paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
-        logger.info("paneBehind - no effect");
+        logger.debug("paneBehind - no effect");
         stage.close();
 
     }

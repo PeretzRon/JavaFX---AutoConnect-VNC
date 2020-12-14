@@ -107,7 +107,7 @@ public class AlertPopupController {
 
     private void autoClosePopUpTimer() {
         if (timer != null) {
-            logger.trace("Close stage");
+            logger.debug("Close stage");
             timer.cancel(true);
             stage.hide();
             PauseTransition delay = new PauseTransition(Duration.seconds(3));
@@ -129,7 +129,7 @@ public class AlertPopupController {
 
     @FXML
     public void autoClosePopUpTimerHandler() {
-        logger.trace("close alert by click");
+        logger.debug("close alert by click");
         autoClosePopUpTimer();
     }
 
