@@ -1,10 +1,10 @@
 # ControlKO
-##Prepare a small app while learning JavaFX.
+## Prepare a small app while learning JavaFX.
 
-## Demo:
+### Demo:
 ![screenshot-1](src/com/kerernor/autoconnect/images/screenshot-4.gif)
 
-## Screenshots:
+### Screenshots:
 ![screenshot-1](src/com/kerernor/autoconnect/images/screenshot-1.png)
 <br />
 <br />
