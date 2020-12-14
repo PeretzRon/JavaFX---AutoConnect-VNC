@@ -309,7 +309,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
 
     private void connectToVNC(String ip) {
         if (!Utils.isValidateIpAddress(ip)) {
-            logger.info("Wrong ip address: " + ip + " Can't to connect to client");
+            logger.info(String.format("Wrong ip address - [%s] - Can't to connect to client", ip));
             AlertPopupController alertPopupController = new AlertPopupController();
             alertPopupController.showAlert(KorTypes.AlertTypes.WARNING, Utils.WRONG_IP_ADDRESS_MASSAGE, mainPane);
             quickConnectTextField.requestFocus();
