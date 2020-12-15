@@ -24,9 +24,11 @@ import java.io.File;
 import java.io.IOException;
 
 public class Main extends Application {
+
+    // set log4j2 configuration
     static {
         String filePath = new File("").getAbsolutePath();
-        filePath = filePath.concat(File.separator + "config" + File.separator + "log4j2.xml");
+        filePath = filePath.concat(File.separator + "config" + File.separator + Utils.LOG_4_J_CONFIG);
         System.setProperty("log4j.configurationFile", filePath);
     }
 
@@ -103,7 +105,6 @@ public class Main extends Application {
 
     @Override
     public void init() throws Exception {
-//        Utils.loadAndSetLoggerSetting();
         Utils.loadAppSettings();
         ComputerData.getInstance().loadData();
         PingerData.getInstance().loadData();

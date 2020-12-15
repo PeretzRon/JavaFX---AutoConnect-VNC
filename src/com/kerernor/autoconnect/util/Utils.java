@@ -24,10 +24,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.config.ConfigurationSource;
-import org.apache.logging.log4j.core.config.Configurator;
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -102,7 +98,7 @@ public class Utils {
     public static final String LAST_CONNECTIONS_HISTORY_DATA = "data/lastConnectionsHistory.json";
 
     // Config files paths
-    public static final String LOG_4_J_CONFIG = "config/log4j.properties";
+    public static final String LOG_4_J_CONFIG = "log4j2.xml";
     public static final String APP_SETTINGS = "config/settings.properties";
 
     // Parameters
@@ -221,25 +217,6 @@ public class Utils {
 
     public static boolean isNullOrEmptyString(final String str) {
         return str != null && str.length() == 0;
-    }
-    public static void loadAndSetLoggerSetting() {
-        String log4jConfigFile = System.getProperty("user.dir") + File.separator + "config" + File.separator + "log4j2.xml";
-        System.out.println(log4jConfigFile);
-        ConfigurationSource source = null;
-//        try {
-//            source = new ConfigurationSource(new FileInputStream(log4jConfigFile));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        Configurator.initialize(null, source);
-        Properties props = new Properties();
-        try (InputStream inputStream = new FileInputStream(LOG_4_J_CONFIG)) {
-            props.load(inputStream);
-//            PropertyConfigurator.configure(props);
-            logger.info("loadAndSetLoggerSetting");
-        } catch (IOException e) {
-            logger.error("failed to load log4j settings");
-        }
     }
 
     public static void loadAppSettings() {

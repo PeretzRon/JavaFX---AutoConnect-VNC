@@ -2,21 +2,26 @@
 <Configuration status="ERROR">
   <Appenders>
     <Console name="Console" target="SYSTEM_OUT">
-      <PatternLayout pattern="%highlight{%d{yyyy-MM-dd HH:mm:ss:SSS}  %-5p    %-30t  Line:%4L   %c{1} - %m%n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=blue, DEBUG=green bold, TRACE=orange}"
+      <PatternLayout pattern="%highlight{%d{dd-MM-yyyy HH:mm:ss:SSS}  %-5p    %-30t  Line:%4L   %c{1} - %m%n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=blue, DEBUG=green bold, TRACE=orange}"
                      disableAnsi="false"/>
     </Console>
-    <File name="MyFile" fileName="log/app.log">
-      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss:SSS}  %-5p    %-30t  Line:%4L   %c{1} - %m%n"
-                     disableAnsi="false"/>    </File>
+    <RollingFile name="RollingFile" fileName="log/app.log"
+                 filePattern="log/%i-app.log" >
+      <PatternLayout>
+        <pattern>%d{dd-MM-yyyy HH:mm:ss:SSS}  %-5p    %-30t  Line:%4L   %c{1} - %m%n</pattern>
+      </PatternLayout>
+      <Policies>
+        <SizeBasedTriggeringPolicy size="3 MB" />
+      </Policies>
+      <DefaultRolloverStrategy max="5" />
+    </RollingFile>
   </Appenders>
   <Loggers>
     <Logger name="com.kerernor.autoconnect" level="TRACE">
-      <Console name="Console" target="SYSTEM_OUT">
-      </Console>
     </Logger>
     <Root level="ERROR">
-      <AppenderRef ref="Console"/>
-      <appender-ref ref="MyFile" level="trace"/>
+      <appender-ref ref="Console" level="TRACE"/>
+      <appender-ref ref="RollingFile" level="TRACE"/>
     </Root>
   </Loggers>
 </Configuration>
