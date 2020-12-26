@@ -298,7 +298,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
     @FXML
     public void addNewComputer() {
         AddEditComputerPopup addEditComputerPopup = new AddEditComputerPopup(mainPane, false);
-        addEditComputerPopup.openPopup(null);
+        addEditComputerPopup.show(null);
     }
 
     private void updateCounters() {

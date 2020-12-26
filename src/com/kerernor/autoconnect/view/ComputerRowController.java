@@ -155,7 +155,7 @@ public class ComputerRowController extends ListCell<Computer> {
             fireEvent(event);
         });
 
-        addEditComputerPopup.openPopup(computer);
+        addEditComputerPopup.show(computer);
     }
 
     public JSearchableTextFlowController getComputerName() {

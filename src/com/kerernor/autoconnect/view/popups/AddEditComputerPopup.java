@@ -163,7 +163,7 @@ public class AddEditComputerPopup extends BorderPane {
     }
 
 
-    public void openPopup(Computer computer) {
+    public void show(Computer computer) {
         // not require
         // fireEvent(new KorEvents.SearchComputerEvent(KorEvents.SearchComputerEvent.SEARCH_COMPUTER_EVENT, "Event"));
 
@@ -197,6 +197,7 @@ public class AddEditComputerPopup extends BorderPane {
         // Prevent the window from closing in case of out of focus
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(paneBehind.getScene().getWindow());
+        Utils.enableExitPopupOnEscKey(stage);
         stage.show();
 
         // center stage

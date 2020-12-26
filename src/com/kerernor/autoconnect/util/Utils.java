@@ -11,6 +11,7 @@ import javafx.event.Event;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.IndexedCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -18,12 +19,14 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -249,9 +252,7 @@ public class Utils {
 
     // keep for use in other cases
     public static void onMouseClickNode(Node node) {
-        Event.fireEvent(node, new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
-                0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
-                true, true, true, true, true, true, null));
+        Event.fireEvent(node, new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true, true, true, true, true, true, true, null));
     }
 
     // keep for use in other cases
@@ -338,6 +339,17 @@ public class Utils {
         if (timer != null) {
             timer.cancel(true);
             timer = null;
+        }
+    }
+
+    public static void enableExitPopupOnEscKey(Stage stage) {
+        Scene scene = stage.getScene();
+        if (scene != null) {
+            scene.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.ESCAPE) {
+                    stage.close();
+                }
+            });
         }
     }
 }
