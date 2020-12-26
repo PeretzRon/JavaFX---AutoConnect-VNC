@@ -1,4 +1,22 @@
 
+/*Fonts*/
+@font-face {
+    font-family: 'One Stroke Script LET';
+    src: url('fonts/One_Stroke.TTF');
+}
+
+@font-face {
+    font-family: 'Varela Round';
+    src: url('fonts/VarelaRound.ttf');
+}
+
+@font-face {
+    font-family: 'Carter One';
+    src: url('fonts/CarterOne-Regular.ttf');
+}
+
+
+
 #button-connect {
     -fx-border-radius: 40px;
     -fx-background-radius: 40px;
@@ -156,23 +174,30 @@
     -fx-background-color: transparent;
 }
 
-
-/*Fonts*/
-/*@font-face {*/
-/*    font-family: 'Babycakes';*/
-/*    src: url('BABYCAKE.ttf');*/
-/*}*/
-
-/*@font-face {*/
-/*    font-family: 'Varela Round';*/
-/*    src: url('VarelaRound.ttf');*/
-/*}*/
-
 /*.root {*/
 /*    -fx-font-family: "Babycakes";*/
 /*}*/
 
+.label {
+     -fx-font-family: "Varela Round";
+}
+
 .app-name-label {
-    /*-fx-font-family: "Babycakes";*/
+    -fx-font-family: "Carter One";
     -fx-font-size: 50;
+}
+
+.copyright-label {
+-fx-font-family: "Varela Round";
+    -fx-font-size: 35;
+}
+
+.version-label {
+    -fx-font-family: "One Stroke Script LET";
+        -fx-font-size: 30;
+}
+
+.button-main-menu {
+     -fx-font-family: "Varela Round";
+      -fx-font-size: 14;
 }

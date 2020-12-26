@@ -269,6 +269,7 @@ public class MainController extends AnchorPane {
         imageIcon.setFitWidth(27);
         imageIcon.setPickOnBounds(true);
         imageIcon.setPreserveRatio(true);
+        button.getStyleClass().add("button-main-menu");
         button.setGraphic(imageIcon);
         return button;
     }

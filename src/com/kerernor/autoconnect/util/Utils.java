@@ -146,7 +146,7 @@ public class Utils {
     public static final String TExT_CONFIRM_DELETE_COMPUTER_MESSAGE = "Are you sure to delete: ";
     public static final String TEXT_ADD_NEW_COMPUTER_POPUP = "Add new computer";
     public static final String TEXT_EDIT_COMPUTER_POPUP = "Edit ";
-    public static final String TEXT_ADD_NEW_GROUP_PINGER_POPUP_TITTLE = "add new group Pinger";
+    public static final String TEXT_ADD_NEW_GROUP_PINGER_POPUP_TITTLE = "add new pinger group";
     public static final String APP_NAME = "ControlKO";
     public static final String COPYRIGHT = "Copyright " + "\u00a9" + " Ron Peretz (2020)";
     public static String VERSION = "Version ";

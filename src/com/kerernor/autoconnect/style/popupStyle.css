@@ -10,6 +10,7 @@
 .title,
 .sub-title {
     -fx-text-fill: #fff;
+     -fx-font-family: "Varela Round";
 }
 
 .button-confirm-popup,
