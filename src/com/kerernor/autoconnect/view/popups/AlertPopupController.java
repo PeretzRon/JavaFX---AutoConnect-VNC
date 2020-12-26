@@ -43,11 +43,11 @@ public class AlertPopupController {
     private Logger logger = LogManager.getLogger(AlertPopupController.class);
     private Stage stage;
     private static Queue<AlertPopupController> queue = new ArrayDeque<>();
-    BorderPane borderPane;
-    Parent paneBehind;
-    Scene scene;
+    private BorderPane borderPane;
+    private Parent paneBehind;
+    private Scene scene;
     private long TIME_TO_CLOSE_ALERT;
-    ScheduledFuture<?> timer;
+    private ScheduledFuture<?> timer;
 
     public AlertPopupController() {
         borderPane = loadView();

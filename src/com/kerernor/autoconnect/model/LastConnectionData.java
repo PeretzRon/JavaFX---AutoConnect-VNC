@@ -43,7 +43,7 @@ public class LastConnectionData {
     }
 
     public void storeData() throws IOException {
-        logger.debug("LastConnectionData.storeData");
+        logger.debug("storeData");
         Path path = Paths.get(Utils.LAST_CONNECTIONS_HISTORY_DATA);
         try (BufferedWriter bw = Files.newBufferedWriter(path)) {
             List<LastConnectionItem> lastConnectionItemsList = new ArrayList<>(lastConnectionItems);

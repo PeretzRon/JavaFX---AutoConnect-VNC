@@ -184,12 +184,13 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
             final String input = searchAreaController.getTextField().getText();
             Utils.updateStyleOnText(input, input.toLowerCase(), KorCommon.getInstance().getRemoteScreenController());
         });
-
     }
 
     private void searchAreaControllerAddListeners() {
+        logger.debug("searchAreaControllerAddListeners");
         searchAreaController.getTextField().setOnKeyReleased(keyEvent -> {
             String input = searchAreaController.getTextField().getText().toLowerCase();
+            logger.trace("searchAreaController input: {}", input);
             Utils.setTextFieldOrientationByDetectLanguage(input, searchAreaController.getTextField(), true); // change direction if needed
 
             isAllowedToMoveRows.set(input.isEmpty());

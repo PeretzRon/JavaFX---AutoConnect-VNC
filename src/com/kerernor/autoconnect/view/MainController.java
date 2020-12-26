@@ -99,6 +99,11 @@ public class MainController extends AnchorPane {
         Utils.createTooltipListener(exitAppStackPane, Utils.EXIT, KorTypes.ShowNodeFrom.RIGHT);
 
         loadKerenOrLogo();
+
+        //only for debug
+        koWebView.setOnMouseClicked(event -> {
+            logger.debug("breakPoint");
+        });
     }
 
     private void createClockLabel() {
@@ -270,8 +275,6 @@ public class MainController extends AnchorPane {
 
     private void exitApp() {
         logger.debug("exitApp");
-        ThreadManger.getInstance().shutDown();
-        LogManager.shutdown();
         Platform.exit();
     }
 

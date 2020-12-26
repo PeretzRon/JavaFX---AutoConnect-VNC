@@ -256,6 +256,9 @@ public class AddEditPingerItemsController extends GridPane {
         stage.initOwner(paneBehind.getScene().getWindow());
         stage.show();
 
+        // center stage
+        Utils.centerNewStageToBehindStage(paneBehind, stage);
+
         // Blur the pane behind
         paneBehind.effectProperty().setValue(Utils.getBlurEffect());
     }

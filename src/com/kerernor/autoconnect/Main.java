@@ -5,6 +5,7 @@ import com.kerernor.autoconnect.model.LastConnectionData;
 import com.kerernor.autoconnect.model.LastRemoteDriveData;
 import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.util.KorCommon;
+import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.MainController;
 import com.kerernor.autoconnect.view.screens.RemoteScreenController;
@@ -119,6 +120,8 @@ public class Main extends Application {
         PingerData.getInstance().storeData();
         LastConnectionData.getInstance().storeData();
         LastRemoteDriveData.getInstance().storeData();
+        ThreadManger.getInstance().shutDown();
+        LogManager.shutdown();
         System.exit(0);
     }
 }
