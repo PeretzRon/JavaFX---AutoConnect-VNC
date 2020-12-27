@@ -26,7 +26,7 @@ import java.io.IOException;
 
 public class Main extends Application {
 
-    // set log4j2 configuration
+    // load and set log4j2 configuration
     static {
         String filePath = new File("").getAbsolutePath();
         filePath = filePath.concat(File.separator + "config" + File.separator + Utils.LOG_4_J_CONFIG);
@@ -37,7 +37,7 @@ public class Main extends Application {
     private Stage primaryStage;
     private AnchorPane rootLayout;
     private FXMLLoader loader;
-    private Logger logger = LogManager.getLogger(Main.class);
+    private final Logger logger = LogManager.getLogger(Main.class);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
