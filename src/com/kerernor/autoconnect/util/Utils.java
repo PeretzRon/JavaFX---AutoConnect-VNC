@@ -49,6 +49,7 @@ public class Utils {
     public static final String IMAGES_BASE_PATH = BASE_PATH + "images/";
     public static final String VIEWS_COMPONENTS_BASE_PATH = VIEWS_BASE_PATH + "components/";
     public static final String VIEWS_POPUPS_BASE_PATH = VIEWS_BASE_PATH + "popups/";
+    public static final String VIEWS_POPUPS_PINGER_BASE_PATH = VIEWS_POPUPS_BASE_PATH + "pinger/";
     public static final String VIEWS_SCREENS_BASE_PATH = VIEWS_BASE_PATH + "screens/";
     public static final String CONFIG_BASE_PATH = BASE_PATH + "config/";
 
@@ -76,6 +77,8 @@ public class Utils {
     public static final String PING_GROUP_ITEM = VIEWS_BASE_PATH + "pingGroupItem.fxml";
     public static final String J_TEXT_FIELD = VIEWS_COMPONENTS_BASE_PATH + "jTextField.fxml";
     public static final String J_SEARCHABLE_TEXT_FLOW = VIEWS_COMPONENTS_BASE_PATH + "jSearchableTextFlow.fxml";
+    public static final String PINGER_POPUP_ITEM = VIEWS_POPUPS_PINGER_BASE_PATH + "pinger.fxml";
+    public static final String PINGER_POPUP_GRID = VIEWS_POPUPS_PINGER_BASE_PATH + "pingerGrid.fxml";
 
     // Images file paths
     public static final String RCGW_ICON = IMAGES_BASE_PATH + "antenna.png";
