@@ -254,7 +254,7 @@ public class AddEditPingerItemsController extends GridPane {
         // Prevent the window from closing in case of out of focus
         stage.initModality(Modality.NONE);
         stage.initOwner(paneBehind.getScene().getWindow());
-        Utils.enableExitPopupOnEscKey(stage);
+        Utils.enableExitPopupOnEscKey(stage, callback -> closeClickAction());
         stage.show();
 
         // center stage

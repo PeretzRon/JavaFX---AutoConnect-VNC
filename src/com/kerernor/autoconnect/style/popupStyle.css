@@ -1,6 +1,7 @@
 .confirm-popup,
 .add-edit-popup,
-.add-edit-pinger-popup {
+.add-edit-pinger-popup,
+.grid-pinger-popup {
     -fx-background-color: #05071F;
     -fx-padding: 0px 10px 10px 10px;
     -fx-border-width: 1;
@@ -90,4 +91,17 @@
 .kor-separator:vertical .line {
     -fx-background-color: black;
     -fx-border-width: 0;
+}
+
+.main-pane {
+    -fx-background-color: #ccc;
+}
+
+.main-pane-not-empty {
+    -fx-background-color: #ff2727;
+}
+
+.menu-item-hover {
+    -fx-border-color: #4a8dff;
+    -fx-border-width: 4;
 }

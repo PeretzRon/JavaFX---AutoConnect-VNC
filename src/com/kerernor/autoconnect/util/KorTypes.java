@@ -24,4 +24,9 @@ public class KorTypes {
         LEFT
     }
 
+    public enum PingerGridItemState {
+        EMPTY,
+        ACTIVE
+    }
+
 }

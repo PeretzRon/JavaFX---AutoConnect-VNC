@@ -12,6 +12,7 @@ import com.kerernor.autoconnect.view.PingGroupItemController;
 import com.kerernor.autoconnect.view.PingListGroupController;
 import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
+import com.kerernor.autoconnect.view.popups.pinger.PingerGridController;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -195,6 +196,12 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
         }));
     }
 
+    @FXML
+    public void openGridPingerHandler() {
+        PingerGridController pingerGridController = new PingerGridController(flowPaneGroupPinger.getChildren(), KorCommon.getInstance().getPingerScreenController());
+        pingerGridController.show();
+    }
+
     private void refreshPingerItemWhenUpdated(int listSize) {
         logger.debug("refreshPingerItemWhenUpdated");
         selectedPingGroupName.setText("");
@@ -298,5 +305,9 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
     @Override
     public Set<JSearchableTextFlowController> getActiveSearchableTextFlowMap() {
         return activeSearchableTextFlowMap;
+    }
+
+    public FlowPane getFlowPaneGroupPinger() {
+        return flowPaneGroupPinger;
     }
 }

@@ -1,5 +1,6 @@
 package com.kerernor.autoconnect.util;
 
+import animatefx.animation.Tada;
 import com.kerernor.autoconnect.view.ComputerRowController;
 import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.screens.ISearchTextFlow;
@@ -27,6 +28,7 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.security.auth.callback.Callback;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +37,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public class Utils {
 
@@ -135,6 +138,7 @@ public class Utils {
     public static final int BLUR_SIZE = 5;
     public static final int BLUR_ITERATIONS = 3;
     public static final int MAX_HISTORY_CONNECT_LIST = 50;
+    public static final int MAX_PINGER_GROUPS = 49;
     public static final int MAX_PINGER_ITEMS_IN_ONE_GROUP = 5;
     public static final int MAX_REMOTE_DRIVE_CONNECT_LIST = 50;
     public static final int TIME_FOR_CLOSE_POPUP = 7000;
@@ -212,7 +216,7 @@ public class Utils {
         double centerXPosition = primaryStage.getX() + primaryStage.getWidth() / 2d;
         double centerYPosition = primaryStage.getY() + primaryStage.getHeight() / 2d;
 
-        newStage.setX(centerXPosition - newStage.getWidth() / 2d);
+        newStage.setX(centerXPosition - newStage.getWidth() / 2d + (KorCommon.getInstance().getMainController().getButtonScreens().getPrefWidth() / 2d));
         newStage.setY(centerYPosition - newStage.getHeight() / 2d);
     }
 
@@ -345,12 +349,12 @@ public class Utils {
         }
     }
 
-    public static void enableExitPopupOnEscKey(Stage stage) {
+    public static void enableExitPopupOnEscKey(Stage stage, Consumer<Boolean> callback) {
         Scene scene = stage.getScene();
         if (scene != null) {
             scene.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.ESCAPE) {
-                    stage.close();
+                    callback.accept(true);
                 }
             });
         }
