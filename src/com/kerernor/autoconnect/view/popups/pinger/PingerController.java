@@ -1,6 +1,7 @@
 package com.kerernor.autoconnect.view.popups.pinger;
 
 import com.kerernor.autoconnect.Main;
+import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.PingGroupItemController;
@@ -8,21 +9,23 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
 
 public class PingerController extends VBox {
 
     @FXML
-    private Label groupNameLabel;
+    private TextFlow groupNameTextFlow;
 
     private int indexOnGrid;
     private KorTypes.PingerGridItemState state;
     private final StringProperty firstRow = new SimpleStringProperty("");
     private PingGroupItemController pingGroupItemController;
+    private Pinger pinger;
 
 
     public PingGroupItemController getPingGroupItemController() {
@@ -33,6 +36,14 @@ public class PingerController extends VBox {
         this.pingGroupItemController = pingGroupItemController;
     }
 
+    public Pinger getPinger() {
+        return pinger;
+    }
+
+    public void setPinger(Pinger pinger) {
+        this.pinger = pinger;
+    }
+
     public PingerController() {
         this.state = KorTypes.PingerGridItemState.EMPTY;
         loadView();
@@ -40,8 +51,10 @@ public class PingerController extends VBox {
 
     @FXML
     public void initialize() {
-        groupNameLabel.textProperty().bind(firstRow);
-        groupNameLabel.setTextFill(Color.web("#05071F"));
+        Text text = new Text();
+        text.setFill(Color.WHITE);
+        text.textProperty().bind(firstRow);
+        groupNameTextFlow.getChildren().setAll(text);
     }
 
     public VBox loadView() {
@@ -63,7 +76,7 @@ public class PingerController extends VBox {
     }
 
     public void setFirstRow(String firstRow) {
-        this.firstRow.set(firstRow);
+        this.firstRow.set(Utils.addDotIfTextIsLong(firstRow, 14));
     }
 
     public int getIndexOnGrid() {

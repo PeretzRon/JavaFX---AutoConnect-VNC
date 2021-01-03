@@ -198,7 +198,7 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
 
     @FXML
     public void openGridPingerHandler() {
-        PingerGridController pingerGridController = new PingerGridController(flowPaneGroupPinger.getChildren(), KorCommon.getInstance().getPingerScreenController());
+        PingerGridController pingerGridController = new PingerGridController(PingerData.getInstance().getPingerObservableList(), KorCommon.getInstance().getPingerScreenController());
         pingerGridController.show();
     }
 

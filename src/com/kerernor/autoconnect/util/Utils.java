@@ -138,7 +138,7 @@ public class Utils {
     public static final int BLUR_SIZE = 5;
     public static final int BLUR_ITERATIONS = 3;
     public static final int MAX_HISTORY_CONNECT_LIST = 50;
-    public static final int MAX_PINGER_GROUPS = 49;
+    public static final int MAX_PINGER_GROUPS = 56;
     public static final int MAX_PINGER_ITEMS_IN_ONE_GROUP = 5;
     public static final int MAX_REMOTE_DRIVE_CONNECT_LIST = 50;
     public static final int TIME_FOR_CLOSE_POPUP = 7000;
@@ -317,6 +317,14 @@ public class Utils {
             return text;
         } else {
             return text.substring(0, MAX_CHARACTER_TO_CUT_TEXT) + "...";
+        }
+    }
+
+    public static String addDotIfTextIsLong(String text, int maxCharacterToCut) {
+        if (text.length() < maxCharacterToCut) {
+            return text;
+        } else {
+            return text.substring(0, maxCharacterToCut) + "...";
         }
     }
 

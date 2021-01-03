@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<fx:root alignment="CENTER" prefHeight="65.0" prefWidth="91.0"  stylesheets="@../../../style/popupStyle.css" type="VBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
-            <HBox alignment="CENTER">
-                <Label fx:id="groupNameLabel" alignment="CENTER" text="TEST">
-         <font>
-            <Font size="14.0" />
-         </font></Label>
-            </HBox>
+<fx:root alignment="CENTER" prefHeight="61.0" prefWidth="82.0" stylesheets="@../../../style/popupStyle.css" type="VBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <HBox alignment="CENTER">
+        <TextFlow fx:id="groupNameTextFlow" textAlignment="CENTER">
+            <padding>
+                <Insets bottom="2" left="8" right="8" top="2" />
+            </padding>
+        </TextFlow>
+    </HBox>
 </fx:root>
