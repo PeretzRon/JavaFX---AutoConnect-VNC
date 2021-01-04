@@ -1,12 +1,18 @@
 package com.kerernor.autoconnect.view.popups.pinger;
 
+import animatefx.animation.RollOut;
+import animatefx.animation.Tada;
 import animatefx.animation.ZoomIn;
+import animatefx.animation.ZoomOut;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
+import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,18 +23,23 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class PingerGridController extends AnchorPane {
 
@@ -40,6 +51,13 @@ public class PingerGridController extends AnchorPane {
     private Button saveChangesButton;
     @FXML
     private Button closeButton;
+    @FXML
+    private Button test;
+    @FXML
+    private StackPane dusbinStackPane;
+    @FXML
+    private ImageView dusbinImageView;
+
 
     private Parent paneBehind;
     private Stage stage;
@@ -51,6 +69,9 @@ public class PingerGridController extends AnchorPane {
     private PingerController colorItem;
     private final int gridRows = 7;
     private final double spaceBetweenCells = 10d;
+    private boolean isSingleDragging = true;
+    private List<PingerController> selectionList = new ArrayList<>();
+    private BooleanProperty isShowIDustbinImage = new SimpleBooleanProperty(false);
 
     public PingerGridController(ObservableList<Pinger> items, Parent paneBehind) {
         logger.debug("LIST SIZE: " + items.size());
@@ -63,6 +84,7 @@ public class PingerGridController extends AnchorPane {
         mainPane.setVgap(spaceBetweenCells);
         mainPane.setHgap(spaceBetweenCells);
         mainPane.setPadding(new Insets(10, 10, 10, 10));
+        dusbinImageView.setVisible(false);
         mainPane.setOrientation(Orientation.HORIZONTAL);
         createCells();
         createEmptyCells();
@@ -72,6 +94,10 @@ public class PingerGridController extends AnchorPane {
         mainPane.setOnMouseReleased(this::onMouseReleased);
         saveChangesButton.setOnMouseClicked(this::saveChangesHandler);
         closeButton.setOnMouseClicked(this::closeClickAction);
+        test.setOnMouseClicked(event -> {
+            logger.debug("");
+//            isSingleDragging = !isSingleDragging;
+        });
     }
 
     private void closeClickAction(MouseEvent event) {
@@ -118,29 +144,62 @@ public class PingerGridController extends AnchorPane {
 
     private void onMousePress(MouseEvent event) {
         final PingerController item = findItemByCoordinates(event.getSceneX(), event.getSceneY(), false);
-        double moduleHeight = ((PingerController) mainPane.getChildren().get(0)).getPrefHeight();
-        double delta = -(moduleHeight * gridRows + spaceBetweenCells * gridRows);
-        if (item != null && item.getState() != KorTypes.PingerGridItemState.EMPTY) {
-            int indexOnGrid = item.getIndexOnGrid();
+        Platform.runLater(() -> {
+            dusbinImageView.setVisible(true);
+            new Tada(dusbinStackPane).play();
+        });
 
-            ((PingerController) mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS)).setFirstRow(item.getFirstRow());
-            mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS).getStyleClass().add("main-pane-not-empty");
-            mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS).getStyleClass().add("menu-item-dragged-border");
-            scaleNode((PingerController) mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS), 1.1);
-            mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS).setTranslateY(delta);
-            y = event.getSceneY();
-            x = event.getSceneX();
+        if (isSingleDragging) {
+
+            double moduleHeight = ((PingerController) mainPane.getChildren().get(0)).getPrefHeight();
+            double delta = -(moduleHeight * gridRows + spaceBetweenCells * gridRows);
+            if (item != null && item.getState() != KorTypes.PingerGridItemState.EMPTY) {
+                int indexOnGrid = item.getIndexOnGrid();
+
+                ((PingerController) mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS)).setFirstRow(item.getFirstRow());
+                mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS).getStyleClass().add("main-pane-not-empty");
+                mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS).getStyleClass().add("menu-item-dragged-border");
+                scaleNode((PingerController) mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS), 1.1);
+                mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS).setTranslateY(delta);
+                y = event.getSceneY();
+                x = event.getSceneX();
+
+
+            }
+        } else {
+            selectController(item);
+        }
+
+    }
+
+    private void selectController(PingerController item) {
+        if (item != null) {
+            item.getStyleClass().add("menu-item-hover");
+            selectionList.add(item);
         }
     }
 
     private void onMouseDragged(MouseEvent event) {
-        final ObservableList<Node> pingerControllers = mainPane.getChildren();
-        double moduleHeight = ((PingerController) pingerControllers.get(Utils.MAX_PINGER_GROUPS)).getPrefHeight();
-        double delta = -(moduleHeight * gridRows + spaceBetweenCells * gridRows);
-        if (draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY) {
-            restoreControllerVisibilityAndPosition(event, pingerControllers, delta);
-            makeBorderOnHoverController(event, pingerControllers);
+        if (isSingleDragging) {
+            final ObservableList<Node> pingerControllers = mainPane.getChildren();
+            double moduleHeight = ((PingerController) pingerControllers.get(Utils.MAX_PINGER_GROUPS)).getPrefHeight();
+            double delta = -(moduleHeight * gridRows + spaceBetweenCells * gridRows);
+            if (draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY) {
+                restoreControllerVisibilityAndPosition(event, pingerControllers, delta);
+                makeBorderOnHoverController(event, pingerControllers);
+            }
+        } else {
+            final ObservableList<Node> pingerControllers = mainPane.getChildren();
+            double moduleHeight = ((PingerController) pingerControllers.get(Utils.MAX_PINGER_GROUPS)).getPrefHeight();
+            double delta = -(moduleHeight * gridRows + spaceBetweenCells * gridRows);
+            for (PingerController pingerController : selectionList) {
+                if (draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY) {
+                    restoreControllerVisibilityAndPosition(event, pingerControllers, delta);
+                    makeBorderOnHoverController(event, pingerControllers);
+                }
+            }
         }
+
     }
 
     private void makeBorderOnHoverController(MouseEvent event, ObservableList<Node> pingerControllers) {
@@ -173,22 +232,42 @@ public class PingerGridController extends AnchorPane {
 
 
     private void onMouseReleased(MouseEvent event) {
-        if (draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY) {
-            mainPane.getChildren().get(draggedItem.getIndexOnGrid() + Utils.MAX_PINGER_GROUPS).setTranslateY(0);
-            mainPane.getChildren().get(draggedItem.getIndexOnGrid() + Utils.MAX_PINGER_GROUPS).setTranslateX(0);
-            mainPane.getChildren().get(draggedItem.getIndexOnGrid()).getStyleClass().add("main-pane-not-empty");
-            mainPane.getChildren().get(draggedItem.getIndexOnGrid()).setVisible(true);
-            scaleNode((PingerController) mainPane.getChildren().get(draggedItem.getIndexOnGrid() + Utils.MAX_PINGER_GROUPS), 1);
-        }
+        if (isSingleDragging) {
+            if (draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY) {
+                mainPane.getChildren().get(draggedItem.getIndexOnGrid() + Utils.MAX_PINGER_GROUPS).setTranslateY(0);
+                mainPane.getChildren().get(draggedItem.getIndexOnGrid() + Utils.MAX_PINGER_GROUPS).setTranslateX(0);
+                mainPane.getChildren().get(draggedItem.getIndexOnGrid()).getStyleClass().add("main-pane-not-empty");
+                mainPane.getChildren().get(draggedItem.getIndexOnGrid()).setVisible(true);
+                scaleNode((PingerController) mainPane.getChildren().get(draggedItem.getIndexOnGrid() + Utils.MAX_PINGER_GROUPS), 1);
+            }
 
-        if (colorItem != null && draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY) {
-            colorItem.getStyleClass().remove("menu-item-hover");
-            switchModules();
+            if (colorItem != null && draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY) {
+                colorItem.getStyleClass().remove("menu-item-hover");
+                switchModules();
+            }
+            removeBorderFromAllNodes(mainPane.getChildren());
+            draggedItem = null;
+            colorItem = null;
+
+
+
+
+            RollOut rollOut = new RollOut(dusbinImageView);
+            rollOut.setOnFinished(event1 -> {
+                Platform.runLater(() -> {
+                    dusbinImageView.setVisible(false);
+                });
+            });
+            rollOut.play();
+//            zoomOut.setOnFinished(event1 -> {
+//
+//
+//
+//            });
+//            zoomOut.play();
         }
-        removeBorderFromAllNodes(mainPane.getChildren());
-        draggedItem = null;
-        colorItem = null;
     }
+
 
     private void switchModules() {
         ObservableList<Node> workingCollection = FXCollections.observableArrayList(mainPane.getChildren());

@@ -177,6 +177,7 @@ public class Utils {
     public static final String ERROR_WHILE_SAVE_DATA = "Can't save data to file";
     public static final String REACH_MAX_PINGER_ITEM = "Can't add item - The amount of items allowed is: ";
     public static final String SOME_OF_FIELDS_ARE_EMPTY = "Some of the fields are empty";
+    public static final String MAX_PING_GROUPS_WARNING = "You have reached a maximum number of groups - " + Utils.MAX_PINGER_GROUPS;
 
 
     // Style

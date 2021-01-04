@@ -25,6 +25,11 @@
     -fx-font-size: 14px;
 }
 
+.button-add-edit-popup:hover,
+.button-confirm-popup:hover {
+    -fx-background-color: #4a5098;
+}
+
 .button-save-popup-grid {
     -fx-background-color: #10155a;
     -fx-background-insets: 0, 1, 2, 3;

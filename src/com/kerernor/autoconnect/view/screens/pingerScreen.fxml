@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<fx:root fx:id="pnlSetting" prefHeight="576.0" prefWidth="773.0" stylesheets="@../../style/style.css" type="Pane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="pnlSetting" prefHeight="576.0" prefWidth="773.0" stylesheets="@../../style/style.css" type="Pane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <AnchorPane prefHeight="576.0" prefWidth="793.0">
             <children>
@@ -30,7 +30,7 @@
                     <font>
                         <Font size="14.0" />
                     </font></Label>
-                <HBox layoutX="22.0" layoutY="58.0" prefHeight="34.0" prefWidth="407.0" spacing="10.0">
+                <HBox layoutX="22.0" layoutY="58.0" prefHeight="34.0" prefWidth="510.0" spacing="10.0">
                     <children>
                         <TextField fx:id="filterPingerGroup" promptText="Filter groups...." style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 2em; -fx-text-fill: #fff;" />
                         <Button fx:id="checkPing" mnemonicParsing="false" onAction="#checkPingHandler" prefHeight="26.0" prefWidth="101.0" styleClass="pinger-screen-btn" text="Run!">
@@ -51,11 +51,11 @@
                                 </ImageView>
                             </graphic>
                         </Button>
-                        <Button fx:id="editGroups" mnemonicParsing="false" onAction="#openGridPingerHandler" prefHeight="3.0" prefWidth="140.0" styleClass="pinger-screen-btn" text="Edit">
+                        <Button fx:id="editGroups" mnemonicParsing="false" onAction="#openGridPingerHandler" prefHeight="3.0" prefWidth="80.0" styleClass="pinger-screen-btn" text="Edit">
                             <graphic>
                                 <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../images/add.png" />
+                                        <Image url="@../../images/pencil.png" />
                                     </image>
                                 </ImageView>
                             </graphic>

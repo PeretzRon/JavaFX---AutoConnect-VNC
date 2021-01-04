@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class PingerData {
@@ -37,8 +38,16 @@ public class PingerData {
             Gson gson = new Gson();
             pingers = gson.fromJson(reader, Pinger[].class);
             pingerObservableList.addAll(Arrays.asList(pingers));
+            deleteGroupsIfReachToMaximum();
         } catch (IOException e) {
             logger.error("file not found - when the app closed, new file will created");
+        }
+    }
+
+    private void deleteGroupsIfReachToMaximum() {
+        logger.debug("deleteGroupsIfReachToMaximum: size list = {}", pingerObservableList.size());
+        if (pingerObservableList.size() > Utils.MAX_PINGER_GROUPS) {
+            pingerObservableList.subList(Utils.MAX_PINGER_GROUPS, pingerObservableList.size()).clear();
         }
     }
 
