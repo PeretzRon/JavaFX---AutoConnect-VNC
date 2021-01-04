@@ -1,9 +1,6 @@
 package com.kerernor.autoconnect.view.popups.pinger;
 
-import animatefx.animation.RollOut;
-import animatefx.animation.Tada;
-import animatefx.animation.ZoomIn;
-import animatefx.animation.ZoomOut;
+import animatefx.animation.*;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
@@ -84,11 +81,10 @@ public class PingerGridController extends AnchorPane {
         mainPane.setVgap(spaceBetweenCells);
         mainPane.setHgap(spaceBetweenCells);
         mainPane.setPadding(new Insets(10, 10, 10, 10));
-        dusbinImageView.setVisible(false);
+        dusbinStackPane.setVisible(false);
         mainPane.setOrientation(Orientation.HORIZONTAL);
         createCells();
         createEmptyCells();
-
         mainPane.setOnMousePressed(this::onMousePress);
         mainPane.setOnMouseDragged(this::onMouseDragged);
         mainPane.setOnMouseReleased(this::onMouseReleased);
@@ -144,9 +140,12 @@ public class PingerGridController extends AnchorPane {
 
     private void onMousePress(MouseEvent event) {
         final PingerController item = findItemByCoordinates(event.getSceneX(), event.getSceneY(), false);
+
+        dusbinStackPane.setVisible(true);
         Platform.runLater(() -> {
-            dusbinImageView.setVisible(true);
-            new Tada(dusbinStackPane).play();
+            Tada zoomIn = new Tada(dusbinStackPane);
+            zoomIn.setSpeed(2);
+            zoomIn.play();
         });
 
         if (isSingleDragging) {
@@ -250,21 +249,13 @@ public class PingerGridController extends AnchorPane {
             colorItem = null;
 
 
-
-
-            RollOut rollOut = new RollOut(dusbinImageView);
-            rollOut.setOnFinished(event1 -> {
-                Platform.runLater(() -> {
-                    dusbinImageView.setVisible(false);
-                });
+            ZoomOut zoomOut = new ZoomOut(dusbinStackPane);
+            zoomOut.setSpeed(3);
+            zoomOut.setOnFinished(event1 -> {
+                    dusbinStackPane.setVisible(false);
             });
-            rollOut.play();
-//            zoomOut.setOnFinished(event1 -> {
-//
-//
-//
-//            });
-//            zoomOut.play();
+
+            zoomOut.setResetOnFinished(true).play();
         }
     }
 
