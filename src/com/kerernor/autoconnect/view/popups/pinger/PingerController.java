@@ -26,6 +26,7 @@ public class PingerController extends VBox {
     private final StringProperty firstRow = new SimpleStringProperty("");
     private PingGroupItemController pingGroupItemController;
     private Pinger pinger;
+    private boolean isDeleted = false;
 
 
     public PingGroupItemController getPingGroupItemController() {
@@ -40,6 +41,14 @@ public class PingerController extends VBox {
         return pinger;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
     public void setPinger(Pinger pinger) {
         this.pinger = pinger;
     }
@@ -47,6 +56,16 @@ public class PingerController extends VBox {
     public PingerController() {
         this.state = KorTypes.PingerGridItemState.EMPTY;
         loadView();
+    }
+
+    public static PingerController emptyPingerController() {
+        PingerController empty = new PingerController();
+        empty.setDeleted(false);
+        empty.setState(KorTypes.PingerGridItemState.EMPTY);
+        empty.setIndexOnGrid(-1);
+        empty.setFirstRow("");
+        empty.setPinger(null);
+        return empty;
     }
 
     @FXML

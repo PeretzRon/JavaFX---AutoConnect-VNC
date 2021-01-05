@@ -69,6 +69,7 @@ public class PingerGridController extends AnchorPane {
     private boolean isSingleDragging = true;
     private List<PingerController> selectionList = new ArrayList<>();
     private BooleanProperty isShowIDustbinImage = new SimpleBooleanProperty(false);
+    private boolean isTrashEnlarged = false;
 
     public PingerGridController(ObservableList<Pinger> items, Parent paneBehind) {
         logger.debug("LIST SIZE: " + items.size());
@@ -102,7 +103,6 @@ public class PingerGridController extends AnchorPane {
 
     private void createCells() {
         for (int i = 0; i < items.size(); i++) {
-            logger.debug(i);
             PingerController pingerController = new PingerController();
             pingerController.setIndexOnGrid(i);
             pingerController.setFirstRow(items.get(i).getName());
@@ -141,20 +141,18 @@ public class PingerGridController extends AnchorPane {
     private void onMousePress(MouseEvent event) {
         final PingerController item = findItemByCoordinates(event.getSceneX(), event.getSceneY(), false);
 
-        dusbinStackPane.setVisible(true);
-        Platform.runLater(() -> {
-            Tada zoomIn = new Tada(dusbinStackPane);
-            zoomIn.setSpeed(2);
-            zoomIn.play();
-        });
-
         if (isSingleDragging) {
 
             double moduleHeight = ((PingerController) mainPane.getChildren().get(0)).getPrefHeight();
             double delta = -(moduleHeight * gridRows + spaceBetweenCells * gridRows);
             if (item != null && item.getState() != KorTypes.PingerGridItemState.EMPTY) {
                 int indexOnGrid = item.getIndexOnGrid();
-
+                dusbinStackPane.setVisible(true);
+                Platform.runLater(() -> {
+                    Tada tada = new Tada(dusbinStackPane);
+                    tada.setSpeed(2);
+                    tada.play();
+                });
                 ((PingerController) mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS)).setFirstRow(item.getFirstRow());
                 mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS).getStyleClass().add("main-pane-not-empty");
                 mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS).getStyleClass().add("menu-item-dragged-border");
@@ -187,6 +185,10 @@ public class PingerGridController extends AnchorPane {
                 restoreControllerVisibilityAndPosition(event, pingerControllers, delta);
                 makeBorderOnHoverController(event, pingerControllers);
             }
+
+            isOnTrash(event.getSceneX(), event.getSceneY());
+
+
         } else {
             final ObservableList<Node> pingerControllers = mainPane.getChildren();
             double moduleHeight = ((PingerController) pingerControllers.get(Utils.MAX_PINGER_GROUPS)).getPrefHeight();
@@ -232,15 +234,26 @@ public class PingerGridController extends AnchorPane {
 
     private void onMouseReleased(MouseEvent event) {
         if (isSingleDragging) {
+            if (isTrashEnlarged) {
+                if (draggedItem != null) {
+                    deleteItem(draggedItem);
+                }
+                isTrashEnlarged = false;
+            }
             if (draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY) {
                 mainPane.getChildren().get(draggedItem.getIndexOnGrid() + Utils.MAX_PINGER_GROUPS).setTranslateY(0);
                 mainPane.getChildren().get(draggedItem.getIndexOnGrid() + Utils.MAX_PINGER_GROUPS).setTranslateX(0);
-                mainPane.getChildren().get(draggedItem.getIndexOnGrid()).getStyleClass().add("main-pane-not-empty");
+                if (draggedItem.isDeleted()) {
+                    mainPane.getChildren().get(draggedItem.getIndexOnGrid()).getStyleClass().add("main-pane");
+                } else {
+                    mainPane.getChildren().get(draggedItem.getIndexOnGrid()).getStyleClass().add("main-pane-not-empty");
+                }
+
                 mainPane.getChildren().get(draggedItem.getIndexOnGrid()).setVisible(true);
                 scaleNode((PingerController) mainPane.getChildren().get(draggedItem.getIndexOnGrid() + Utils.MAX_PINGER_GROUPS), 1);
             }
 
-            if (colorItem != null && draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY) {
+            if (colorItem != null && draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY && !draggedItem.isDeleted()) {
                 colorItem.getStyleClass().remove("menu-item-hover");
                 switchModules();
             }
@@ -248,34 +261,42 @@ public class PingerGridController extends AnchorPane {
             draggedItem = null;
             colorItem = null;
 
+            dusbinImageView.setFitHeight(30);
+            dusbinImageView.setFitWidth(30);
+
 
             ZoomOut zoomOut = new ZoomOut(dusbinStackPane);
             zoomOut.setSpeed(3);
             zoomOut.setOnFinished(event1 -> {
-                    dusbinStackPane.setVisible(false);
+                dusbinStackPane.setVisible(false);
             });
 
             zoomOut.setResetOnFinished(true).play();
         }
     }
 
+    private void deleteItem(PingerController draggedItem) {
+        logger.debug("Deleting: " + draggedItem.getPinger().getName());
+        draggedItem.setDeleted(true);
+        PingerController emptyPingerController = PingerController.emptyPingerController();
+        emptyPingerController.setIndexOnGrid(draggedItem.getIndexOnGrid());
+        mainPane.getChildren().set(draggedItem.getIndexOnGrid(), emptyPingerController);
+        createEffectOfSwappedControllers(emptyPingerController);
+    }
 
     private void switchModules() {
         ObservableList<Node> workingCollection = FXCollections.observableArrayList(mainPane.getChildren());
         Collections.swap(workingCollection, colorItem.getIndexOnGrid(), draggedItem.getIndexOnGrid());
         mainPane.getChildren().setAll(workingCollection);
         swapIndexOngGrid(colorItem, draggedItem);
-        createEffectOfSwappedControllers();
+        createEffectOfSwappedControllers(colorItem);
+        createEffectOfSwappedControllers(draggedItem);
     }
 
-    private void createEffectOfSwappedControllers() {
-        ZoomIn zoomIn = new ZoomIn(colorItem);
+    private void createEffectOfSwappedControllers(PingerController item) {
+        ZoomIn zoomIn = new ZoomIn(item);
         zoomIn.setSpeed(2);
         zoomIn.play();
-
-        ZoomIn zoomIn2 = new ZoomIn(draggedItem);
-        zoomIn2.setSpeed(2);
-        zoomIn2.play();
     }
 
     private void swapIndexOngGrid(PingerController ctl1, PingerController ctl2) {
@@ -283,6 +304,27 @@ public class PingerGridController extends AnchorPane {
         ctl1.setIndexOnGrid(ctl2.getIndexOnGrid());
         ctl2.setIndexOnGrid(temp);
     }
+
+    private boolean isOnTrash(double x, double y) {
+        double startX, startY, endX, endY;
+        startX = dusbinStackPane.getLayoutX();
+        endX = startX + dusbinStackPane.getWidth();
+        startY = dusbinStackPane.getLayoutY();
+        endY = startY + dusbinStackPane.getHeight();
+
+        if ((startX < x && endX > x) && (startY < y && endY > y)) {
+            dusbinImageView.setFitHeight(60);
+            dusbinImageView.setFitWidth(60);
+            dusbinStackPane.toFront();
+            isTrashEnlarged = true;
+        } else {
+            dusbinImageView.setFitHeight(30);
+            dusbinImageView.setFitWidth(30);
+            isTrashEnlarged = false;
+        }
+        return false;
+    }
+
 
     private PingerController findItemByCoordinates(double x, double y, boolean isForStyling) {
         double startX, startY, endX, endY;
@@ -326,7 +368,7 @@ public class PingerGridController extends AnchorPane {
     }
 
     public void show() {
-        Scene scene = new Scene(this.loadView(), 770, 560);
+        Scene scene = new Scene(this.loadView(), 770, 556);
         stage = new Stage();
         stage.setScene(scene);
         stage.setResizable(false);

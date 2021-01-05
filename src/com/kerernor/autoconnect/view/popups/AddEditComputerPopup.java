@@ -1,7 +1,5 @@
 package com.kerernor.autoconnect.view.popups;
 
-import animatefx.animation.Tada;
-import animatefx.animation.ZoomIn;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
 import com.kerernor.autoconnect.model.ComputerData;
@@ -206,9 +204,6 @@ public class AddEditComputerPopup extends BorderPane {
         Utils.enableExitPopupOnEscKey(stage, callback -> closeClickAction());
 
         stage.show();
-        Platform.runLater(() -> {
-            new ZoomIn(stationRadioButton);
-        });
 
         // center stage
         Utils.centerNewStageToBehindStage(paneBehind, stage);
