@@ -22,10 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -38,7 +35,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PingerGridController extends AnchorPane {
+public class PingerGridController extends BorderPane {
+
 
     @FXML
     private FlowPane mainPane;
@@ -62,9 +60,10 @@ public class PingerGridController extends AnchorPane {
     private final Logger logger = LogManager.getLogger(PingerGridController.class);
 
     private double x, y;
+    public static final int DELTA_TRANSLATE_Y = 100;
     private PingerController draggedItem;
     private PingerController colorItem;
-    private final int gridRows = 7;
+    private final int gridRows = 6;
     private final double spaceBetweenCells = 10d;
     private boolean isSingleDragging = true;
     private List<PingerController> selectionList = new ArrayList<>();
@@ -121,6 +120,10 @@ public class PingerGridController extends AnchorPane {
             pingerController.getStyleClass().add("main-pane");
             mainPane.getChildren().add(pingerController);
         }
+
+        for (int i = Utils.MAX_PINGER_GROUPS; i < Utils.MAX_PINGER_GROUPS * 2; i++) {
+            mainPane.getChildren().get(i).setTranslateY(DELTA_TRANSLATE_Y);
+        }
     }
 
     private void saveChangesHandler(MouseEvent event) {
@@ -149,7 +152,7 @@ public class PingerGridController extends AnchorPane {
                 int indexOnGrid = item.getIndexOnGrid();
                 dusbinStackPane.setVisible(true);
                 Platform.runLater(() -> {
-                    Tada tada = new Tada(dusbinStackPane);
+                    ZoomIn tada = new ZoomIn(dusbinStackPane);
                     tada.setSpeed(2);
                     tada.play();
                 });
@@ -241,7 +244,7 @@ public class PingerGridController extends AnchorPane {
                 isTrashEnlarged = false;
             }
             if (draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY) {
-                mainPane.getChildren().get(draggedItem.getIndexOnGrid() + Utils.MAX_PINGER_GROUPS).setTranslateY(0);
+                mainPane.getChildren().get(draggedItem.getIndexOnGrid() + Utils.MAX_PINGER_GROUPS).setTranslateY(DELTA_TRANSLATE_Y);
                 mainPane.getChildren().get(draggedItem.getIndexOnGrid() + Utils.MAX_PINGER_GROUPS).setTranslateX(0);
                 if (draggedItem.isDeleted()) {
                     mainPane.getChildren().get(draggedItem.getIndexOnGrid()).getStyleClass().add("main-pane");
@@ -353,7 +356,7 @@ public class PingerGridController extends AnchorPane {
     }
 
 
-    public AnchorPane loadView() {
+    public BorderPane loadView() {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.PINGER_POPUP_GRID));
         loader.setController(this);
         loader.setRoot(this);

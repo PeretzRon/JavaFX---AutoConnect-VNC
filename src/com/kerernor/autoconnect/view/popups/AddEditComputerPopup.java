@@ -247,7 +247,6 @@ public class AddEditComputerPopup extends BorderPane {
         Timeline timeline = new Timeline();;
         mainPane.prefWidthProperty().addListener((observable, oldValue, newValue) -> {
             stage.setWidth(newValue.doubleValue());
-//            logger.debug(newValue.doubleValue());
         });
         mainPane.prefHeightProperty().addListener((observable, oldValue, newValue) -> {
             stage.setHeight(newValue.doubleValue());
