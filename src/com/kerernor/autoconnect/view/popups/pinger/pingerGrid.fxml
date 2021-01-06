@@ -27,8 +27,8 @@
         </FlowPane>
     </center>
     <bottom>
-        <HBox>
-            <StackPane fx:id="dusbinStackPane" layoutX="2.0" layoutY="520.0" prefHeight="45.0" prefWidth="768.0" style="-fx-background-color: #083C68">
+        <HBox fx:id="dustbinHBox" style="-fx-background-color: #083C68">
+            <StackPane fx:id="dusbinStackPane" prefHeight="45.0" prefWidth="768.0" >
                 <children>
                     <ImageView fx:id="dusbinImageView" fitHeight="29.0" fitWidth="29.0">
                         <image>

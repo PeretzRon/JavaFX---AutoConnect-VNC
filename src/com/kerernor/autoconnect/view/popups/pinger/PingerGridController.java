@@ -52,6 +52,8 @@ public class PingerGridController extends BorderPane {
     private StackPane dusbinStackPane;
     @FXML
     private ImageView dusbinImageView;
+    @FXML
+    private HBox dustbinHBox;
 
 
     private Parent paneBehind;
@@ -69,6 +71,7 @@ public class PingerGridController extends BorderPane {
     private List<PingerController> selectionList = new ArrayList<>();
     private BooleanProperty isShowIDustbinImage = new SimpleBooleanProperty(false);
     private boolean isTrashEnlarged = false;
+    private boolean breakPoint = false;
 
     public PingerGridController(ObservableList<Pinger> items, Parent paneBehind) {
         logger.debug("LIST SIZE: " + items.size());
@@ -81,7 +84,7 @@ public class PingerGridController extends BorderPane {
         mainPane.setVgap(spaceBetweenCells);
         mainPane.setHgap(spaceBetweenCells);
         mainPane.setPadding(new Insets(10, 10, 10, 10));
-        dusbinStackPane.setVisible(false);
+        dustbinHBox.setVisible(false);
         mainPane.setOrientation(Orientation.HORIZONTAL);
         createCells();
         createEmptyCells();
@@ -150,11 +153,11 @@ public class PingerGridController extends BorderPane {
             double delta = -(moduleHeight * gridRows + spaceBetweenCells * gridRows);
             if (item != null && item.getState() != KorTypes.PingerGridItemState.EMPTY) {
                 int indexOnGrid = item.getIndexOnGrid();
-                dusbinStackPane.setVisible(true);
+                dustbinHBox.setVisible(true);
                 Platform.runLater(() -> {
-                    ZoomIn tada = new ZoomIn(dusbinStackPane);
-                    tada.setSpeed(2);
-                    tada.play();
+                    ZoomIn zoomIn = new ZoomIn(dustbinHBox);
+                    zoomIn.setSpeed(3);
+                    zoomIn.play();
                 });
                 ((PingerController) mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS)).setFirstRow(item.getFirstRow());
                 mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS).getStyleClass().add("main-pane-not-empty");
@@ -216,6 +219,7 @@ public class PingerGridController extends BorderPane {
         } else {
             if (colorItem != null) {
                 removeBorderFromAllNodes(pingerControllers);
+                colorItem = null;
             }
         }
     }
@@ -268,10 +272,10 @@ public class PingerGridController extends BorderPane {
             dusbinImageView.setFitWidth(30);
 
 
-            ZoomOut zoomOut = new ZoomOut(dusbinStackPane);
+            ZoomOut zoomOut = new ZoomOut(dustbinHBox);
             zoomOut.setSpeed(3);
             zoomOut.setOnFinished(event1 -> {
-                dusbinStackPane.setVisible(false);
+                dustbinHBox.setVisible(false);
             });
 
             zoomOut.setResetOnFinished(true).play();
@@ -310,20 +314,38 @@ public class PingerGridController extends BorderPane {
 
     private boolean isOnTrash(double x, double y) {
         double startX, startY, endX, endY;
-        startX = dusbinStackPane.getLayoutX();
-        endX = startX + dusbinStackPane.getWidth();
-        startY = dusbinStackPane.getLayoutY();
-        endY = startY + dusbinStackPane.getHeight();
+        startX = dustbinHBox.getLayoutX();
 
+        endX = startX + dustbinHBox.getWidth();
+
+        startY = dustbinHBox.getLayoutY();
+
+        endY = startY + dustbinHBox.getHeight();
+        Tada tada = new Tada(dusbinImageView);
         if ((startX < x && endX > x) && (startY < y && endY > y)) {
+            if (!isTrashEnlarged) {
+                tada.setCycleCount(AnimationFX.INDEFINITE).play();
+                logger.warn("START!!!");
+            }
             dusbinImageView.setFitHeight(60);
             dusbinImageView.setFitWidth(60);
-            dusbinStackPane.toFront();
             isTrashEnlarged = true;
+            dustbinHBox.setOpacity(0.5);
+            dustbinHBox.setStyle("-fx-background-color: red;");
         } else {
+            if (isTrashEnlarged) {
+                Platform.runLater(() -> {
+                    tada.setResetOnFinished(true).stop();
+                    logger.debug(tada);
+                });
+
+                logger.warn("STOOP!!!");
+            }
             dusbinImageView.setFitHeight(30);
             dusbinImageView.setFitWidth(30);
             isTrashEnlarged = false;
+            dustbinHBox.setOpacity(1);
+            dustbinHBox.setStyle("-fx-background-color: #083C68;");
         }
         return false;
     }
