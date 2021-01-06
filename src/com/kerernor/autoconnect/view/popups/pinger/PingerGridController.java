@@ -54,6 +54,8 @@ public class PingerGridController extends BorderPane {
     private ImageView dusbinImageView;
     @FXML
     private HBox dustbinHBox;
+    @FXML
+    private VBox bottomMenu;
 
 
     private Parent paneBehind;
@@ -65,13 +67,13 @@ public class PingerGridController extends BorderPane {
     public static final int DELTA_TRANSLATE_Y = 100;
     private PingerController draggedItem;
     private PingerController colorItem;
-    private final int gridRows = 6;
+    private final int gridRows = 7;
     private final double spaceBetweenCells = 10d;
     private boolean isSingleDragging = true;
     private List<PingerController> selectionList = new ArrayList<>();
     private BooleanProperty isShowIDustbinImage = new SimpleBooleanProperty(false);
     private boolean isTrashEnlarged = false;
-    private boolean breakPoint = false;
+    Tada tada;
 
     public PingerGridController(ObservableList<Pinger> items, Parent paneBehind) {
         logger.debug("LIST SIZE: " + items.size());
@@ -93,6 +95,8 @@ public class PingerGridController extends BorderPane {
         mainPane.setOnMouseReleased(this::onMouseReleased);
         saveChangesButton.setOnMouseClicked(this::saveChangesHandler);
         closeButton.setOnMouseClicked(this::closeClickAction);
+
+        tada = new Tada(dusbinImageView);
         test.setOnMouseClicked(event -> {
             logger.debug("");
 //            isSingleDragging = !isSingleDragging;
@@ -143,6 +147,11 @@ public class PingerGridController extends BorderPane {
         closeClickAction();
     }
 
+    private void toggleBottomMenu(boolean isToShowButtons) {
+        buttonsHBox.setVisible(isToShowButtons);
+        dustbinHBox.setVisible(!isToShowButtons);
+    }
+
 
     private void onMousePress(MouseEvent event) {
         final PingerController item = findItemByCoordinates(event.getSceneX(), event.getSceneY(), false);
@@ -153,7 +162,8 @@ public class PingerGridController extends BorderPane {
             double delta = -(moduleHeight * gridRows + spaceBetweenCells * gridRows);
             if (item != null && item.getState() != KorTypes.PingerGridItemState.EMPTY) {
                 int indexOnGrid = item.getIndexOnGrid();
-                dustbinHBox.setVisible(true);
+                toggleBottomMenu(false);
+//                dustbinHBox.setVisible(true);
                 Platform.runLater(() -> {
                     ZoomIn zoomIn = new ZoomIn(dustbinHBox);
                     zoomIn.setSpeed(3);
@@ -188,6 +198,10 @@ public class PingerGridController extends BorderPane {
             double moduleHeight = ((PingerController) pingerControllers.get(Utils.MAX_PINGER_GROUPS)).getPrefHeight();
             double delta = -(moduleHeight * gridRows + spaceBetweenCells * gridRows);
             if (draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY) {
+                if (!dustbinHBox.isVisible()) {
+                    // that in case of somehow the trash not show and controller of dragging is not null
+                    toggleBottomMenu(false);
+                }
                 restoreControllerVisibilityAndPosition(event, pingerControllers, delta);
                 makeBorderOnHoverController(event, pingerControllers);
             }
@@ -275,7 +289,8 @@ public class PingerGridController extends BorderPane {
             ZoomOut zoomOut = new ZoomOut(dustbinHBox);
             zoomOut.setSpeed(3);
             zoomOut.setOnFinished(event1 -> {
-                dustbinHBox.setVisible(false);
+                toggleBottomMenu(true);
+                compressedTrash();
             });
 
             zoomOut.setResetOnFinished(true).play();
@@ -312,42 +327,42 @@ public class PingerGridController extends BorderPane {
         ctl2.setIndexOnGrid(temp);
     }
 
-    private boolean isOnTrash(double x, double y) {
+    private void isOnTrash(double x, double y) {
         double startX, startY, endX, endY;
-        startX = dustbinHBox.getLayoutX();
+        startX = bottomMenu.getLayoutX();
+        endX = startX + bottomMenu.getWidth();
+        startY = bottomMenu.getLayoutY();
+        endY = startY + bottomMenu.getHeight();
 
-        endX = startX + dustbinHBox.getWidth();
-
-        startY = dustbinHBox.getLayoutY();
-
-        endY = startY + dustbinHBox.getHeight();
-        Tada tada = new Tada(dusbinImageView);
         if ((startX < x && endX > x) && (startY < y && endY > y)) {
-            if (!isTrashEnlarged) {
-                tada.setCycleCount(AnimationFX.INDEFINITE).play();
-                logger.warn("START!!!");
-            }
-            dusbinImageView.setFitHeight(60);
-            dusbinImageView.setFitWidth(60);
-            isTrashEnlarged = true;
-            dustbinHBox.setOpacity(0.5);
-            dustbinHBox.setStyle("-fx-background-color: red;");
+            enlargeTrash();
         } else {
-            if (isTrashEnlarged) {
-                Platform.runLater(() -> {
-                    tada.setResetOnFinished(true).stop();
-                    logger.debug(tada);
-                });
-
-                logger.warn("STOOP!!!");
-            }
-            dusbinImageView.setFitHeight(30);
-            dusbinImageView.setFitWidth(30);
-            isTrashEnlarged = false;
-            dustbinHBox.setOpacity(1);
-            dustbinHBox.setStyle("-fx-background-color: #083C68;");
+            compressedTrash();
         }
-        return false;
+    }
+
+    private void compressedTrash() {
+        if (isTrashEnlarged) {
+            tada.setResetOnFinished(true).stop();
+            dusbinImageView.setRotate(0);
+        }
+        dusbinImageView.setFitHeight(30);
+        dusbinImageView.setFitWidth(30);
+        isTrashEnlarged = false;
+        dustbinHBox.setOpacity(1);
+        dustbinHBox.setStyle("-fx-background-color: #083C68;");
+    }
+
+    private void enlargeTrash() {
+        if (!isTrashEnlarged) {
+            tada.setCycleCount(AnimationFX.INDEFINITE).play();
+        }
+
+        isTrashEnlarged = true;
+        dusbinImageView.setFitHeight(50);
+        dusbinImageView.setFitWidth(50);
+        dustbinHBox.setOpacity(0.5);
+        dustbinHBox.setStyle("-fx-background-color: red;");
     }
 
 
@@ -358,7 +373,7 @@ public class PingerGridController extends BorderPane {
             itemController = (PingerController) currentItemController;
             startX = currentItemController.getLayoutX();
             endX = startX + ((PingerController) currentItemController).getWidth();
-            startY = currentItemController.getLayoutY() + 30;
+            startY = currentItemController.getLayoutY();
             endY = startY + ((PingerController) currentItemController).getHeight();
 
             if ((startX < x && endX > x) && (startY < y && endY > y)) {

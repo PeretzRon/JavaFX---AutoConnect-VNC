@@ -10,14 +10,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 
+<?import javafx.scene.layout.VBox?>
 <fx:root fx:id="main" prefHeight="400.0" prefWidth="650.0" styleClass="grid-pinger-popup" stylesheets="@../../../style/popupStyle.css" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
     <top>
-        <HBox fx:id="buttonsHBox" alignment="CENTER" spacing="10">
-            <Button fx:id="saveChangesButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="70.0" styleClass="button-save-popup-grid" text="Save" />
-            <Button fx:id="closeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="20.0" prefWidth="70.0" styleClass="button-close-popup-grid" text="Close" />
-            <Button fx:id="test" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="20.0" prefWidth="70.0" styleClass="button-close-popup-grid" text="Test" />
-        </HBox>
+
     </top>
     <center>
         <FlowPane fx:id="mainPane" minHeight="-Infinity" prefHeight="0.0" GridPane.rowIndex="1">
@@ -27,16 +24,28 @@
         </FlowPane>
     </center>
     <bottom>
-        <HBox fx:id="dustbinHBox" style="-fx-background-color: #083C68">
-            <StackPane fx:id="dusbinStackPane" prefHeight="45.0" prefWidth="768.0" >
-                <children>
-                    <ImageView fx:id="dusbinImageView" fitHeight="29.0" fitWidth="29.0">
-                        <image>
-                            <Image url="@../../../images/dustbin.png" />
-                        </image>
-                    </ImageView>
-                </children>
+        <VBox fx:id="bottomMenu">
+            <StackPane>
+                <HBox fx:id="buttonsHBox" alignment="CENTER" spacing="10">
+                    <Button fx:id="saveChangesButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="70.0" styleClass="button-save-popup-grid" text="Save" />
+                    <Button fx:id="closeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="20.0" prefWidth="70.0" styleClass="button-close-popup-grid" text="Close" />
+                    <Button fx:id="test" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="20.0" prefWidth="70.0" styleClass="button-close-popup-grid" text="Test" />
+                    <padding>
+                        <Insets bottom="5"/>
+                    </padding>
+                </HBox>
+                <HBox visible="false" fx:id="dustbinHBox" style="-fx-background-color: #083C68">
+                    <StackPane fx:id="dusbinStackPane" prefHeight="45.0" prefWidth="768.0" >
+                        <children>
+                            <ImageView fx:id="dusbinImageView" fitHeight="30.0" fitWidth="30.0">
+                                <image>
+                                    <Image url="@../../../images/dustbin.png" />
+                                </image>
+                            </ImageView>
+                        </children>
+                    </StackPane>
+                </HBox>
             </StackPane>
-        </HBox>
+        </VBox>
     </bottom>
 </fx:root>
