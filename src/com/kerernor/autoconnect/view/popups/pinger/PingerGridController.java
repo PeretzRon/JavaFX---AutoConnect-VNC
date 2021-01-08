@@ -1,6 +1,9 @@
 package com.kerernor.autoconnect.view.popups.pinger;
 
-import animatefx.animation.*;
+import animatefx.animation.AnimationFX;
+import animatefx.animation.Tada;
+import animatefx.animation.ZoomIn;
+import animatefx.animation.ZoomOut;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
@@ -8,8 +11,6 @@ import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -28,7 +29,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,9 +58,9 @@ public class PingerGridController extends BorderPane {
     private VBox bottomMenu;
 
 
-    private Parent paneBehind;
+    private final Parent paneBehind;
     private Stage stage;
-    private ObservableList<Pinger> items;
+    private final ObservableList<Pinger> items;
     private final Logger logger = LogManager.getLogger(PingerGridController.class);
 
     private double x, y;
@@ -70,8 +70,7 @@ public class PingerGridController extends BorderPane {
     private final int gridRows = 7;
     private final double spaceBetweenCells = 10d;
     private boolean isSingleDragging = true;
-    private List<PingerController> selectionList = new ArrayList<>();
-    private BooleanProperty isShowIDustbinImage = new SimpleBooleanProperty(false);
+    private final List<PingerController> selectionList = new ArrayList<>();
     private boolean isTrashEnlarged = false;
     Tada tada;
 
@@ -99,7 +98,7 @@ public class PingerGridController extends BorderPane {
         tada = new Tada(dusbinImageView);
         test.setOnMouseClicked(event -> {
             logger.debug("");
-//            isSingleDragging = !isSingleDragging;
+            isSingleDragging = !isSingleDragging;
         });
     }
 
@@ -128,8 +127,15 @@ public class PingerGridController extends BorderPane {
             mainPane.getChildren().add(pingerController);
         }
 
+        createDummyController();
+    }
+
+    private void createDummyController() {
         for (int i = Utils.MAX_PINGER_GROUPS; i < Utils.MAX_PINGER_GROUPS * 2; i++) {
-            mainPane.getChildren().get(i).setTranslateY(DELTA_TRANSLATE_Y);
+            final Node node = mainPane.getChildren().get(i);
+            node.setTranslateY(DELTA_TRANSLATE_Y);
+            ((PingerController)node).setState(KorTypes.PingerGridItemState.DUMMY);
+//            ((PingerController)node).setDummyController(true);
         }
     }
 
@@ -163,7 +169,6 @@ public class PingerGridController extends BorderPane {
             if (item != null && item.getState() != KorTypes.PingerGridItemState.EMPTY) {
                 int indexOnGrid = item.getIndexOnGrid();
                 toggleBottomMenu(false);
-//                dustbinHBox.setVisible(true);
                 Platform.runLater(() -> {
                     ZoomIn zoomIn = new ZoomIn(dustbinHBox);
                     zoomIn.setSpeed(3);
@@ -274,7 +279,7 @@ public class PingerGridController extends BorderPane {
                 scaleNode((PingerController) mainPane.getChildren().get(draggedItem.getIndexOnGrid() + Utils.MAX_PINGER_GROUPS), 1);
             }
 
-            if (colorItem != null && draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY && !draggedItem.isDeleted()) {
+            if ((colorItem != null  && colorItem.getState() != KorTypes.PingerGridItemState.DUMMY) && (draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY && !draggedItem.isDeleted())) {
                 colorItem.getStyleClass().remove("menu-item-hover");
                 switchModules();
             }
@@ -408,7 +413,7 @@ public class PingerGridController extends BorderPane {
     }
 
     public void show() {
-        Scene scene = new Scene(this.loadView(), 770, 556);
+        Scene scene = new Scene(this.loadView(), 750, 556);
         stage = new Stage();
         stage.setScene(scene);
         stage.setResizable(false);

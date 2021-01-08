@@ -29,35 +29,6 @@ public class PingerController extends VBox {
     private boolean isDeleted = false;
 
 
-    public PingGroupItemController getPingGroupItemController() {
-        return pingGroupItemController;
-    }
-
-    public void setPingGroupItemController(PingGroupItemController pingGroupItemController) {
-        this.pingGroupItemController = pingGroupItemController;
-    }
-
-    public Pinger getPinger() {
-        return pinger;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
-
-    public void setPinger(Pinger pinger) {
-        this.pinger = pinger;
-    }
-
-    public PingerController() {
-        this.state = KorTypes.PingerGridItemState.EMPTY;
-        loadView();
-    }
-
     public static PingerController emptyPingerController() {
         PingerController empty = new PingerController();
         empty.setDeleted(false);
@@ -112,6 +83,31 @@ public class PingerController extends VBox {
 
     public void setState(KorTypes.PingerGridItemState state) {
         this.state = state;
+    }
+
+    public PingGroupItemController getPingGroupItemController() {
+        return pingGroupItemController;
+    }
+
+    public Pinger getPinger() {
+        return pinger;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public void setPinger(Pinger pinger) {
+        this.pinger = pinger;
+    }
+
+    public PingerController() {
+        this.state = KorTypes.PingerGridItemState.EMPTY;
+        loadView();
     }
 
     @Override
