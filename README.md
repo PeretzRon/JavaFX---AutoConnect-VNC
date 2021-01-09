@@ -2,7 +2,7 @@
 ## Prepare a small app while learning JavaFX.
 
 ### Demo:
-![screenshot-1](src/com/kerernor/autoconnect/images/screenshot-4.gif)
+![screenshot-1](src/com/kerernor/autoconnect/images/screenshot-gif-4.gif)
 
 ### Screenshots:
 ![screenshot-1](src/com/kerernor/autoconnect/images/screenshot-1.png)
