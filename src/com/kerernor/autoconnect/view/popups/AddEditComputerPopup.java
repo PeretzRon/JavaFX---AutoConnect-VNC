@@ -244,26 +244,28 @@ public class AddEditComputerPopup extends BorderPane {
     }
 
     public void closeClickAction() {
-        Timeline timeline = new Timeline();;
-        mainPane.prefWidthProperty().addListener((observable, oldValue, newValue) -> {
-            stage.setWidth(newValue.doubleValue());
-        });
-        mainPane.prefHeightProperty().addListener((observable, oldValue, newValue) -> {
-            stage.setHeight(newValue.doubleValue());
-        });
-        KeyFrame key = new KeyFrame(Duration.millis(1000),
-                new KeyValue(mainPane.prefWidthProperty(), 0));
-        KeyFrame key2 = new KeyFrame(Duration.millis(1000),
-                new KeyValue(mainPane.prefHeightProperty(), 0));
-        timeline.getKeyFrames().add(key);
-        timeline.getKeyFrames().add(key2);
-        timeline.setOnFinished((ae) -> {
-            stage.close();
-            // Revert the blur effect from the pane behind
-            paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
-        });
-        timeline.play();
-
+//        Timeline timeline = new Timeline();;
+//        mainPane.prefWidthProperty().addListener((observable, oldValue, newValue) -> {
+//            stage.setWidth(newValue.doubleValue());
+//        });
+//        mainPane.prefHeightProperty().addListener((observable, oldValue, newValue) -> {
+//            stage.setHeight(newValue.doubleValue());
+//        });
+//        KeyFrame key = new KeyFrame(Duration.millis(1000),
+//                new KeyValue(mainPane.prefWidthProperty(), 0));
+//        KeyFrame key2 = new KeyFrame(Duration.millis(1000),
+//                new KeyValue(mainPane.prefHeightProperty(), 0));
+//        timeline.getKeyFrames().add(key);
+//        timeline.getKeyFrames().add(key2);
+//        timeline.setOnFinished((ae) -> {
+//            stage.close();
+//            // Revert the blur effect from the pane behind
+//            paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
+//        });
+//        timeline.play();
+        stage.close();
+        // Revert the blur effect from the pane behind
+        paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
 
     }
 
