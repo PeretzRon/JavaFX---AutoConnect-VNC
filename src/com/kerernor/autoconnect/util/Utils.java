@@ -1,5 +1,6 @@
 package com.kerernor.autoconnect.util;
 
+import animatefx.animation.Tada;
 import com.kerernor.autoconnect.view.ComputerRowController;
 import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.screens.ISearchTextFlow;
@@ -27,6 +28,7 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.security.auth.callback.Callback;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +37,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public class Utils {
 
@@ -49,6 +52,7 @@ public class Utils {
     public static final String IMAGES_BASE_PATH = BASE_PATH + "images/";
     public static final String VIEWS_COMPONENTS_BASE_PATH = VIEWS_BASE_PATH + "components/";
     public static final String VIEWS_POPUPS_BASE_PATH = VIEWS_BASE_PATH + "popups/";
+    public static final String VIEWS_POPUPS_PINGER_BASE_PATH = VIEWS_POPUPS_BASE_PATH + "pinger/";
     public static final String VIEWS_SCREENS_BASE_PATH = VIEWS_BASE_PATH + "screens/";
     public static final String CONFIG_BASE_PATH = BASE_PATH + "config/";
 
@@ -76,6 +80,8 @@ public class Utils {
     public static final String PING_GROUP_ITEM = VIEWS_BASE_PATH + "pingGroupItem.fxml";
     public static final String J_TEXT_FIELD = VIEWS_COMPONENTS_BASE_PATH + "jTextField.fxml";
     public static final String J_SEARCHABLE_TEXT_FLOW = VIEWS_COMPONENTS_BASE_PATH + "jSearchableTextFlow.fxml";
+    public static final String PINGER_POPUP_ITEM = VIEWS_POPUPS_PINGER_BASE_PATH + "pinger.fxml";
+    public static final String PINGER_POPUP_GRID = VIEWS_POPUPS_PINGER_BASE_PATH + "pingerGrid.fxml";
 
     // Images file paths
     public static final String RCGW_ICON = IMAGES_BASE_PATH + "antenna.png";
@@ -132,6 +138,7 @@ public class Utils {
     public static final int BLUR_SIZE = 5;
     public static final int BLUR_ITERATIONS = 3;
     public static final int MAX_HISTORY_CONNECT_LIST = 50;
+    public static final int MAX_PINGER_GROUPS = 56;
     public static final int MAX_PINGER_ITEMS_IN_ONE_GROUP = 5;
     public static final int MAX_REMOTE_DRIVE_CONNECT_LIST = 50;
     public static final int TIME_FOR_CLOSE_POPUP = 7000;
@@ -170,6 +177,7 @@ public class Utils {
     public static final String ERROR_WHILE_SAVE_DATA = "Can't save data to file";
     public static final String REACH_MAX_PINGER_ITEM = "Can't add item - The amount of items allowed is: ";
     public static final String SOME_OF_FIELDS_ARE_EMPTY = "Some of the fields are empty";
+    public static final String MAX_PING_GROUPS_WARNING = "You have reached a maximum number of groups - " + Utils.MAX_PINGER_GROUPS;
 
 
     // Style
@@ -209,7 +217,7 @@ public class Utils {
         double centerXPosition = primaryStage.getX() + primaryStage.getWidth() / 2d;
         double centerYPosition = primaryStage.getY() + primaryStage.getHeight() / 2d;
 
-        newStage.setX(centerXPosition - newStage.getWidth() / 2d);
+        newStage.setX(centerXPosition - newStage.getWidth() / 2d + (KorCommon.getInstance().getMainController().getButtonScreens().getPrefWidth() / 2d));
         newStage.setY(centerYPosition - newStage.getHeight() / 2d);
     }
 
@@ -313,6 +321,14 @@ public class Utils {
         }
     }
 
+    public static String addDotIfTextIsLong(String text, int maxCharacterToCut) {
+        if (text.length() < maxCharacterToCut) {
+            return text;
+        } else {
+            return text.substring(0, maxCharacterToCut) + "...";
+        }
+    }
+
     public static void setTextFieldOrientationByDetectLanguage(String input, TextField textField, boolean isOnTyping) {
         if (!input.isEmpty()) {
             if (isOnTyping) {
@@ -342,12 +358,12 @@ public class Utils {
         }
     }
 
-    public static void enableExitPopupOnEscKey(Stage stage) {
+    public static void enableExitPopupOnEscKey(Stage stage, Consumer<Boolean> callback) {
         Scene scene = stage.getScene();
         if (scene != null) {
             scene.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.ESCAPE) {
-                    stage.close();
+                    callback.accept(true);
                 }
             });
         }

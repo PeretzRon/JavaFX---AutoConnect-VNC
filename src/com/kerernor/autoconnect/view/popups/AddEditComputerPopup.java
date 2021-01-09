@@ -6,6 +6,9 @@ import com.kerernor.autoconnect.model.ComputerData;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.components.JTextFieldController;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -17,9 +20,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -66,6 +73,7 @@ public class AddEditComputerPopup extends BorderPane {
     private BooleanProperty isValidLocationTextField;
     private BooleanProperty isValidNameTextField;
     private boolean isEdit;
+    private Logger logger = LogManager.getLogger(AddEditComputerPopup.class);
 
     public AddEditComputerPopup(Parent paneBehind, boolean isEdit) {
         this.paneBehind = paneBehind;
@@ -197,7 +205,8 @@ public class AddEditComputerPopup extends BorderPane {
         // Prevent the window from closing in case of out of focus
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(paneBehind.getScene().getWindow());
-        Utils.enableExitPopupOnEscKey(stage);
+        Utils.enableExitPopupOnEscKey(stage, callback -> closeClickAction());
+
         stage.show();
 
         // center stage
@@ -235,9 +244,27 @@ public class AddEditComputerPopup extends BorderPane {
     }
 
     public void closeClickAction() {
-        // Revert the blur effect from the pane behind
-        paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
-        stage.close();
+        Timeline timeline = new Timeline();;
+        mainPane.prefWidthProperty().addListener((observable, oldValue, newValue) -> {
+            stage.setWidth(newValue.doubleValue());
+        });
+        mainPane.prefHeightProperty().addListener((observable, oldValue, newValue) -> {
+            stage.setHeight(newValue.doubleValue());
+        });
+        KeyFrame key = new KeyFrame(Duration.millis(1000),
+                new KeyValue(mainPane.prefWidthProperty(), 0));
+        KeyFrame key2 = new KeyFrame(Duration.millis(1000),
+                new KeyValue(mainPane.prefHeightProperty(), 0));
+        timeline.getKeyFrames().add(key);
+        timeline.getKeyFrames().add(key2);
+        timeline.setOnFinished((ae) -> {
+            stage.close();
+            // Revert the blur effect from the pane behind
+            paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
+        });
+        timeline.play();
+
+
     }
 
     // save new computer / edit computer to list

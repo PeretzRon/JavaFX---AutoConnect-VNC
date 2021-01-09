@@ -228,6 +228,7 @@ public class AddEditPingerItemsController extends GridPane {
     }
 
     public void show() {
+        logger.debug("shoe pinger grid");
         GridPane root = this.loadView();
         Scene scene = new Scene(root);
         root.setStyle("-fx-background-color: #05071F;");
@@ -254,7 +255,7 @@ public class AddEditPingerItemsController extends GridPane {
         // Prevent the window from closing in case of out of focus
         stage.initModality(Modality.NONE);
         stage.initOwner(paneBehind.getScene().getWindow());
-        Utils.enableExitPopupOnEscKey(stage);
+        Utils.enableExitPopupOnEscKey(stage, callback -> closeClickAction());
         stage.show();
 
         // center stage

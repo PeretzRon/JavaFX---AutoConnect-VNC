@@ -42,7 +42,7 @@ public class PingGroupItemController extends HBox {
     private ImageView deleteItem;
 
     private final Pinger pingerItem;
-    private Parent behindPane;
+    private final Parent behindPane;
 
     private EventHandler<KorEvents.PingerEvent> infoEditPingerItems;
     private EventHandler<KorEvents.PingerEvent> infoEditPingerGroupName;
@@ -65,9 +65,6 @@ public class PingGroupItemController extends HBox {
     public void initialize() {
          // TODO: check why need platform , otherwise tha app stuck on startup
         Platform.runLater(() -> KorCommon.getInstance().getPingerScreenController().getActiveSearchableTextFlowMap().add(name));
-        mainPane.setOnMouseClicked(event -> {
-
-        });
     }
 
     @FXML

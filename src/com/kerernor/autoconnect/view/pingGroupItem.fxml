@@ -1,23 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
 <?import com.kerernor.autoconnect.view.components.JSearchableTextFlowController?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
 <fx:root fx:id="mainPane" alignment="CENTER" prefHeight="90.0" prefWidth="120.0" spacing="10.0" styleClass="pinger-item" stylesheets="@../style/itemStyle.css" type="HBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
       <children>
          <VBox alignment="CENTER" prefHeight="46.0" prefWidth="101.0">
             <children>
                <JSearchableTextFlowController fx:id="name"/>
-<!--                <Label fx:id="name" styleClass="pinger-item" text="name" wrapText="true">-->
-<!--                  <font>-->
-<!--                     <Font size="13.0" />-->
-<!--                  </font>-->
-<!--               </Label>-->
             </children>
          </VBox>
          <HBox alignment="CENTER" prefHeight="55.0" prefWidth="101.0" spacing="15.0">

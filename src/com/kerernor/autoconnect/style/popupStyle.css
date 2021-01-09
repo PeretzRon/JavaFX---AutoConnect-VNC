@@ -7,6 +7,12 @@
     -fx-border-color: white;
 }
 
+.grid-pinger-popup {
+    -fx-background-color: #05071F;
+    -fx-border-width: 1;
+    -fx-border-color: white;
+}
+
 .title,
 .sub-title {
     -fx-text-fill: #fff;
@@ -23,6 +29,39 @@
     -fx-text-fill: white;
     -fx-font-size: 14px;
 }
+
+.button-add-edit-popup:hover,
+.button-confirm-popup:hover {
+    -fx-background-color: #4a5098;
+}
+
+.button-save-popup-grid {
+    -fx-background-color: #10155a;
+    -fx-background-insets: 0, 1, 2, 3;
+    -fx-border-color: #0D2C5F;
+    -fx-background-radius: 3, 2, 2, 2;
+    -fx-padding: 5 12 5 12;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-min-width: 30;
+}
+
+.button-close-popup-grid {
+    -fx-background-color: #05071F;
+    -fx-background-insets: 0, 1, 2, 3;
+    -fx-border-color: #0D2C5F;
+    -fx-background-radius: 3, 2, 2, 2;
+    -fx-padding: 5 12 5 12;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-min-width: 30;
+}
+
+.button-close-popup-grid:hover,
+.button-save-popup-grid:hover {
+    -fx-background-color: #4a5098;
+}
+
 
 .text-field-add-edit-popup {
     -fx-background-color: #05071F;
@@ -90,4 +129,22 @@
 .kor-separator:vertical .line {
     -fx-background-color: black;
     -fx-border-width: 0;
+}
+
+.main-pane {
+    -fx-background-color: #4c54b8;
+}
+
+.main-pane-not-empty {
+    -fx-background-color: #10165F;
+}
+
+.menu-item-hover {
+    -fx-border-color: #4a8dff;
+    -fx-border-width: 2;
+}
+
+.menu-item-dragged-border {
+    -fx-border-color: #c6c6c6;
+    -fx-border-width: 2;
 }

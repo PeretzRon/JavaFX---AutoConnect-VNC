@@ -4,14 +4,13 @@ import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.model.PingerItem;
-import com.kerernor.autoconnect.util.KorCommon;
-import com.kerernor.autoconnect.util.KorEvents;
-import com.kerernor.autoconnect.util.ThreadManger;
-import com.kerernor.autoconnect.util.Utils;
+import com.kerernor.autoconnect.util.*;
 import com.kerernor.autoconnect.view.PingGroupItemController;
 import com.kerernor.autoconnect.view.PingListGroupController;
 import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
+import com.kerernor.autoconnect.view.popups.AlertPopupController;
+import com.kerernor.autoconnect.view.popups.pinger.PingerGridController;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -176,8 +175,12 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
     @FXML
     public void addPingerItemHandler() {
         logger.debug("addPingerItemHandler");
-        AddEditPingerItemsController addEditPingerItemsController = new AddEditPingerItemsController(pnlSetting, null, false);
-        addEditPingerItemsController.show();
+        if (PingerData.getInstance().getPingerObservableList().size() >= Utils.MAX_PINGER_GROUPS) {
+            AlertPopupController.sendAlert(KorTypes.AlertTypes.INFO, Utils.MAX_PING_GROUPS_WARNING, this);
+        } else {
+            AddEditPingerItemsController addEditPingerItemsController = new AddEditPingerItemsController(pnlSetting, null, false);
+            addEditPingerItemsController.show();
+        }
     }
 
     @FXML
@@ -193,6 +196,12 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
         pingListGroupController.getListToSendPing().forEach(pingerItem -> ThreadManger.getInstance().getThreadPoolExecutor().execute(() -> {
             sendPing(pingerItem, progress, buffer, listSizeOfCurrentSelected);
         }));
+    }
+
+    @FXML
+    public void openGridPingerHandler() {
+        PingerGridController pingerGridController = new PingerGridController(PingerData.getInstance().getPingerObservableList(), KorCommon.getInstance().getPingerScreenController());
+        pingerGridController.show();
     }
 
     private void refreshPingerItemWhenUpdated(int listSize) {
@@ -298,5 +307,9 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
     @Override
     public Set<JSearchableTextFlowController> getActiveSearchableTextFlowMap() {
         return activeSearchableTextFlowMap;
+    }
+
+    public FlowPane getFlowPaneGroupPinger() {
+        return flowPaneGroupPinger;
     }
 }

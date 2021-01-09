@@ -298,4 +298,8 @@ public class MainController extends AnchorPane {
     public AnchorPane getMainPane() {
         return mainPane;
     }
+
+    public VBox getButtonScreens() {
+        return buttonScreens;
+    }
 }
