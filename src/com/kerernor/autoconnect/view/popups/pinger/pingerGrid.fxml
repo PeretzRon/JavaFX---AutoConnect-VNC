@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 
 <?import javafx.scene.layout.VBox?>
-<fx:root fx:id="main" prefHeight="400.0" prefWidth="650.0" styleClass="grid-pinger-popup" stylesheets="@../../../style/popupStyle.css" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="main" prefHeight="400.0" prefWidth="650.0" styleClass="grid-pinger-popup" stylesheets="@../../../style/popupStyle.css" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
 
     <top>
 

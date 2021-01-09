@@ -116,4 +116,5 @@ public class PingerController extends VBox {
                 "firstRow=" + firstRow +
                 '}';
     }
+
 }

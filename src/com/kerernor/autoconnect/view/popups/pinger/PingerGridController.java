@@ -1,15 +1,14 @@
 package com.kerernor.autoconnect.view.popups.pinger;
 
-import animatefx.animation.AnimationFX;
-import animatefx.animation.Tada;
-import animatefx.animation.ZoomIn;
-import animatefx.animation.ZoomOut;
+import animatefx.animation.*;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
 import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorTypes;
+import com.kerernor.autoconnect.util.ThreadManger;
 import com.kerernor.autoconnect.util.Utils;
+import com.kerernor.autoconnect.view.popups.AlertPopupController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,7 +32,10 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class PingerGridController extends BorderPane {
 
@@ -67,12 +69,14 @@ public class PingerGridController extends BorderPane {
     public static final int DELTA_TRANSLATE_Y = 100;
     private PingerController draggedItem;
     private PingerController colorItem;
-    private final int gridRows = 7;
+    private final int GRID_ROW = 7;
+    private final int GRID_COL = 8;
     private final double spaceBetweenCells = 10d;
     private boolean isSingleDragging = true;
     private final List<PingerController> selectionList = new ArrayList<>();
     private boolean isTrashEnlarged = false;
     Tada tada;
+    private ScheduledFuture<?> timer;
 
     public PingerGridController(ObservableList<Pinger> items, Parent paneBehind) {
         logger.debug("LIST SIZE: " + items.size());
@@ -89,13 +93,17 @@ public class PingerGridController extends BorderPane {
         mainPane.setOrientation(Orientation.HORIZONTAL);
         createCells();
         createEmptyCells();
+        initCellAnimation();
         mainPane.setOnMousePressed(this::onMousePress);
         mainPane.setOnMouseDragged(this::onMouseDragged);
         mainPane.setOnMouseReleased(this::onMouseReleased);
-        saveChangesButton.setOnMouseClicked(this::saveChangesHandler);
+        saveChangesButton.setOnMouseClicked(this::saveChangesButtonHandler);
         closeButton.setOnMouseClicked(this::closeClickAction);
 
         tada = new Tada(dusbinImageView);
+
+        // for enable/disable multi drag process
+        buttonsHBox.getChildren().remove(2);
         test.setOnMouseClicked(event -> {
             logger.debug("");
             isSingleDragging = !isSingleDragging;
@@ -107,6 +115,7 @@ public class PingerGridController extends BorderPane {
     }
 
     private void createCells() {
+        logger.debug("createCells");
         for (int i = 0; i < items.size(); i++) {
             PingerController pingerController = new PingerController();
             pingerController.setIndexOnGrid(i);
@@ -119,6 +128,7 @@ public class PingerGridController extends BorderPane {
     }
 
     private void createEmptyCells() {
+        logger.debug("createEmptyCells");
         for (int i = items.size(); i < Utils.MAX_PINGER_GROUPS * 2; i++) {
             PingerController pingerController = new PingerController();
             pingerController.setIndexOnGrid(i);
@@ -131,15 +141,35 @@ public class PingerGridController extends BorderPane {
     }
 
     private void createDummyController() {
+        logger.debug("createDummyController");
         for (int i = Utils.MAX_PINGER_GROUPS; i < Utils.MAX_PINGER_GROUPS * 2; i++) {
             final Node node = mainPane.getChildren().get(i);
             node.setTranslateY(DELTA_TRANSLATE_Y);
-            ((PingerController)node).setState(KorTypes.PingerGridItemState.DUMMY);
-//            ((PingerController)node).setDummyController(true);
+            ((PingerController) node).setState(KorTypes.PingerGridItemState.DUMMY);
         }
     }
 
-    private void saveChangesHandler(MouseEvent event) {
+    private void initCellAnimation() {
+        Platform.runLater(() -> {
+            boolean secondHalf = false;
+            int half = GRID_COL / 2;
+            int j = 0;
+            for (int i = 0; i < Utils.MAX_PINGER_GROUPS; i++) {
+                if (secondHalf) {
+                    new FadeInRight(mainPane.getChildren().get(i)).play();
+                } else {
+                    new FadeInLeft(mainPane.getChildren().get(i)).play();
+                }
+                j++;
+                if (j >= half) {
+                    secondHalf = !secondHalf;
+                    j = 0;
+                }
+            }
+        });
+    }
+
+    private void saveChangesButtonHandler(MouseEvent event) {
         ObservableList<Pinger> list = FXCollections.observableArrayList();
 
         for (Node node : mainPane.getChildren()) {
@@ -148,7 +178,6 @@ public class PingerGridController extends BorderPane {
             }
         }
 
-        System.out.println(list);
         PingerData.getInstance().getPingerObservableList().setAll(list);
         closeClickAction();
     }
@@ -158,14 +187,28 @@ public class PingerGridController extends BorderPane {
         dustbinHBox.setVisible(!isToShowButtons);
     }
 
+    private void longPressTimer(MouseEvent event) {
+        cancelLongPressTimer();
+        timer = ThreadManger.getInstance().getScheduledThreadPool().schedule(() -> {
+            logger.debug("long press detected");
+            handleWithMultiDragProcessing(event);
+        }, 400, TimeUnit.MILLISECONDS);
+    }
+
+    private void cancelLongPressTimer() {
+        if (timer != null) {
+            timer.cancel(true);
+            timer = null;
+        }
+    }
 
     private void onMousePress(MouseEvent event) {
+        logger.debug("onMousePress");
         final PingerController item = findItemByCoordinates(event.getSceneX(), event.getSceneY(), false);
 
         if (isSingleDragging) {
-
             double moduleHeight = ((PingerController) mainPane.getChildren().get(0)).getPrefHeight();
-            double delta = -(moduleHeight * gridRows + spaceBetweenCells * gridRows);
+            double delta = -(moduleHeight * GRID_ROW + spaceBetweenCells * GRID_ROW);
             if (item != null && item.getState() != KorTypes.PingerGridItemState.EMPTY) {
                 int indexOnGrid = item.getIndexOnGrid();
                 toggleBottomMenu(false);
@@ -181,19 +224,53 @@ public class PingerGridController extends BorderPane {
                 mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS).setTranslateY(delta);
                 y = event.getSceneY();
                 x = event.getSceneX();
-
-
             }
         } else {
             selectController(item);
+            longPressTimer(event);
         }
+    }
 
+    private void handleWithMultiDragProcessing(MouseEvent event) {
+        logger.debug("handleWithMultiDragProcessing");
+        double moduleHeight = ((PingerController) mainPane.getChildren().get(0)).getPrefHeight();
+        double delta = -(moduleHeight * GRID_ROW + spaceBetweenCells * GRID_ROW);
+        for (PingerController pingerController : selectionList) {
+            if (pingerController != null && pingerController.getState() != KorTypes.PingerGridItemState.EMPTY) {
+                int indexOnGrid = pingerController.getIndexOnGrid();
+//                toggleBottomMenu(false);
+//                Platform.runLater(() -> {
+//                    ZoomIn zoomIn = new ZoomIn(dustbinHBox);
+//                    zoomIn.setSpeed(3);
+//                    zoomIn.play();
+//                });
+                ((PingerController) mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS)).setFirstRow(pingerController.getFirstRow());
+                mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS).getStyleClass().add("main-pane-not-empty");
+                mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS).getStyleClass().add("menu-item-dragged-border");
+                scaleNode((PingerController) mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS), 1.1);
+                mainPane.getChildren().get(indexOnGrid + Utils.MAX_PINGER_GROUPS).setTranslateY(delta);
+            }
+            y = event.getSceneY();
+            x = event.getSceneX();
+        }
     }
 
     private void selectController(PingerController item) {
         if (item != null) {
+            for (PingerController pingerController : selectionList) {
+                if (pingerController.getIndexOnGrid() == item.getIndexOnGrid()) {
+                    return;
+                }
+            }
             item.getStyleClass().add("menu-item-hover");
             selectionList.add(item);
+        }
+    }
+
+    private void unselectController(PingerController item) {
+        if (item != null) {
+            item.getStyleClass().remove("menu-item-hover");
+            selectionList.remove(item);
         }
     }
 
@@ -201,14 +278,14 @@ public class PingerGridController extends BorderPane {
         if (isSingleDragging) {
             final ObservableList<Node> pingerControllers = mainPane.getChildren();
             double moduleHeight = ((PingerController) pingerControllers.get(Utils.MAX_PINGER_GROUPS)).getPrefHeight();
-            double delta = -(moduleHeight * gridRows + spaceBetweenCells * gridRows);
+            double delta = -(moduleHeight * GRID_ROW + spaceBetweenCells * GRID_ROW);
             if (draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY) {
                 if (!dustbinHBox.isVisible()) {
                     // that in case of somehow the trash not show and controller of dragging is not null
                     toggleBottomMenu(false);
                 }
-                restoreControllerVisibilityAndPosition(event, pingerControllers, delta);
-                makeBorderOnHoverController(event, pingerControllers);
+                restoreControllerVisibilityAndPosition(event, pingerControllers, draggedItem, delta);
+                makeBorderOnHoverController(event, pingerControllers, draggedItem);
             }
 
             isOnTrash(event.getSceneX(), event.getSceneY());
@@ -217,18 +294,17 @@ public class PingerGridController extends BorderPane {
         } else {
             final ObservableList<Node> pingerControllers = mainPane.getChildren();
             double moduleHeight = ((PingerController) pingerControllers.get(Utils.MAX_PINGER_GROUPS)).getPrefHeight();
-            double delta = -(moduleHeight * gridRows + spaceBetweenCells * gridRows);
+            double delta = -(moduleHeight * GRID_ROW + spaceBetweenCells * GRID_ROW);
             for (PingerController pingerController : selectionList) {
-                if (draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY) {
-                    restoreControllerVisibilityAndPosition(event, pingerControllers, delta);
-                    makeBorderOnHoverController(event, pingerControllers);
+                if (pingerController != null && pingerController.getState() != KorTypes.PingerGridItemState.EMPTY) {
+                    restoreControllerVisibilityAndPosition(event, pingerControllers, pingerController, delta);
+                    makeBorderOnHoverController(event, pingerControllers, pingerController);
                 }
             }
         }
-
     }
 
-    private void makeBorderOnHoverController(MouseEvent event, ObservableList<Node> pingerControllers) {
+    private void makeBorderOnHoverController(MouseEvent event, ObservableList<Node> pingerControllers, PingerController draggedItem) {
         PingerController itemControllerHover = findItemByCoordinates(event.getSceneX(), event.getSceneY(), true);
         if (itemControllerHover != null && !itemControllerHover.equals(draggedItem)) {
             if (!itemControllerHover.getStyleClass().contains("menu-item-hover")) {
@@ -249,7 +325,7 @@ public class PingerGridController extends BorderPane {
         }
     }
 
-    private void restoreControllerVisibilityAndPosition(MouseEvent event, ObservableList<Node> pingerControllers, double delta) {
+    private void restoreControllerVisibilityAndPosition(MouseEvent event, ObservableList<Node> pingerControllers, PingerController draggedItem, double delta) {
         pingerControllers.get(draggedItem.getIndexOnGrid()).getStyleClass().remove("main-pane-not-empty");
         pingerControllers.get(draggedItem.getIndexOnGrid()).setVisible(false);
 
@@ -259,6 +335,8 @@ public class PingerGridController extends BorderPane {
 
 
     private void onMouseReleased(MouseEvent event) {
+        logger.debug("onMouseReleased");
+        cancelLongPressTimer();
         if (isSingleDragging) {
             if (isTrashEnlarged) {
                 if (draggedItem != null) {
@@ -279,7 +357,7 @@ public class PingerGridController extends BorderPane {
                 scaleNode((PingerController) mainPane.getChildren().get(draggedItem.getIndexOnGrid() + Utils.MAX_PINGER_GROUPS), 1);
             }
 
-            if ((colorItem != null  && colorItem.getState() != KorTypes.PingerGridItemState.DUMMY) && (draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY && !draggedItem.isDeleted())) {
+            if ((colorItem != null && colorItem.getState() != KorTypes.PingerGridItemState.DUMMY) && (draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY && !draggedItem.isDeleted())) {
                 colorItem.getStyleClass().remove("menu-item-hover");
                 switchModules();
             }
@@ -299,11 +377,30 @@ public class PingerGridController extends BorderPane {
             });
 
             zoomOut.setResetOnFinished(true).play();
+        } else {
+            if (colorItem != null && colorItem.getState() != (KorTypes.PingerGridItemState.DUMMY)) {
+                selectionList.sort(Comparator.comparingInt(PingerController::getIndexOnGrid));
+                int targetIndex = colorItem.getIndexOnGrid();
+                int delta = targetIndex - selectionList.get(0).getIndexOnGrid();
+                for (PingerController currentController : selectionList) {
+                    int index = currentController.getIndexOnGrid() + targetIndex;
+                    if (index < 0 || index >= Utils.MAX_PINGER_GROUPS) {
+                        AlertPopupController.sendAlert(KorTypes.AlertTypes.INFO, "Can't ", this);
+                        return;
+                    }
+                    if (((PingerController) getGridCollection().get(currentController.getIndexOnGrid() + delta)).getState() == KorTypes.PingerGridItemState.ACTIVE) {
+                        AlertPopupController.sendAlert(KorTypes.AlertTypes.INFO, "Can't there is others ", this);
+                        return;
+                    }
+                }
+                AlertPopupController.sendAlert(KorTypes.AlertTypes.INFO, "YEss ", this);
+            }
         }
+
     }
 
     private void deleteItem(PingerController draggedItem) {
-        logger.debug("Deleting: " + draggedItem.getPinger().getName());
+        logger.debug("deleteItem: {}", draggedItem.getFirstRow());
         draggedItem.setDeleted(true);
         PingerController emptyPingerController = PingerController.emptyPingerController();
         emptyPingerController.setIndexOnGrid(draggedItem.getIndexOnGrid());
@@ -312,6 +409,7 @@ public class PingerGridController extends BorderPane {
     }
 
     private void switchModules() {
+        logger.debug("switchModules between Indexes: {}<->{}", colorItem.getIndexOnGrid(), draggedItem.getIndexOnGrid());
         ObservableList<Node> workingCollection = FXCollections.observableArrayList(mainPane.getChildren());
         Collections.swap(workingCollection, colorItem.getIndexOnGrid(), draggedItem.getIndexOnGrid());
         mainPane.getChildren().setAll(workingCollection);
@@ -446,6 +544,10 @@ public class PingerGridController extends BorderPane {
         // Revert the blur effect from the pane behind
         paneBehind.effectProperty().setValue(Utils.getEmptyEffect());
         stage.close();
+    }
+
+    private ObservableList<Node> getGridCollection() {
+        return mainPane.getChildren();
     }
 
 }

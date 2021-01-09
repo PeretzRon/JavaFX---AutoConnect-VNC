@@ -228,6 +228,7 @@ public class AddEditPingerItemsController extends GridPane {
     }
 
     public void show() {
+        logger.debug("shoe pinger grid");
         GridPane root = this.loadView();
         Scene scene = new Scene(root);
         root.setStyle("-fx-background-color: #05071F;");
