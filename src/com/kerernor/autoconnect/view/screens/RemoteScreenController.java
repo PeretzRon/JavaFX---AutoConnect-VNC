@@ -1,5 +1,6 @@
 package com.kerernor.autoconnect.view.screens;
 
+import animatefx.animation.FadeIn;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
 import com.kerernor.autoconnect.model.ComputerData;
@@ -298,7 +299,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
     @FXML
     public void addNewComputer() {
         AddEditComputerPopup addEditComputerPopup = new AddEditComputerPopup(mainPane, false);
-        addEditComputerPopup.show(null);
+        addEditComputerPopup.show0(null);
     }
 
     private void updateCounters() {
@@ -412,6 +413,7 @@ public class RemoteScreenController extends Pane implements IDisplayable, ISearc
         this.setVisible(true);
         this.setStyle(Utils.SCREEN_BACKGROUND_COLOR);
         this.toFront();
+        new FadeIn(this).setSpeed(1.5).play();
     }
 
     public LastConnectionsPopupController getLastConnectionsPopupController() {

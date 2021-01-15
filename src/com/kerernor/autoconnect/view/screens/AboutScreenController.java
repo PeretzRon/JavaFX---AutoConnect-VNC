@@ -1,5 +1,6 @@
 package com.kerernor.autoconnect.view.screens;
 
+import animatefx.animation.FadeIn;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.util.Utils;
 import javafx.beans.binding.Bindings;
@@ -76,6 +77,7 @@ public class AboutScreenController extends Pane implements IDisplayable {
         this.setVisible(true);
         this.setStyle(Utils.SCREEN_BACKGROUND_COLOR);
         this.toFront();
+        new FadeIn(this).setSpeed(1.5).play();
     }
 
     public Label getAboutSecondLine() {

@@ -173,7 +173,7 @@ public class PingerGridController extends BorderPane {
         ObservableList<Pinger> list = FXCollections.observableArrayList();
 
         for (Node node : mainPane.getChildren()) {
-            if (((PingerController) node).getState() != KorTypes.PingerGridItemState.EMPTY) {
+            if (((PingerController) node).getState() == KorTypes.PingerGridItemState.ACTIVE) {
                 list.add(((PingerController) node).getPinger());
             }
         }

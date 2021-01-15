@@ -1,5 +1,6 @@
 package com.kerernor.autoconnect.view.screens;
 
+import animatefx.animation.FadeIn;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
@@ -302,6 +303,7 @@ public class PingerScreenController extends Pane implements IDisplayable, ISearc
         this.setVisible(true);
         this.setStyle(Utils.SCREEN_BACKGROUND_COLOR);
         this.toFront();
+        new FadeIn(this).setSpeed(1.5).play();
     }
 
     @Override

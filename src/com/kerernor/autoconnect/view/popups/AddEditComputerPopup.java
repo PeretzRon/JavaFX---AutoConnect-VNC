@@ -3,6 +3,7 @@ package com.kerernor.autoconnect.view.popups;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Computer;
 import com.kerernor.autoconnect.model.ComputerData;
+import com.kerernor.autoconnect.util.KorCommon;
 import com.kerernor.autoconnect.util.KorTypes;
 import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.components.JTextFieldController;
@@ -13,6 +14,8 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,6 +24,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -168,6 +172,24 @@ public class AddEditComputerPopup extends BorderPane {
         }
 
         return null;
+    }
+
+    public void show0(Computer computer) {
+//        Timeline tick0 = new Timeline();
+//        tick0.setCycleCount(Timeline.INDEFINITE);
+//        tick0.getKeyFrames().add(
+//                new KeyFrame(new Duration(8), new EventHandler<ActionEvent>() {
+//                    public void handle(ActionEvent t) {
+////                        Pane root = KorCommon.getInstance().getRemoteScreenController();
+//                        paneBehind.setOpacity(paneBehind.getOpacity() - 0.01);
+//                        if (paneBehind.getOpacity() < 0.01) {//30 divided by 0.01 equals 3000 so you take the duration and divide it be the opacity to get your transition time in milliseconds
+//
+//                            tick0.stop();
+//                        }
+//                    }
+//                }));
+//        tick0.play();
+        show(computer);
     }
 
 

@@ -1,5 +1,6 @@
 package com.kerernor.autoconnect.view.screens;
 
+import animatefx.animation.FadeIn;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.LastRemoteDriveData;
 import com.kerernor.autoconnect.model.LastRemoteDriveItem;
@@ -168,6 +169,7 @@ public class RemoteDriveScreenController extends Pane implements IDisplayable {
         this.setVisible(true);
         this.setStyle("-fx-background-color : #02050A");
         this.toFront();
+        new FadeIn(this).setSpeed(1.5).play();
     }
 
     public static BooleanProperty isProcessRunningProperty() {
