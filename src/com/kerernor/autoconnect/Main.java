@@ -81,13 +81,13 @@ public class Main extends Application {
 
     private void makeStageDraggable() {
         logger.debug("makeStageDraggable");
-        this.rootLayout.setOnMousePressed(event -> {
+        this.rootLayout.addEventHandler(MouseEvent.MOUSE_PRESSED ,event -> {
             x = event.getSceneX();
             y = event.getSceneY();
             closePopupIfOpened(event);
         });
 
-        this.rootLayout.setOnMouseDragged(event -> {
+        this.rootLayout.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
             primaryStage.setX(event.getScreenX() - x);
             primaryStage.setY(event.getScreenY() - y);
         });

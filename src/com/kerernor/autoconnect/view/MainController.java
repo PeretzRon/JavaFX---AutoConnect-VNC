@@ -10,12 +10,14 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -97,7 +99,9 @@ public class MainController extends AnchorPane {
 
         Utils.createTooltipListener(minimizeAppStackPane, Utils.MINIMIZE, KorTypes.ShowNodeFrom.RIGHT);
         Utils.createTooltipListener(exitAppStackPane, Utils.EXIT, KorTypes.ShowNodeFrom.RIGHT);
-
+        minimizeAppStackPane.addEventHandler(MouseEvent.MOUSE_PRESSED, Event::consume);
+        minimizeAppStackPane.addEventHandler(MouseEvent.MOUSE_RELEASED, this::minimizeAppHandler);
+        minimizeAppStackPane.addEventHandler(MouseEvent.MOUSE_DRAGGED, Event::consume);
         loadKerenOrLogo();
 
         //only for debug
@@ -244,8 +248,7 @@ public class MainController extends AnchorPane {
         exitApp();
     }
 
-    @FXML
-    public void minimizeAppHandler() {
+    public void minimizeAppHandler(MouseEvent event) {
         logger.debug("minimizeAppHandler");
         Stage stage = (Stage) minimizeAppStackPane.getScene().getWindow();
         // is stage minimizable into task bar. (true | false)

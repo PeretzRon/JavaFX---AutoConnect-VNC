@@ -33,7 +33,7 @@
                         </image>
                     </ImageView>
                 </StackPane>
-                <StackPane fx:id="minimizeAppStackPane" onMouseClicked="#minimizeAppHandler">
+                <StackPane fx:id="minimizeAppStackPane">
                     <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" styleClass="hand-cursor-hover">
                         <image>
                             <Image url="@../images/minus-white-2.png" />
