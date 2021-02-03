@@ -100,7 +100,7 @@ public class MainController extends AnchorPane {
         Utils.createTooltipListener(minimizeAppStackPane, Utils.MINIMIZE, KorTypes.ShowNodeFrom.RIGHT);
         Utils.createTooltipListener(exitAppStackPane, Utils.EXIT, KorTypes.ShowNodeFrom.RIGHT);
         minimizeAppStackPane.addEventHandler(MouseEvent.MOUSE_PRESSED, Event::consume);
-        minimizeAppStackPane.addEventHandler(MouseEvent.MOUSE_RELEASED, this::minimizeAppHandler);
+        minimizeAppStackPane.addEventHandler(MouseEvent.MOUSE_CLICKED, this::minimizeAppHandler);
         minimizeAppStackPane.addEventHandler(MouseEvent.MOUSE_DRAGGED, Event::consume);
         loadKerenOrLogo();
 

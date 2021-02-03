@@ -1,6 +1,7 @@
 package com.kerernor.autoconnect.view.screens;
 
 import animatefx.animation.FadeIn;
+import com.google.gson.JsonObject;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
