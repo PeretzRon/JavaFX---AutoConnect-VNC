@@ -20,7 +20,7 @@ public class LastConnectionsPopupController extends GridPane {
     @FXML
     private LastConnectionListController lastConnectionListController;
 
-    private Logger logger = LogManager.getLogger(LastConnectionsPopupController.class);
+    private final Logger logger = LogManager.getLogger(LastConnectionsPopupController.class);
 
     public LastConnectionsPopupController() {
         loadView();

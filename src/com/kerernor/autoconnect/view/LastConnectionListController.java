@@ -19,7 +19,7 @@ public class LastConnectionListController extends ListView {
     @FXML
     private ListView<LastConnectionItem> lastConnectionList;
 
-    private Logger logger = LogManager.getLogger(LastConnectionListController.class);
+    private final Logger logger = LogManager.getLogger(LastConnectionListController.class);
 
     public LastConnectionListController() {
         super();

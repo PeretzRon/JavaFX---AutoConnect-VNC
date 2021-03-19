@@ -13,12 +13,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
-public class LastRemoteDriveListController extends ListView {
+public class LastRemoteDriveListController extends ListView<LastRemoteDriveRowController> {
 
     @FXML
     private ListView<LastRemoteDriveItem> lastRemoteDriveList;
 
-    private Logger logger = LogManager.getLogger(LastRemoteDriveListController.class);
+    private final Logger logger = LogManager.getLogger(LastRemoteDriveListController.class);
     private Pane paneBehind;
 
     public void setPaneBehind(Pane paneBehind) {

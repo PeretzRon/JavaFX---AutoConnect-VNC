@@ -1,6 +1,5 @@
 package com.kerernor.autoconnect.util;
 
-import animatefx.animation.Tada;
 import com.kerernor.autoconnect.view.ComputerRowController;
 import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.screens.ISearchTextFlow;
@@ -28,7 +27,6 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.security.auth.callback.Callback;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,7 +41,7 @@ public class Utils {
 
     private static Logger logger = LogManager.getLogger(Utils.class);
     public static Map<String, Image> appImages = new HashMap<>();
-    private static ScheduledFuture timer;
+    private static ScheduledFuture<?> timer;
 
     // Base paths
     public static final String BASE_PATH = "com/kerernor/autoconnect/";

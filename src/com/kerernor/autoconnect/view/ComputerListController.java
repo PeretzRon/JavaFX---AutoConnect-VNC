@@ -14,7 +14,7 @@ import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
-public class ComputerListController extends ListView {
+public class ComputerListController extends ListView<Computer> {
 
     @FXML
     private ListView<Computer> computerListView;
@@ -35,6 +35,7 @@ public class ComputerListController extends ListView {
         this.paneBehind = paneBehind;
     }
 
+    @SuppressWarnings("unused")
     public ComputerListController() {
         this(new Pane());
     }
@@ -89,9 +90,5 @@ public class ComputerListController extends ListView {
 
             return currentComputer;
         });
-
-
     }
-
-
 }

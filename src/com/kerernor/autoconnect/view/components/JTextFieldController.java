@@ -34,7 +34,7 @@ public class JTextFieldController extends StackPane {
     @FXML
     Line lineDraw;
 
-    private Logger logger = LogManager.getLogger(JTextFieldController.class);
+    private final Logger logger = LogManager.getLogger(JTextFieldController.class);
     private TranslateTransition translateTransitionForPlaceHolder;
     private ParallelTransition parallelTransition;
     private final ObjectProperty<Color> colorLineUnderTextField = new SimpleObjectProperty<>(Color.rgb(40, 20, 190));

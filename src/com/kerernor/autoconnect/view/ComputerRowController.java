@@ -52,9 +52,9 @@ public class ComputerRowController extends ListCell<Computer> {
 
     private Computer computer;
     private FXMLLoader loader;
-    private Parent paneBehind;
-    private static BooleanProperty isButtonsDisabled = new SimpleBooleanProperty(false);
-    private Logger logger = LogManager.getLogger(ComputerRowController.class);
+    private final Parent paneBehind;
+    private static final BooleanProperty isButtonsDisabled = new SimpleBooleanProperty(false);
+    private final Logger logger = LogManager.getLogger(ComputerRowController.class);
 
     public void initialize() {
         computerName.setColorFoundText(Color.YELLOW);

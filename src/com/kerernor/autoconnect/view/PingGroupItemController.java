@@ -10,19 +10,16 @@ import com.kerernor.autoconnect.util.Utils;
 import com.kerernor.autoconnect.view.components.JSearchableTextFlowController;
 import com.kerernor.autoconnect.view.popups.AddEditPingerItemsController;
 import com.kerernor.autoconnect.view.popups.ConfirmPopupController;
-import com.kerernor.autoconnect.view.screens.PingerScreenController;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-import javax.swing.*;
 import java.io.IOException;
 
 public class PingGroupItemController extends HBox {
@@ -118,18 +115,17 @@ public class PingGroupItemController extends HBox {
 //        infoEditPingerGroupName = infoEditPingerExit = infoEditPingerItems = null;
 //    }
 
-    private HBox loadView() {
+    private void loadView() {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(Utils.PING_GROUP_ITEM));
         loader.setController(this);
         loader.setRoot(this);
 
         try {
-            return loader.load();
+            loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return null;
     }
 
     public HBox getMainPane() {
