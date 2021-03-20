@@ -29,7 +29,8 @@
                 <HBox fx:id="buttonsHBox" alignment="CENTER" spacing="10">
                     <Button fx:id="saveChangesButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="70.0" styleClass="button-save-popup-grid" text="Save" />
                     <Button fx:id="closeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="20.0" prefWidth="70.0" styleClass="button-close-popup-grid" text="Close" />
-                    <Button fx:id="test" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="20.0" prefWidth="70.0" styleClass="button-close-popup-grid" text="Test" />
+                    <Button fx:id="deleteCell" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="20.0" prefWidth="70.0" styleClass="button-close-popup-grid" text="Delete" />
+                    <Button fx:id="castleCells" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="20.0" prefWidth="70.0" styleClass="button-close-popup-grid" text="Castle" />
                     <padding>
                         <Insets bottom="5"/>
                     </padding>

@@ -4,10 +4,7 @@ import animatefx.animation.*;
 import com.kerernor.autoconnect.Main;
 import com.kerernor.autoconnect.model.Pinger;
 import com.kerernor.autoconnect.model.PingerData;
-import com.kerernor.autoconnect.util.KorCommon;
-import com.kerernor.autoconnect.util.KorTypes;
-import com.kerernor.autoconnect.util.ThreadManger;
-import com.kerernor.autoconnect.util.Utils;
+import com.kerernor.autoconnect.util.*;
 import com.kerernor.autoconnect.view.popups.AlertPopupController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -49,7 +46,9 @@ public class PingerGridController extends BorderPane {
     @FXML
     private Button closeButton;
     @FXML
-    private Button test;
+    private Button deleteCell;
+    @FXML
+    private Button castleCells;
     @FXML
     private StackPane dusbinStackPane;
     @FXML
@@ -72,9 +71,11 @@ public class PingerGridController extends BorderPane {
     private final int GRID_ROW = 7;
     private final int GRID_COL = 8;
     private final double spaceBetweenCells = 10d;
-    private boolean isSingleDragging = true;
+    private final boolean isSingleDragging = true;
     private final List<PingerController> selectionList = new ArrayList<>();
     private boolean isTrashEnlarged = false;
+    private boolean isDeleteCellSelected = false;
+    private boolean isCastlingSelected = false;
     Tada tada;
     private ScheduledFuture<?> timer;
 
@@ -99,16 +100,31 @@ public class PingerGridController extends BorderPane {
         mainPane.setOnMouseReleased(this::onMouseReleased);
         saveChangesButton.setOnMouseClicked(this::saveChangesButtonHandler);
         closeButton.setOnMouseClicked(this::closeClickAction);
+        deleteCell.setOnMouseClicked(this::onDeleteCellAction);
+        castleCells.setOnMouseClicked(this::onCastleCellsAction);
 
         tada = new Tada(dusbinImageView);
 
-        // for enable/disable multi drag process
-        buttonsHBox.getChildren().remove(2);
-        test.setOnMouseClicked(event -> {
-            logger.debug("");
-            isSingleDragging = !isSingleDragging;
-        });
     }
+
+    private void onCastleCellsAction(MouseEvent event) {
+        isCastlingSelected = !isCastlingSelected;
+        if (isCastlingSelected) {
+            castleCells.getStyleClass().add("border-yellow");
+        } else {
+            castleCells.getStyleClass().remove("border-yellow");
+        }
+    }
+
+    private void onDeleteCellAction(MouseEvent event) {
+        isDeleteCellSelected = !isDeleteCellSelected;
+        if (isDeleteCellSelected) {
+            deleteCell.getStyleClass().add("border-yellow");
+        } else {
+            deleteCell.getStyleClass().remove("border-yellow");
+        }
+    }
+
 
     private void closeClickAction(MouseEvent event) {
         closeClickAction();
@@ -205,7 +221,14 @@ public class PingerGridController extends BorderPane {
     private void onMousePress(MouseEvent event) {
         logger.debug("onMousePress");
         final PingerController item = findItemByCoordinates(event.getSceneX(), event.getSceneY(), false);
-
+        if (isDeleteCellSelected) {
+            deleteCellProcessing(item);
+            return;
+        }
+        if (isCastlingSelected) {
+            castlingCellsProcessing(item);
+            return;
+        }
         if (isSingleDragging) {
             double moduleHeight = ((PingerController) mainPane.getChildren().get(0)).getPrefHeight();
             double delta = -(moduleHeight * GRID_ROW + spaceBetweenCells * GRID_ROW);
@@ -229,6 +252,30 @@ public class PingerGridController extends BorderPane {
             selectController(item);
             longPressTimer(event);
         }
+    }
+
+    private void castlingCellsProcessing(PingerController item) {
+        if (item == null) return;
+        selectController(item);
+        if (selectionList.size() == 2) {
+            switchModules(selectionList.get(0), selectionList.get(1));
+            unSelectAllCells();
+            onCastleCellsAction(null);
+        }
+    }
+
+    private void deleteCellProcessing(PingerController item) {
+        if (item == null || item.getState() != KorTypes.PingerGridItemState.ACTIVE) return;
+        int indexOnGrid = item.getIndexOnGrid();
+        PingerController emptyCell = PingerController.emptyPingerController();
+        emptyCell.setIndexOnGrid(indexOnGrid);
+        getGridCollection().set(indexOnGrid, emptyCell);
+        getGridCollection().get(indexOnGrid).getStyleClass().add("main-pane");
+        deleteCell.getStyleClass().remove("border-yellow");
+        isDeleteCellSelected = false;
+        ZoomIn zoomIn = new ZoomIn(emptyCell);
+        zoomIn.setSpeed(3);
+        zoomIn.play();
     }
 
     private void handleWithMultiDragProcessing(MouseEvent event) {
@@ -274,7 +321,12 @@ public class PingerGridController extends BorderPane {
         }
     }
 
+    private void unSelectAllCells(){
+        getGridCollection().forEach(cell -> unselectController((PingerController) cell));
+    }
+
     private void onMouseDragged(MouseEvent event) {
+        if (isCastlingSelected || isDeleteCellSelected) return;
         if (isSingleDragging) {
             final ObservableList<Node> pingerControllers = mainPane.getChildren();
             double moduleHeight = ((PingerController) pingerControllers.get(Utils.MAX_PINGER_GROUPS)).getPrefHeight();
@@ -336,6 +388,10 @@ public class PingerGridController extends BorderPane {
 
     private void onMouseReleased(MouseEvent event) {
         logger.debug("onMouseReleased");
+        if (isDeleteCellSelected || isCastlingSelected) {
+            logger.debug("consume event");
+            return;
+        }
         cancelLongPressTimer();
         if (isSingleDragging) {
             if (isTrashEnlarged) {
@@ -359,7 +415,7 @@ public class PingerGridController extends BorderPane {
 
             if ((colorItem != null && colorItem.getState() != KorTypes.PingerGridItemState.DUMMY) && (draggedItem != null && draggedItem.getState() != KorTypes.PingerGridItemState.EMPTY && !draggedItem.isDeleted())) {
                 colorItem.getStyleClass().remove("menu-item-hover");
-                switchModules();
+                switchModules(draggedItem, colorItem);
             }
             removeBorderFromAllNodes(mainPane.getChildren());
             draggedItem = null;
@@ -405,23 +461,17 @@ public class PingerGridController extends BorderPane {
         PingerController emptyPingerController = PingerController.emptyPingerController();
         emptyPingerController.setIndexOnGrid(draggedItem.getIndexOnGrid());
         mainPane.getChildren().set(draggedItem.getIndexOnGrid(), emptyPingerController);
-        createEffectOfSwappedControllers(emptyPingerController);
+        Animation.zoomIn(emptyPingerController, 2);
     }
 
-    private void switchModules() {
-        logger.debug("switchModules between Indexes: {}<->{}", colorItem.getIndexOnGrid(), draggedItem.getIndexOnGrid());
+    private void switchModules(PingerController pinger1, PingerController pinger2) {
+        logger.debug("switchModules between Indexes: {}<->{}", pinger2.getIndexOnGrid(), pinger1.getIndexOnGrid());
         ObservableList<Node> workingCollection = FXCollections.observableArrayList(mainPane.getChildren());
-        Collections.swap(workingCollection, colorItem.getIndexOnGrid(), draggedItem.getIndexOnGrid());
+        Collections.swap(workingCollection, pinger2.getIndexOnGrid(), pinger1.getIndexOnGrid());
         mainPane.getChildren().setAll(workingCollection);
-        swapIndexOngGrid(colorItem, draggedItem);
-        createEffectOfSwappedControllers(colorItem);
-        createEffectOfSwappedControllers(draggedItem);
-    }
-
-    private void createEffectOfSwappedControllers(PingerController item) {
-        ZoomIn zoomIn = new ZoomIn(item);
-        zoomIn.setSpeed(2);
-        zoomIn.play();
+        swapIndexOngGrid(pinger2, pinger1);
+        Animation.zoomIn(pinger2, 2);
+        Animation.zoomIn(pinger1, 2);
     }
 
     private void swapIndexOngGrid(PingerController ctl1, PingerController ctl2) {

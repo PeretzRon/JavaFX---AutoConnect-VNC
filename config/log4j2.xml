@@ -2,13 +2,13 @@
 <Configuration status="ERROR">
   <Appenders>
     <Console name="Console" target="SYSTEM_OUT">
-      <PatternLayout pattern="%highlight{%d{{dd-MM-yyyy HH:mm:ss,SSS}}  %-5p    %-30t  Line:%4L   %c{1} - %m%n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=blue, DEBUG=green bold, TRACE=orange}"
+      <PatternLayout pattern="%highlight{%-5p %d{{dd-MM-yyyy HH:mm:ss,SSS}}  %-5p    %-30t  Line:%4L   %c{1} - %m%n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=blue, DEBUG=green bold, TRACE=orange}"
                      disableAnsi="false"/>
     </Console>
     <RollingFile name="RollingFile" fileName="log/app.log"
                  filePattern="log/%i-app.log" >
       <PatternLayout>
-        <pattern>%d{{dd-MM-yyyy HH:mm:ss,SSS}}  %-5p    %-30t  Line:%4L   %c{1} - %m%n</pattern>
+        <pattern>%-5p %d{{dd-MM-yyyy HH:mm:ss,SSS}}   %-30t  Line:%4L   %c{1} - %m%n</pattern>
       </PatternLayout>
       <Policies>
         <SizeBasedTriggeringPolicy size="3 MB" />
