@@ -111,7 +111,7 @@ public class ComputerRowController extends ListCell<Computer> {
             loader = loadView();
         }
 
-        computerName.initText(computer.getName(),true);
+        computerName.initText(computer.getName(), true);
         computerName.setFont(Font.font(25));
         computerLocation.initText(computer.getItemLocation(), true);
         computerLocation.setFont(Font.font(16));

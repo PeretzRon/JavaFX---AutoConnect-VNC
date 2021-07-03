@@ -24,8 +24,6 @@ import java.io.IOException;
 
 public class PingGroupItemController extends HBox {
 
-    //TODO: add logger
-
     @FXML
     private HBox mainPane;
 
@@ -60,7 +58,7 @@ public class PingGroupItemController extends HBox {
 
     @FXML
     public void initialize() {
-         // TODO: check why need platform , otherwise tha app stuck on startup
+        // TODO: check why need platform , otherwise tha app stuck on startup
         Platform.runLater(() -> KorCommon.getInstance().getPingerScreenController().getActiveSearchableTextFlowMap().add(name));
     }
 
