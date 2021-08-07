@@ -118,13 +118,10 @@ public class ConfirmPopupController extends GridPane {
             Platform.runLater(this::closeClickAction);
         }, Utils.TIME_FOR_CLOSE_POPUP, TimeUnit.MILLISECONDS);
 
-
+        Utils.enableExitPopupOnEscKey(stage, callback -> closeClickAction());
         Utils.showStageOnTopAndWait(stage);
         Utils.centerNewStageToBehindStage(paneBehind, stage);
-
-
         return callback;
-
     }
 
     @FXML
